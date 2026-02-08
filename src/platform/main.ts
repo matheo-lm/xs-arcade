@@ -184,44 +184,39 @@ const render = (): void => {
           </div>
         </div>
         <section class="launcher-controls" aria-label="launcher controls">
-          <div class="launcher-controls-meta">
-            <p class="launcher-subtitle">${i18n.t("appSubtitle")}</p>
+          <p class="launcher-subtitle">${i18n.t("appSubtitle")}</p>
+          <div class="launcher-control-field">
             <label class="field-label launcher-control-label" for="profileSelect">${i18n.t("profileLabel")}</label>
-            <label class="field-label launcher-control-label" for="ageFilter">${i18n.t("filterAge")}</label>
-            <label class="field-label launcher-control-label" for="skillFilter">${i18n.t("filterSkill")}</label>
+            <select class="select" id="profileSelect">
+              ${platformStorage
+                .listProfiles()
+                .map(
+                  (profile) =>
+                    `<option value="${profile.id}" ${profile.id === active.id ? "selected" : ""}>${profile.name}</option>`
+                )
+                .join("")}
+            </select>
           </div>
-          <div class="launcher-controls-inputs">
-            <span class="launcher-controls-spacer" aria-hidden="true"></span>
-            <div class="launcher-control-field">
-              <select class="select" id="profileSelect">
-                ${platformStorage
-                  .listProfiles()
-                  .map(
-                    (profile) =>
-                      `<option value="${profile.id}" ${profile.id === active.id ? "selected" : ""}>${profile.name}</option>`
-                  )
-                  .join("")}
-              </select>
-            </div>
-            <div class="launcher-control-field">
-              <select class="select" id="ageFilter">
-                <option value="">${i18n.t("filterAllAges")}</option>
-                <option value="4-5" ${selectedAge === "4-5" ? "selected" : ""}>${i18n.t("ageBand45")}</option>
-                <option value="6-7" ${selectedAge === "6-7" ? "selected" : ""}>${i18n.t("ageBand67")}</option>
-                <option value="8" ${selectedAge === "8" ? "selected" : ""}>${i18n.t("ageBand8")}</option>
-              </select>
-            </div>
-            <div class="launcher-control-field">
-              <select class="select" id="skillFilter">
-                <option value="">${i18n.t("filterAllSkills")}</option>
-                <option value="numeracy" ${selectedSkill === "numeracy" ? "selected" : ""}>${i18n.t("skillNumeracy")}</option>
-                <option value="literacy" ${selectedSkill === "literacy" ? "selected" : ""}>${i18n.t("skillLiteracy")}</option>
-                <option value="logic" ${selectedSkill === "logic" ? "selected" : ""}>${i18n.t("skillLogic")}</option>
-                <option value="memory" ${selectedSkill === "memory" ? "selected" : ""}>${i18n.t("skillMemory")}</option>
-                <option value="creativity" ${selectedSkill === "creativity" ? "selected" : ""}>${i18n.t("skillCreativity")}</option>
-                <option value="spatial" ${selectedSkill === "spatial" ? "selected" : ""}>${i18n.t("skillSpatial")}</option>
-              </select>
-            </div>
+          <div class="launcher-control-field">
+            <label class="field-label launcher-control-label" for="ageFilter">${i18n.t("filterAge")}</label>
+            <select class="select" id="ageFilter">
+              <option value="">${i18n.t("filterAllAges")}</option>
+              <option value="4-5" ${selectedAge === "4-5" ? "selected" : ""}>${i18n.t("ageBand45")}</option>
+              <option value="6-7" ${selectedAge === "6-7" ? "selected" : ""}>${i18n.t("ageBand67")}</option>
+              <option value="8" ${selectedAge === "8" ? "selected" : ""}>${i18n.t("ageBand8")}</option>
+            </select>
+          </div>
+          <div class="launcher-control-field">
+            <label class="field-label launcher-control-label" for="skillFilter">${i18n.t("filterSkill")}</label>
+            <select class="select" id="skillFilter">
+              <option value="">${i18n.t("filterAllSkills")}</option>
+              <option value="numeracy" ${selectedSkill === "numeracy" ? "selected" : ""}>${i18n.t("skillNumeracy")}</option>
+              <option value="literacy" ${selectedSkill === "literacy" ? "selected" : ""}>${i18n.t("skillLiteracy")}</option>
+              <option value="logic" ${selectedSkill === "logic" ? "selected" : ""}>${i18n.t("skillLogic")}</option>
+              <option value="memory" ${selectedSkill === "memory" ? "selected" : ""}>${i18n.t("skillMemory")}</option>
+              <option value="creativity" ${selectedSkill === "creativity" ? "selected" : ""}>${i18n.t("skillCreativity")}</option>
+              <option value="spatial" ${selectedSkill === "spatial" ? "selected" : ""}>${i18n.t("skillSpatial")}</option>
+            </select>
           </div>
         </section>
       </div>
@@ -245,7 +240,18 @@ const render = (): void => {
         <span>${i18n.t("footerMadeWith")}</span>
         <span class="footer-heart" aria-hidden="true">
           <svg viewBox="0 0 24 24" focusable="false">
-            <path d="M12 21 3 12.7a5.2 5.2 0 0 1 0-7.4 5.4 5.4 0 0 1 7.6 0L12 6.7l1.4-1.4a5.4 5.4 0 0 1 7.6 0 5.2 5.2 0 0 1 0 7.4Z"></path>
+            <rect x="6" y="4" width="4" height="4"></rect>
+            <rect x="14" y="4" width="4" height="4"></rect>
+            <rect x="4" y="8" width="4" height="4"></rect>
+            <rect x="8" y="8" width="4" height="4"></rect>
+            <rect x="12" y="8" width="4" height="4"></rect>
+            <rect x="16" y="8" width="4" height="4"></rect>
+            <rect x="6" y="12" width="4" height="4"></rect>
+            <rect x="10" y="12" width="4" height="4"></rect>
+            <rect x="14" y="12" width="4" height="4"></rect>
+            <rect x="8" y="16" width="4" height="4"></rect>
+            <rect x="12" y="16" width="4" height="4"></rect>
+            <rect x="10" y="20" width="4" height="2"></rect>
           </svg>
         </span>
         <span>${i18n.t("footerByX")}</span>

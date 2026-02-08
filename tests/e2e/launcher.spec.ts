@@ -5,8 +5,8 @@ test("launcher shows nine game cards and supports filters", async ({ page }) => 
   await page.goto("/");
 
   const cards = page.locator("[data-game-id]");
-  await expect(page.locator(".launcher-controls-meta")).toBeVisible();
-  await expect(page.locator(".launcher-controls-meta .launcher-subtitle")).toContainText("pick a game");
+  await expect(page.locator(".launcher-controls")).toBeVisible();
+  await expect(page.locator(".launcher-controls .launcher-subtitle")).toContainText("pick a game");
   await expect(page.locator('label[for="profileSelect"]')).toContainText(/player|jugador/i);
   await expect(page.locator('label[for="ageFilter"]')).toContainText(/age|edad/i);
   await expect(page.locator('label[for="skillFilter"]')).toContainText(/skill|habilidad/i);

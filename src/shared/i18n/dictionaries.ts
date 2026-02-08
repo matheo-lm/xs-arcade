@@ -56,7 +56,7 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     settingsProfileLabel: "profile",
     footerAbout: "about",
     footerMadeWith: "made with",
-    footerByX: "by x",
+    footerByX: "by xvr",
     footerContribute: "contribute",
     footerContributeAria: "open github repository to contribute"
   },
@@ -115,7 +115,7 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     settingsProfileLabel: "perfil",
     footerAbout: "acerca de",
     footerMadeWith: "hecho con",
-    footerByX: "por x",
+    footerByX: "por xvr",
     footerContribute: "contribuir",
     footerContributeAria: "abrir repositorio github para contribuir"
   }

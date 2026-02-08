@@ -1,38 +1,39 @@
 .launcher-header {
-  padding: 12px;
+  padding: 10px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
-  gap: 12px;
+  gap: 10px;
   position: relative;
 }
 
 .launcher-header-main {
   min-width: 0;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .launcher-brand {
-  display: grid;
-  gap: 8px;
-  justify-items: start;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .launcher-title {
   margin: 0;
-  font-size: clamp(1rem, 2.9vw, 1.3rem);
+  font-size: clamp(0.96rem, 2.3vw, 1.16rem);
   letter-spacing: 0.04em;
-  line-height: 1.3;
+  line-height: 1.2;
   text-shadow: 0 0 12px var(--crt-glow);
 }
 
 .launcher-subtitle {
   margin: 0;
-  font-size: 0.86rem;
-  line-height: 1.35;
+  font-size: 0.8rem;
+  line-height: 1.28;
   color: var(--text-soft);
-  max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -41,103 +42,97 @@
 .launcher-stats {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .stat-chip {
-  min-height: 40px;
-  min-width: 66px;
+  min-height: 36px;
+  min-width: 60px;
   border: 2px solid var(--status-border);
   border-radius: 3px;
   background: var(--status-bg);
-  padding: 5px 8px;
+  padding: 4px 7px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   color: var(--status-text);
   justify-content: flex-start;
 }
 
 .stat-chip img {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   display: block;
   image-rendering: pixelated;
 }
 
 .stat-chip strong {
-  font-size: 0.67rem;
+  font-size: 0.62rem;
   line-height: 1;
-}
-
-.launcher-menu-wrap {
-  justify-self: end;
 }
 
 .launcher-header-actions {
   justify-self: end;
 }
 
-.launcher-controls {
-  display: grid;
-  gap: 7px;
+.launcher-menu-wrap {
+  justify-self: end;
 }
 
-.launcher-controls-meta,
-.launcher-controls-inputs {
+.launcher-controls {
   display: grid;
-  grid-template-columns: minmax(160px, 1.4fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(170px, 1.3fr) repeat(3, minmax(0, 1fr));
   gap: 8px;
   align-items: end;
 }
 
-.launcher-control-label {
-  margin-bottom: 0;
-}
-
-.launcher-controls-spacer {
-  min-height: 1px;
-}
-
 .launcher-control-field {
   min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.launcher-control-label {
+  margin-bottom: 0;
+  font-size: 0.56rem;
+  line-height: 1.25;
 }
 
 .launcher-controls .select {
   width: 100%;
-  min-height: 44px;
+  min-height: 42px;
 }
 
 .game-grid {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .game-card {
-  padding: 12px;
+  padding: 8px;
   display: grid;
-  gap: 9px;
-  min-height: 244px;
+  gap: 6px;
+  min-height: clamp(140px, 17vh, 188px);
 }
 
 .game-card h2 {
   margin: 0;
-  font-size: 0.82rem;
-  line-height: 1.45;
+  font-size: 0.7rem;
+  line-height: 1.3;
 }
 
 .card-top {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
 .card-icon {
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   display: inline-flex;
   border-radius: 4px;
   align-items: center;
@@ -148,15 +143,15 @@
 }
 
 .card-icon-img {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   display: block;
 }
 
 .status-pill {
-  font-size: 0.6rem;
-  line-height: 1.35;
-  padding: 6px 8px;
+  font-size: 0.5rem;
+  line-height: 1.3;
+  padding: 4px 6px;
   border-radius: 3px;
   border: 2px solid var(--status-border);
   background: var(--status-bg);
@@ -170,36 +165,40 @@
 
 .game-card p {
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 0.84rem;
+  line-height: 1.35;
   color: var(--text-soft);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .card-details {
   margin-top: auto;
   display: grid;
-  gap: 8px;
+  gap: 5px;
   grid-template-columns: 1fr auto;
   align-items: end;
 }
 
 .card-tags {
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .tag-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
 }
 
 .tag {
-  font-size: 0.56rem;
-  line-height: 1.35;
-  border: 2px solid var(--tag-border);
+  font-size: 0.45rem;
+  line-height: 1.3;
+  border: 1px solid var(--tag-border);
   border-radius: 3px;
-  padding: 4px 7px;
+  padding: 2px 4px;
   color: var(--text-soft);
   background: var(--tag-bg);
 }
@@ -213,8 +212,14 @@
   text-decoration: none;
 }
 
+.card-actions .button {
+  min-height: 40px;
+  font-size: 0.56rem;
+  padding: 7px 10px;
+}
+
 .launcher-footer {
-  padding: 10px 12px;
+  padding: 8px 10px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
@@ -222,7 +227,7 @@
 }
 
 .footer-link {
-  min-height: 44px;
+  min-height: 40px;
   display: inline-flex;
   align-items: center;
   justify-self: start;
@@ -232,21 +237,21 @@
   margin: 0;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-family: var(--font-pixel);
-  font-size: 0.62rem;
-  line-height: 1.4;
+  font-size: 0.54rem;
+  line-height: 1.3;
   color: var(--text-soft);
   justify-self: center;
 }
 
 .footer-heart {
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   display: inline-grid;
   place-items: center;
-  border: 2px solid var(--tag-border);
-  border-radius: 3px;
+  border: 1px solid var(--tag-border);
+  border-radius: 2px;
   background: var(--tag-bg);
 }
 
@@ -254,22 +259,23 @@
   width: 14px;
   height: 14px;
   fill: var(--accent);
+  shape-rendering: crispEdges;
 }
 
 .footer-github-link {
-  min-height: 44px;
+  min-height: 40px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 10px;
+  gap: 6px;
+  padding: 7px 9px;
   border: 2px solid var(--tag-border);
   border-radius: 4px;
   background: var(--tag-bg);
   color: var(--link);
   text-decoration: none;
   font-family: var(--font-pixel);
-  font-size: 0.62rem;
-  line-height: 1.3;
+  font-size: 0.54rem;
+  line-height: 1.25;
   justify-self: end;
 }
 
@@ -278,67 +284,24 @@
 }
 
 .footer-github-icon {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   display: block;
   fill: currentcolor;
 }
 
 @media (max-width: 1120px) and (min-width: 900px) {
-  .launcher-header {
-    padding: 10px;
-    gap: 10px;
-  }
-
-  .launcher-header-main {
-    gap: 8px;
-  }
-
-  .launcher-title {
-    font-size: clamp(0.88rem, 2vw, 1rem);
-  }
-
-  .launcher-brand {
-    gap: 6px;
-  }
-
-  .launcher-stats {
-    gap: 6px;
-  }
-
-  .stat-chip {
-    min-height: 34px;
-    min-width: 56px;
-    padding: 4px 7px;
-    gap: 6px;
-  }
-
-  .stat-chip img {
-    width: 14px;
-    height: 14px;
-  }
-
-  .stat-chip strong {
-    font-size: 0.58rem;
-  }
-
   .launcher-controls {
-    gap: 6px;
-  }
-
-  .launcher-controls-meta,
-  .launcher-controls-inputs {
-    grid-template-columns: minmax(140px, 1.25fr) repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(130px, 1fr) repeat(3, minmax(0, 1fr));
     gap: 6px;
   }
 
   .launcher-subtitle {
     font-size: 0.66rem;
-    line-height: 1.2;
   }
 
   .launcher-control-label {
-    font-size: 0.52rem;
+    font-size: 0.5rem;
   }
 
   .launcher-controls .select {
@@ -352,7 +315,7 @@
   }
 
   .game-card {
-    min-height: 140px;
+    min-height: 136px;
     padding: 6px;
     gap: 4px;
   }
@@ -368,46 +331,22 @@
   }
 
   .status-pill {
-    font-size: 0.44rem;
+    font-size: 0.42rem;
     padding: 3px 5px;
   }
 
   .game-card h2 {
-    font-size: 0.62rem;
-    line-height: 1.2;
+    font-size: 0.6rem;
   }
 
   .game-card p {
     font-size: 0.72rem;
-    line-height: 1.25;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
-    overflow: hidden;
-  }
-
-  .card-details {
-    gap: 4px;
-  }
-
-  .card-tags {
-    gap: 4px;
-  }
-
-  .tag-row {
-    gap: 3px;
-  }
-
-  .tag {
-    font-size: 0.42rem;
-    line-height: 1.3;
-    padding: 2px 4px;
-    border-width: 1px;
   }
 
   .card-actions .button {
     min-height: 34px;
-    font-size: 0.52rem;
+    font-size: 0.5rem;
     padding: 5px 8px;
   }
 
@@ -416,39 +355,26 @@
     gap: 6px;
   }
 
-  .footer-credit {
-    gap: 5px;
-    font-size: 0.5rem;
-  }
-
-  .footer-link {
-    min-height: 34px;
-  }
-
-  .footer-heart {
-    width: 20px;
-    height: 20px;
-  }
-
-  .footer-heart svg {
-    width: 12px;
-    height: 12px;
-  }
-
+  .footer-link,
   .footer-github-link {
     min-height: 34px;
-    gap: 5px;
-    padding: 4px 7px;
-    font-size: 0.5rem;
   }
 
-  .footer-github-icon {
-    width: 14px;
-    height: 14px;
+  .footer-credit {
+    font-size: 0.48rem;
+    gap: 5px;
   }
 }
 
 @media (max-width: 920px) {
+  .launcher-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .launcher-subtitle {
+    grid-column: 1 / -1;
+  }
+
   .game-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -463,18 +389,13 @@
     justify-self: end;
   }
 
-  .launcher-controls-meta,
-  .launcher-controls-inputs {
+  .launcher-controls {
     grid-template-columns: 1fr;
-    gap: 6px;
   }
 
-  .launcher-controls-spacer {
+  .launcher-subtitle,
+  .launcher-stats {
     display: none;
-  }
-
-  .launcher-control-label {
-    margin-bottom: 2px;
   }
 
   .launcher-footer {
@@ -497,24 +418,15 @@
 }
 
 @media (max-width: 680px) {
-  .launcher-subtitle {
-    display: none;
-  }
-
-  .launcher-stats {
-    display: none;
-  }
-
   .launcher-title {
-    font-size: 0.9rem;
-  }
-
-  .launcher-controls,
-  .game-grid {
-    grid-template-columns: 1fr;
+    font-size: 0.86rem;
   }
 
   .launcher-controls .select {
     min-height: 42px;
+  }
+
+  .game-grid {
+    grid-template-columns: 1fr;
   }
 }
