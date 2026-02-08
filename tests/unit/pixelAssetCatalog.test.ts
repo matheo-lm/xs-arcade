@@ -14,6 +14,8 @@ interface PixelAssetEntry {
 }
 
 interface PixelAssetCatalog {
+  styleVersion: string;
+  pixelEra: string;
   assets: PixelAssetEntry[];
 }
 
@@ -48,6 +50,8 @@ describe("pixel asset catalog", () => {
   test("catalog entries are complete and local", () => {
     const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8")) as PixelAssetCatalog;
 
+    expect(catalog.styleVersion).toBe("retro-clean-v2");
+    expect(catalog.pixelEra).toBe("16-bit-inspired");
     expect(Array.isArray(catalog.assets)).toBe(true);
     expect(catalog.assets.length).toBeGreaterThan(0);
 
@@ -59,6 +63,7 @@ describe("pixel asset catalog", () => {
       expect(Array.isArray(asset.contexts)).toBe(true);
       expect(asset.contexts.length).toBeGreaterThan(0);
       expect(asset.grid).toBeTruthy();
+      expect(/^\d+x\d+@\d+px$/.test(asset.grid)).toBe(true);
       expect(Array.isArray(asset.palette)).toBe(true);
       expect(asset.palette.length).toBeGreaterThan(0);
     }

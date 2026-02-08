@@ -131,8 +131,8 @@
 }
 
 .card-icon {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   display: inline-flex;
   border-radius: 4px;
   align-items: center;
@@ -143,8 +143,8 @@
 }
 
 .card-icon-img {
-  width: 26px;
-  height: 26px;
+  width: 40px;
+  height: 40px;
   display: block;
   image-rendering: pixelated;
 }
@@ -256,11 +256,11 @@
   background: var(--tag-bg);
 }
 
-.footer-heart svg {
+.footer-heart-img {
   width: 16px;
   height: 16px;
-  fill: var(--accent);
-  shape-rendering: crispEdges;
+  display: block;
+  image-rendering: pixelated;
 }
 
 .footer-github-link {
@@ -360,13 +360,13 @@
   }
 
   .card-icon {
-    width: 34px;
-    height: 34px;
+    width: 42px;
+    height: 42px;
   }
 
   .card-icon-img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
   }
 
   .status-pill {

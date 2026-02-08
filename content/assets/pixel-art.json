@@ -1,4 +1,6 @@
 {
+  "styleVersion": "retro-clean-v2",
+  "pixelEra": "16-bit-inspired",
   "assets": [
     {
       "id": "fruits-apple",
@@ -8,15 +10,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -27,15 +40,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -46,15 +70,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -65,15 +100,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -84,15 +130,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -103,15 +160,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -122,15 +190,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -141,15 +220,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -160,15 +250,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -179,15 +280,26 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "grid": "16x16@4px",
+      "grid": "32x32@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -198,15 +310,26 @@
         "launcher-game-card",
         "placeholder-header"
       ],
-      "grid": "24x24@4px",
+      "grid": "48x48@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -217,15 +340,26 @@
         "launcher-game-card",
         "placeholder-header"
       ],
-      "grid": "24x24@4px",
+      "grid": "48x48@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -236,15 +370,26 @@
         "launcher-game-card",
         "placeholder-header"
       ],
-      "grid": "24x24@4px",
+      "grid": "48x48@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -255,15 +400,26 @@
         "launcher-game-card",
         "placeholder-header"
       ],
-      "grid": "24x24@4px",
+      "grid": "48x48@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -274,15 +430,26 @@
         "launcher-game-card",
         "placeholder-header"
       ],
-      "grid": "24x24@4px",
+      "grid": "48x48@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -293,15 +460,26 @@
         "launcher-game-card",
         "placeholder-header"
       ],
-      "grid": "24x24@4px",
+      "grid": "48x48@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -312,15 +490,26 @@
         "launcher-game-card",
         "placeholder-header"
       ],
-      "grid": "24x24@4px",
+      "grid": "48x48@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -331,15 +520,26 @@
         "launcher-game-card",
         "placeholder-header"
       ],
-      "grid": "24x24@4px",
+      "grid": "48x48@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -350,15 +550,26 @@
         "launcher-game-card",
         "placeholder-header"
       ],
-      "grid": "24x24@4px",
+      "grid": "48x48@2px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -369,15 +580,26 @@
         "global-fallback",
         "launcher-fallback"
       ],
-      "grid": "12x12@2px",
+      "grid": "24x24@1px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -387,15 +609,26 @@
       "contexts": [
         "launcher-footer"
       ],
-      "grid": "12x12@2px",
+      "grid": "24x24@1px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -405,15 +638,26 @@
       "contexts": [
         "launcher-footer"
       ],
-      "grid": "12x12@2px",
+      "grid": "24x24@1px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -423,15 +667,26 @@
       "contexts": [
         "launcher-profile-stats"
       ],
-      "grid": "12x12@2px",
+      "grid": "24x24@1px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -441,15 +696,26 @@
       "contexts": [
         "launcher-profile-stats"
       ],
-      "grid": "12x12@2px",
+      "grid": "24x24@1px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -459,15 +725,26 @@
       "contexts": [
         "launcher-profile-stats"
       ],
-      "grid": "12x12@2px",
+      "grid": "24x24@1px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -477,15 +754,26 @@
       "contexts": [
         "settings-theme-toggle"
       ],
-      "grid": "12x12@2px",
+      "grid": "24x24@1px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -495,15 +783,26 @@
       "contexts": [
         "settings-theme-toggle"
       ],
-      "grid": "12x12@2px",
+      "grid": "24x24@1px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     },
     {
@@ -513,15 +812,26 @@
       "contexts": [
         "settings-theme-toggle"
       ],
-      "grid": "12x12@2px",
+      "grid": "24x24@1px",
       "palette": [
-        "#1b2238",
+        "#1a2138",
         "#122038",
-        "#fff7df",
-        "#6fa8ff",
-        "#ffd56b",
-        "#6bdba3",
-        "#ff7f7f"
+        "#2a3d61",
+        "#1a2746",
+        "#d8e8ff",
+        "#fff2c2",
+        "#ff8a91",
+        "#ff6a82",
+        "#ffd86d",
+        "#79cd6a",
+        "#7e54a2",
+        "#d4adf2",
+        "#72abff",
+        "#84adff",
+        "#a8c9ff",
+        "#ffb96c",
+        "#9ecf76",
+        "#f29a4b"
       ]
     }
   ]

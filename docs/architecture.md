@@ -48,5 +48,5 @@
 
 ## Asset Resilience
 - Image assets are local-only under `public/assets/`.
-- `content/assets/pixel-art.json` is the canonical repository contract for all image metadata.
+- `content/assets/pixel-art.json` is the canonical repository contract for all image metadata, including style versioning (`styleVersion`, `pixelEra`).
 - Game manifests and game configs must reference local `/assets/...svg` paths.

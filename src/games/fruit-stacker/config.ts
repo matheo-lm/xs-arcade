@@ -36,8 +36,8 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackSpriteUrl: "/assets/fruits/cherry.svg",
     fallbackA: "#ff8a9a",
     fallbackB: "#ff2e50",
-    drawScale: 1.02,
-    spriteScale: 1.1
+    drawScale: 1.04,
+    spriteScale: 1.16
   },
   {
     id: "lemon",
@@ -49,8 +49,8 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackSpriteUrl: "/assets/fruits/lemon.svg",
     fallbackA: "#fff08a",
     fallbackB: "#ffc738",
-    drawScale: 1,
-    spriteScale: 1.1
+    drawScale: 1.03,
+    spriteScale: 1.14
   },
   {
     id: "kiwi",
@@ -62,8 +62,8 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackSpriteUrl: "/assets/fruits/kiwi.svg",
     fallbackA: "#cde87e",
     fallbackB: "#7bb24a",
-    drawScale: 1,
-    spriteScale: 1.08
+    drawScale: 1.02,
+    spriteScale: 1.12
   },
   {
     id: "orange",
@@ -75,8 +75,8 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackSpriteUrl: "/assets/fruits/orange.svg",
     fallbackA: "#ffd390",
     fallbackB: "#ff922f",
-    drawScale: 1,
-    spriteScale: 1.08
+    drawScale: 1.02,
+    spriteScale: 1.11
   },
   {
     id: "apple",
@@ -88,8 +88,8 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackSpriteUrl: "/assets/fruits/apple.svg",
     fallbackA: "#ffb39f",
     fallbackB: "#ff3f3f",
-    drawScale: 1,
-    spriteScale: 1.08
+    drawScale: 1.01,
+    spriteScale: 1.1
   },
   {
     id: "pear",
@@ -101,8 +101,8 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackSpriteUrl: "/assets/fruits/pear.svg",
     fallbackA: "#e5ffa5",
     fallbackB: "#90db44",
-    drawScale: 1,
-    spriteScale: 1.07
+    drawScale: 1.01,
+    spriteScale: 1.09
   },
   {
     id: "peach",
@@ -114,8 +114,8 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackSpriteUrl: "/assets/fruits/peach.svg",
     fallbackA: "#ffd9bf",
     fallbackB: "#ff9e6a",
-    drawScale: 1,
-    spriteScale: 1.06
+    drawScale: 1.01,
+    spriteScale: 1.08
   },
   {
     id: "melon",
@@ -128,7 +128,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#f4bf79",
     fallbackB: "#dd8b43",
     drawScale: 1,
-    spriteScale: 1.08
+    spriteScale: 1.07
   },
   {
     id: "watermelon",
@@ -155,7 +155,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackB: "#e06f22",
     special: "pumpkin",
     drawScale: 1,
-    spriteScale: 1.04
+    spriteScale: 1.05
   }
 ];
 

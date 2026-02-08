@@ -3,7 +3,7 @@
 Use this checklist for UI work.
 
 ## Required
-- Keep 90s pixel-arcade visual direction.
+- Keep a retro pixel direction with 16-bit clean readability.
 - Use shared tokens from `src/shared/ui/base.css`.
 - Use shared game header from `src/shared/ui/gameHeader.ts` + `src/shared/ui/gameHeader.css` for all game pages.
 - Keep controls >= 44x44.
@@ -35,3 +35,4 @@ Use this checklist for UI work.
 - Shared header appears and aligns consistently.
 - Theme switch keeps style identity in both modes.
 - Game cards, UI stats/icons, settings icons, footer icons, and game sprites all use the same pixel language.
+- Game cards are visually recognizable by scene/object, not by initials alone.

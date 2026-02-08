@@ -41,7 +41,7 @@ Add the new page to `vite.config.ts` `build.rollupOptions.input`.
 - Preserve 44x44 touch targets and keyboard focus visibility.
 
 ## 7. Assets
-- Add game icon and gameplay image assets in `public/assets/` using 8-bit pixel-art SVG style.
+- Add game icon and gameplay image assets in `public/assets/` using retro pixel (16-bit clean) SVG style.
 - `cardIcon` in `content/games/<slug>.json` must be a local `/assets/...svg` path.
 - Do not use external image/CDN URLs.
 - Add entries for every new image to `content/assets/pixel-art.json`.

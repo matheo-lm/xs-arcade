@@ -49,15 +49,15 @@ Rules:
 - Game over triggers only after sustained top-line overflow.
 
 ## Asset Policy
-- Image assets must use 8-bit pixel-art style.
+- Image assets must use retro pixel (16-bit clean) style.
 - Image sources must be local-only under `/Users/m/Desktop/berries/public/assets/` (no CDN or remote image URLs).
 - Every image used by platform or games must have a catalog record in `/Users/m/Desktop/berries/content/assets/pixel-art.json`.
 - Use SVG assets only for the pixel imaging system.
 - Do not add heavyweight asset pipelines unless requested.
 
-## 8-Bit Pixel Imaging Policy (Required)
+## Retro Pixel Imaging Policy (Required)
 - This policy applies to launcher UI, shared UI, game cards, placeholder pages, and all game sprites.
-- No visual icon/image exceptions: footer, settings, and gameplay imagery must all follow the same pixel-art system.
+- No visual icon/image exceptions: footer, settings, and gameplay imagery must all follow the same retro pixel system.
 - `content/games/*.json` `cardIcon` values must be local `/assets/...svg` paths.
 - Fruit Stacker sprite URLs must be local `/assets/fruits/*.svg` paths.
 - New image files require:

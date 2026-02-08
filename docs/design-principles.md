@@ -1,9 +1,10 @@
 # Design Principles
 
 ## Visual Direction
-- 90s pixel-arcade look is the default brand style.
+- Retro pixel (16-bit clean) look is the default brand style.
 - Keep strong contrast with readable body text.
-- Use pixel frames, beveled panels, and subtle CRT glow/scanline accents.
+- Blend old-school arcade cues with modern, clean composition for current screens.
+- Use pixel frames, beveled panels, and restrained glow/scanline accents.
 
 ## Pixel Arcade System
 - Typography split:
