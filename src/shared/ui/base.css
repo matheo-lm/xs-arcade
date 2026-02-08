@@ -4,10 +4,11 @@
 }
 
 html[data-theme="light"] {
-  --bg-top: #e6efff;
-  --bg-bottom: #b8cdf5;
-  --shape-a: #f8cf89;
-  --shape-b: #9ac7ff;
+  --bg-top: #edf4ff;
+  --bg-bottom: #c5d6f5;
+  --shape-a: #ffd8ab;
+  --shape-b: #8ec2ff;
+  --shape-c: #95aef5;
   --panel: #f6fbff;
   --panel-edge: #1f3f7a;
   --panel-shadow: #7ea0dd;
@@ -27,13 +28,15 @@ html[data-theme="light"] {
   --status-text: #1f3d76;
   --crt-glow: rgba(53, 114, 227, 0.2);
   --scanline: rgba(255, 255, 255, 0.07);
+  --scanline-opacity: 0.22;
 }
 
 html[data-theme="dark"] {
-  --bg-top: #0f1734;
-  --bg-bottom: #080d1f;
-  --shape-a: #5e358f;
-  --shape-b: #12668a;
+  --bg-top: #111b38;
+  --bg-bottom: #090f24;
+  --shape-a: #3f4f98;
+  --shape-b: #1f708c;
+  --shape-c: #5f3f8a;
   --panel: #111a33;
   --panel-edge: #57b6ff;
   --panel-shadow: #0b2a5a;
@@ -52,7 +55,8 @@ html[data-theme="dark"] {
   --status-border: #53a9f4;
   --status-text: #9ad8ff;
   --crt-glow: rgba(58, 214, 255, 0.2);
-  --scanline: rgba(0, 0, 0, 0.2);
+  --scanline: rgba(255, 255, 255, 0.06);
+  --scanline-opacity: 0.12;
 }
 
 * {
@@ -67,8 +71,9 @@ body {
 
 body {
   background:
-    radial-gradient(circle at 12% 14%, color-mix(in srgb, var(--shape-a) 88%, transparent) 0 18%, transparent 19%),
-    radial-gradient(circle at 84% 78%, color-mix(in srgb, var(--shape-b) 86%, transparent) 0 20%, transparent 21%),
+    radial-gradient(circle at 10% 10%, color-mix(in srgb, var(--shape-c) 42%, transparent) 0 26%, transparent 58%),
+    radial-gradient(circle at 88% 84%, color-mix(in srgb, var(--shape-b) 38%, transparent) 0 24%, transparent 60%),
+    radial-gradient(circle at 52% 24%, color-mix(in srgb, var(--shape-a) 30%, transparent) 0 28%, transparent 70%),
     linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
   color: var(--text-main);
   font-family: var(--font-body);
@@ -83,7 +88,16 @@ body::before {
   inset: 0;
   pointer-events: none;
   background: repeating-linear-gradient(180deg, transparent 0 3px, var(--scanline) 3px 4px);
-  opacity: 0.45;
+  opacity: var(--scanline-opacity);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 38%, transparent 35%, color-mix(in srgb, var(--bg-bottom) 28%, black));
+  opacity: 0.3;
 }
 
 .app-shell {

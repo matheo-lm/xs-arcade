@@ -50,5 +50,9 @@
   "themeDark": "dark",
   "languageLabel": "language",
   "audioLabel": "sound",
-  "settingsProfileLabel": "profile"
+  "settingsProfileLabel": "profile",
+  "footerAbout": "about",
+  "footerMadeWithHeartBy": "made with pixel art heart by x",
+  "footerContribute": "contribute",
+  "footerContributeAria": "open github repository to contribute"
 }

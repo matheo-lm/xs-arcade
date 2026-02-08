@@ -53,6 +53,10 @@ export interface TranslationDictionary {
   languageLabel: string;
   audioLabel: string;
   settingsProfileLabel: string;
+  footerAbout: string;
+  footerMadeWithHeartBy: string;
+  footerContribute: string;
+  footerContributeAria: string;
 }
 
 export type TranslationKey = keyof TranslationDictionary;

@@ -53,7 +53,11 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     themeDark: "dark",
     languageLabel: "language",
     audioLabel: "sound",
-    settingsProfileLabel: "profile"
+    settingsProfileLabel: "profile",
+    footerAbout: "about",
+    footerMadeWithHeartBy: "made with pixel art heart by x",
+    footerContribute: "contribute",
+    footerContributeAria: "open github repository to contribute"
   },
   es: {
     appTitle: "x's arcade",
@@ -107,6 +111,10 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     themeDark: "oscuro",
     languageLabel: "idioma",
     audioLabel: "sonido",
-    settingsProfileLabel: "perfil"
+    settingsProfileLabel: "perfil",
+    footerAbout: "acerca de",
+    footerMadeWithHeartBy: "hecho con corazon pixel art por x",
+    footerContribute: "contribuir",
+    footerContributeAria: "abrir repositorio github para contribuir"
   }
 };

@@ -9,6 +9,9 @@ test("launcher shows nine game cards and supports filters", async ({ page }) => 
   await expect(page.locator(".launcher-stats .stat-chip")).toHaveCount(3);
   await expect(page.locator("#createProfileBtn")).toHaveCount(0);
   await expect(page.locator("[data-game-id] .card-details .card-actions .button").first()).toBeVisible();
+  await expect(page.locator(".launcher-footer")).toBeVisible();
+  await expect(page.locator('.launcher-footer a[href*="github.com/matheo-lm/berries#readme"]')).toBeVisible();
+  await expect(page.locator('.launcher-footer a[href="https://github.com/matheo-lm/berries"]')).toBeVisible();
 
   await page.selectOption("#skillFilter", "literacy");
   await expect(cards).toHaveCount(3);
@@ -41,7 +44,8 @@ test("locale switch and fruit stacker navigation smoke", async ({ page }) => {
   await page.click("#launcherSettingsMenuBtn");
   await page.click("#launcherLangEs");
   await expect(page.locator(".launcher-subtitle")).toContainText("aprender");
-  await page.selectOption("#launcherThemeSelect", "dark");
+  await page.click("#launcherThemeDarkBtn");
+  await expect(page.locator("#launcherThemeDarkBtn")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");

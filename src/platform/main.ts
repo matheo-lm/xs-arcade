@@ -165,68 +165,100 @@ const render = (): void => {
 
   app.innerHTML = `
     <header class="panel launcher-header">
-      <div class="launcher-brand">
-        <h1 class="launcher-title">${i18n.t("appTitle")}</h1>
-        <p class="launcher-subtitle">${i18n.t("appSubtitle")}</p>
-        <div class="launcher-stats" aria-label="profile summary">
-          <span class="stat-chip" title="${i18n.t("statsStarsTooltip")}: ${totalStars}" aria-label="${i18n.t("statsStarsTooltip")}: ${totalStars}">
-            <img src="/assets/ui/stat-stars.svg" alt="" aria-hidden="true" />
-            <strong>${totalStars}</strong>
-          </span>
-          <span class="stat-chip" title="${i18n.t("statsBadgesTooltip")}: ${totalBadges}" aria-label="${i18n.t("statsBadgesTooltip")}: ${totalBadges}">
-            <img src="/assets/ui/stat-badges.svg" alt="" aria-hidden="true" />
-            <strong>${totalBadges}</strong>
-          </span>
-          <span class="stat-chip" title="${i18n.t("statsHighScoreTooltip")}: ${fruitBest}" aria-label="${i18n.t("statsHighScoreTooltip")}: ${fruitBest}">
-            <img src="/assets/ui/stat-high-score.svg" alt="" aria-hidden="true" />
-            <strong>${fruitBest}</strong>
-          </span>
+      <div class="launcher-header-main">
+        <div class="launcher-brand">
+          <h1 class="launcher-title">${i18n.t("appTitle")}</h1>
+          <p class="launcher-subtitle">${i18n.t("appSubtitle")}</p>
+          <div class="launcher-stats" aria-label="profile summary">
+            <span class="stat-chip" title="${i18n.t("statsStarsTooltip")}: ${totalStars}" aria-label="${i18n.t("statsStarsTooltip")}: ${totalStars}">
+              <img src="/assets/ui/stat-stars.svg" alt="" aria-hidden="true" />
+              <strong>${totalStars}</strong>
+            </span>
+            <span class="stat-chip" title="${i18n.t("statsBadgesTooltip")}: ${totalBadges}" aria-label="${i18n.t("statsBadgesTooltip")}: ${totalBadges}">
+              <img src="/assets/ui/stat-badges.svg" alt="" aria-hidden="true" />
+              <strong>${totalBadges}</strong>
+            </span>
+            <span class="stat-chip" title="${i18n.t("statsHighScoreTooltip")}: ${fruitBest}" aria-label="${i18n.t("statsHighScoreTooltip")}: ${fruitBest}">
+              <img src="/assets/ui/stat-high-score.svg" alt="" aria-hidden="true" />
+              <strong>${fruitBest}</strong>
+            </span>
+          </div>
         </div>
+        <section class="launcher-controls" aria-label="launcher controls">
+          <div>
+            <label class="field-label" for="profileSelect">${i18n.t("profileLabel")}</label>
+            <select class="select" id="profileSelect">
+              ${platformStorage
+                .listProfiles()
+                .map(
+                  (profile) =>
+                    `<option value="${profile.id}" ${profile.id === active.id ? "selected" : ""}>${profile.name}</option>`
+                )
+                .join("")}
+            </select>
+          </div>
+
+          <div>
+            <label class="field-label" for="ageFilter">${i18n.t("filterAge")}</label>
+            <select class="select" id="ageFilter">
+              <option value="">${i18n.t("filterAllAges")}</option>
+              <option value="4-5" ${selectedAge === "4-5" ? "selected" : ""}>${i18n.t("ageBand45")}</option>
+              <option value="6-7" ${selectedAge === "6-7" ? "selected" : ""}>${i18n.t("ageBand67")}</option>
+              <option value="8" ${selectedAge === "8" ? "selected" : ""}>${i18n.t("ageBand8")}</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="field-label" for="skillFilter">${i18n.t("filterSkill")}</label>
+            <select class="select" id="skillFilter">
+              <option value="">${i18n.t("filterAllSkills")}</option>
+              <option value="numeracy" ${selectedSkill === "numeracy" ? "selected" : ""}>${i18n.t("skillNumeracy")}</option>
+              <option value="literacy" ${selectedSkill === "literacy" ? "selected" : ""}>${i18n.t("skillLiteracy")}</option>
+              <option value="logic" ${selectedSkill === "logic" ? "selected" : ""}>${i18n.t("skillLogic")}</option>
+              <option value="memory" ${selectedSkill === "memory" ? "selected" : ""}>${i18n.t("skillMemory")}</option>
+              <option value="creativity" ${selectedSkill === "creativity" ? "selected" : ""}>${i18n.t("skillCreativity")}</option>
+              <option value="spatial" ${selectedSkill === "spatial" ? "selected" : ""}>${i18n.t("skillSpatial")}</option>
+            </select>
+          </div>
+        </section>
       </div>
-      <div id="settingsMenuMount" class="settings-menu-wrap launcher-menu-wrap"></div>
+      <div class="launcher-header-actions">
+        <div id="settingsMenuMount" class="settings-menu-wrap launcher-menu-wrap"></div>
+      </div>
     </header>
-
-    <section class="panel top-controls" aria-label="launcher controls">
-      <div>
-        <label class="field-label" for="profileSelect">${i18n.t("profileLabel")}</label>
-        <select class="select" id="profileSelect">
-          ${platformStorage
-            .listProfiles()
-            .map(
-              (profile) =>
-                `<option value="${profile.id}" ${profile.id === active.id ? "selected" : ""}>${profile.name}</option>`
-            )
-            .join("")}
-        </select>
-      </div>
-
-      <div>
-        <label class="field-label" for="ageFilter">${i18n.t("filterAge")}</label>
-        <select class="select" id="ageFilter">
-          <option value="">${i18n.t("filterAllAges")}</option>
-          <option value="4-5" ${selectedAge === "4-5" ? "selected" : ""}>${i18n.t("ageBand45")}</option>
-          <option value="6-7" ${selectedAge === "6-7" ? "selected" : ""}>${i18n.t("ageBand67")}</option>
-          <option value="8" ${selectedAge === "8" ? "selected" : ""}>${i18n.t("ageBand8")}</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="field-label" for="skillFilter">${i18n.t("filterSkill")}</label>
-        <select class="select" id="skillFilter">
-          <option value="">${i18n.t("filterAllSkills")}</option>
-          <option value="numeracy" ${selectedSkill === "numeracy" ? "selected" : ""}>${i18n.t("skillNumeracy")}</option>
-          <option value="literacy" ${selectedSkill === "literacy" ? "selected" : ""}>${i18n.t("skillLiteracy")}</option>
-          <option value="logic" ${selectedSkill === "logic" ? "selected" : ""}>${i18n.t("skillLogic")}</option>
-          <option value="memory" ${selectedSkill === "memory" ? "selected" : ""}>${i18n.t("skillMemory")}</option>
-          <option value="creativity" ${selectedSkill === "creativity" ? "selected" : ""}>${i18n.t("skillCreativity")}</option>
-          <option value="spatial" ${selectedSkill === "spatial" ? "selected" : ""}>${i18n.t("skillSpatial")}</option>
-        </select>
-      </div>
-    </section>
 
     <section class="game-grid" aria-label="game list">
       ${renderCards(games)}
     </section>
+
+    <footer class="panel launcher-footer" aria-label="launcher footer">
+      <a
+        class="pixel-link footer-link"
+        href="https://github.com/matheo-lm/berries#readme"
+        target="_blank"
+        rel="noopener noreferrer"
+      >${i18n.t("footerAbout")}</a>
+      <p class="footer-credit">
+        <span class="footer-heart" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M12 21 3 12.7a5.2 5.2 0 0 1 0-7.4 5.4 5.4 0 0 1 7.6 0L12 6.7l1.4-1.4a5.4 5.4 0 0 1 7.6 0 5.2 5.2 0 0 1 0 7.4Z"></path>
+          </svg>
+        </span>
+        <span>${i18n.t("footerMadeWithHeartBy")}</span>
+      </p>
+      <a
+        class="footer-github-link"
+        href="https://github.com/matheo-lm/berries"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="${i18n.t("footerContributeAria")}"
+      >
+        <svg class="footer-github-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-2c-2.8.6-3.4-1.3-3.4-1.3-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 0 1.6 1 1.6 1 .9 1.5 2.4 1 3 1 .1-.7.3-1 .6-1.3-2.2-.2-4.6-1.1-4.6-4.9 0-1.1.4-2.1 1-2.8-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.9 1a9.7 9.7 0 0 1 5.2 0c2-1.3 2.9-1 2.9-1 .6 1.4.2 2.4.1 2.7.6.7 1 1.7 1 2.8 0 3.8-2.4 4.7-4.7 4.9.4.3.7 1 .7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"></path>
+        </svg>
+        <span>${i18n.t("footerContribute")}</span>
+      </a>
+    </footer>
   `;
 
   const settingsMenuMount = document.getElementById("settingsMenuMount") as HTMLElement | null;
@@ -235,6 +267,7 @@ const render = (): void => {
     isOpen: settingsMenuOpen,
     locale: i18n.locale,
     themePreference,
+    themeControlMode: "icons",
     muted: isMuted(),
     includeCreateProfile: true,
     labels: {

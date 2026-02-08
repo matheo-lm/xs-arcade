@@ -1,6 +1,8 @@
 import type { LocaleCode } from "@shared/types/i18n";
 import type { ThemePreference } from "@shared/ui/theme";
 
+export type ThemeControlMode = "select" | "icons";
+
 export interface SettingsMenuLabels {
   settingsLabel: string;
   settingsOpen: string;
@@ -22,6 +24,7 @@ export interface SettingsMenuConfig {
   isOpen: boolean;
   locale: LocaleCode;
   themePreference: ThemePreference;
+  themeControlMode?: ThemeControlMode;
   muted: boolean;
   labels: SettingsMenuLabels;
   includeCreateProfile?: boolean;
@@ -43,6 +46,7 @@ export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig
     isOpen,
     locale,
     themePreference,
+    themeControlMode = "select",
     muted,
     labels,
     includeCreateProfile = false
@@ -51,10 +55,78 @@ export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig
   const toggleId = idFor(idPrefix, "SettingsMenuBtn");
   const panelId = idFor(idPrefix, "SettingsPanel");
   const themeId = idFor(idPrefix, "ThemeSelect");
+  const themeSystemId = idFor(idPrefix, "ThemeSystemBtn");
+  const themeLightId = idFor(idPrefix, "ThemeLightBtn");
+  const themeDarkId = idFor(idPrefix, "ThemeDarkBtn");
   const langEnId = idFor(idPrefix, "LangEn");
   const langEsId = idFor(idPrefix, "LangEs");
   const muteId = idFor(idPrefix, "SoundBtn");
   const createId = idFor(idPrefix, "CreateProfileBtn");
+  const themeMarkup =
+    themeControlMode === "icons"
+      ? `
+          <div class="settings-row">
+            <span class="field-label">${labels.themeLabel}</span>
+            <div class="theme-switch" role="group" aria-label="${labels.themeLabel}">
+              <button
+                type="button"
+                id="${themeSystemId}"
+                class="theme-icon-button"
+                aria-label="${labels.themeLabel}: ${labels.themeSystem}"
+                aria-pressed="${themePreference === "system" ? "true" : "false"}"
+                title="${labels.themeSystem}"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <rect x="3" y="5" width="18" height="12" rx="2"></rect>
+                  <line x1="8" y1="20" x2="16" y2="20"></line>
+                  <line x1="12" y1="17" x2="12" y2="20"></line>
+                </svg>
+              </button>
+              <button
+                type="button"
+                id="${themeLightId}"
+                class="theme-icon-button"
+                aria-label="${labels.themeLabel}: ${labels.themeLight}"
+                aria-pressed="${themePreference === "light" ? "true" : "false"}"
+                title="${labels.themeLight}"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <line x1="12" y1="2.5" x2="12" y2="5.5"></line>
+                  <line x1="12" y1="18.5" x2="12" y2="21.5"></line>
+                  <line x1="2.5" y1="12" x2="5.5" y2="12"></line>
+                  <line x1="18.5" y1="12" x2="21.5" y2="12"></line>
+                  <line x1="5.3" y1="5.3" x2="7.4" y2="7.4"></line>
+                  <line x1="16.6" y1="16.6" x2="18.7" y2="18.7"></line>
+                  <line x1="16.6" y1="7.4" x2="18.7" y2="5.3"></line>
+                  <line x1="5.3" y1="18.7" x2="7.4" y2="16.6"></line>
+                </svg>
+              </button>
+              <button
+                type="button"
+                id="${themeDarkId}"
+                class="theme-icon-button"
+                aria-label="${labels.themeLabel}: ${labels.themeDark}"
+                aria-pressed="${themePreference === "dark" ? "true" : "false"}"
+                title="${labels.themeDark}"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M16.8 2.8A9.5 9.5 0 1 0 21.2 17a8 8 0 0 1-4.4-14.2Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        `
+      : `
+          <div class="settings-row">
+            <label class="field-label" for="${themeId}">${labels.themeLabel}</label>
+            <select class="select" id="${themeId}">
+              <option value="system" ${themePreference === "system" ? "selected" : ""}>${labels.themeSystem}</option>
+              <option value="light" ${themePreference === "light" ? "selected" : ""}>${labels.themeLight}</option>
+              <option value="dark" ${themePreference === "dark" ? "selected" : ""}>${labels.themeDark}</option>
+            </select>
+          </div>
+        `;
 
   root.innerHTML = `
     <button
@@ -76,14 +148,7 @@ export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig
       ${isOpen ? "" : "hidden"}
     >
       <h2>${labels.settingsLabel}</h2>
-      <div class="settings-row">
-        <label class="field-label" for="${themeId}">${labels.themeLabel}</label>
-        <select class="select" id="${themeId}">
-          <option value="system" ${themePreference === "system" ? "selected" : ""}>${labels.themeSystem}</option>
-          <option value="light" ${themePreference === "light" ? "selected" : ""}>${labels.themeLight}</option>
-          <option value="dark" ${themePreference === "dark" ? "selected" : ""}>${labels.themeDark}</option>
-        </select>
-      </div>
+      ${themeMarkup}
       <div class="settings-row">
         <span class="field-label">${labels.languageLabel}</span>
         <div class="lang-switch">
@@ -116,6 +181,9 @@ export const bindSettingsMenuEvents = (
   const toggleButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "SettingsMenuBtn")}`);
   const panel = root.querySelector<HTMLElement>(`#${idFor(config.idPrefix, "SettingsPanel")}`);
   const themeSelect = root.querySelector<HTMLSelectElement>(`#${idFor(config.idPrefix, "ThemeSelect")}`);
+  const themeSystemButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "ThemeSystemBtn")}`);
+  const themeLightButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "ThemeLightBtn")}`);
+  const themeDarkButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "ThemeDarkBtn")}`);
   const langEnButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "LangEn")}`);
   const langEsButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "LangEs")}`);
   const soundButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "SoundBtn")}`);
@@ -137,6 +205,9 @@ export const bindSettingsMenuEvents = (
     const next = target.value === "light" || target.value === "dark" ? target.value : "system";
     handlers.onThemeChange(next);
   };
+  const onThemeSystemClick = (): void => handlers.onThemeChange("system");
+  const onThemeLightClick = (): void => handlers.onThemeChange("light");
+  const onThemeDarkClick = (): void => handlers.onThemeChange("dark");
 
   const onOutsideClick = (event: MouseEvent): void => {
     if (event.timeStamp <= attachedAt) return;
@@ -156,6 +227,9 @@ export const bindSettingsMenuEvents = (
   toggleButton?.addEventListener("click", onToggle);
   panel?.addEventListener("click", onPanelClick);
   themeSelect?.addEventListener("change", onThemeChange);
+  themeSystemButton?.addEventListener("click", onThemeSystemClick);
+  themeLightButton?.addEventListener("click", onThemeLightClick);
+  themeDarkButton?.addEventListener("click", onThemeDarkClick);
   langEnButton?.addEventListener("click", () => handlers.onLocaleChange("en"));
   langEsButton?.addEventListener("click", () => handlers.onLocaleChange("es"));
   soundButton?.addEventListener("click", handlers.onToggleMuted);
@@ -167,6 +241,9 @@ export const bindSettingsMenuEvents = (
     toggleButton?.removeEventListener("click", onToggle);
     panel?.removeEventListener("click", onPanelClick);
     themeSelect?.removeEventListener("change", onThemeChange);
+    themeSystemButton?.removeEventListener("click", onThemeSystemClick);
+    themeLightButton?.removeEventListener("click", onThemeLightClick);
+    themeDarkButton?.removeEventListener("click", onThemeDarkClick);
     window.removeEventListener("click", onOutsideClick);
     window.removeEventListener("keydown", onEscape);
   };

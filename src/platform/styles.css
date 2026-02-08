@@ -1,10 +1,16 @@
 .launcher-header {
   padding: 14px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
   gap: 14px;
   position: relative;
+}
+
+.launcher-header-main {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
 }
 
 .launcher-brand {
@@ -66,12 +72,19 @@
   justify-self: end;
 }
 
-.top-controls {
-  padding: 14px;
+.launcher-header-actions {
+  justify-self: end;
+}
+
+.launcher-controls {
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: end;
+}
+
+.launcher-controls .select {
+  width: 100%;
 }
 
 .game-grid {
@@ -178,8 +191,76 @@
   text-decoration: none;
 }
 
+.launcher-footer {
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-credit {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-pixel);
+  font-size: 0.62rem;
+  line-height: 1.4;
+  color: var(--text-soft);
+}
+
+.footer-heart {
+  width: 26px;
+  height: 26px;
+  display: inline-grid;
+  place-items: center;
+  border: 2px solid var(--tag-border);
+  border-radius: 3px;
+  background: var(--tag-bg);
+}
+
+.footer-heart svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--accent);
+}
+
+.footer-github-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px;
+  border: 2px solid var(--tag-border);
+  border-radius: 4px;
+  background: var(--tag-bg);
+  color: var(--link);
+  text-decoration: none;
+  font-family: var(--font-pixel);
+  font-size: 0.62rem;
+  line-height: 1.3;
+}
+
+.footer-github-link:hover {
+  background: color-mix(in srgb, var(--tag-bg) 76%, var(--panel));
+}
+
+.footer-github-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  fill: currentcolor;
+}
+
 @media (max-width: 1020px) {
-  .top-controls {
+  .launcher-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -189,6 +270,15 @@
 }
 
 @media (max-width: 760px) {
+  .launcher-footer {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .footer-github-link {
+    justify-self: start;
+  }
+
   .card-details {
     grid-template-columns: 1fr;
     align-items: stretch;
@@ -201,14 +291,18 @@
 
 @media (max-width: 680px) {
   .launcher-header {
-    align-items: center;
+    grid-template-columns: 1fr;
+  }
+
+  .launcher-header-actions {
+    justify-self: end;
   }
 
   .launcher-title {
     font-size: 0.98rem;
   }
 
-  .top-controls,
+  .launcher-controls,
   .game-grid {
     grid-template-columns: 1fr;
   }

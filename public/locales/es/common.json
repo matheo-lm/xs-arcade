@@ -50,5 +50,9 @@
   "themeDark": "oscuro",
   "languageLabel": "idioma",
   "audioLabel": "sonido",
-  "settingsProfileLabel": "perfil"
+  "settingsProfileLabel": "perfil",
+  "footerAbout": "acerca de",
+  "footerMadeWithHeartBy": "hecho con corazon pixel art por x",
+  "footerContribute": "contribuir",
+  "footerContributeAria": "abrir repositorio github para contribuir"
 }
