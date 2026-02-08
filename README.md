@@ -80,6 +80,11 @@ E2E smoke tests:
 npm run test:e2e
 ```
 
+## CI
+- GitHub Actions workflow: `/Users/m/Desktop/berries/.github/workflows/ci.yml`
+- Runs on pushes to `main` and all pull requests.
+- Pipeline steps: `typecheck`, `test`, `build`, `test:e2e`.
+
 ## Fruit Stacker Rules (Canonical)
 Merge chain:
 
