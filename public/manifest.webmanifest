@@ -1,11 +1,11 @@
 {
-  "name": "Berries Arcade",
-  "short_name": "Berries",
-  "description": "Kid-friendly web arcade with learning games for ages 4-8.",
+  "name": "x's arcade",
+  "short_name": "x's",
+  "description": "minimal web arcade with learning games for ages 4-8.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#060a1a",
-  "theme_color": "#13235a",
+  "background_color": "#f2f4f8",
+  "theme_color": "#1a1f2e",
   "icons": [
     {
       "src": "/assets/icon.svg",

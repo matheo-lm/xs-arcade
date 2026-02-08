@@ -4,21 +4,33 @@
   "path": "/games/fruit-stacker/",
   "status": "playable",
   "title": {
-    "en": "Fruit Stacker",
-    "es": "Apila Frutas"
+    "en": "fruit stacker",
+    "es": "apila frutas"
   },
   "description": {
-    "en": "Drop and merge matching fruits to make bigger ones.",
-    "es": "Suelta y combina frutas iguales para hacerlas mas grandes."
+    "en": "drop and merge matching fruits to make bigger ones.",
+    "es": "suelta y combina frutas iguales para hacerlas mas grandes."
   },
-  "cardIcon": "🍉",
-  "ageBands": ["4-5", "6-7", "8"],
-  "skills": ["spatial", "logic"],
+  "cardIcon": "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F349.svg",
+  "ageBands": [
+    "4-5",
+    "6-7",
+    "8"
+  ],
+  "skills": [
+    "spatial",
+    "logic"
+  ],
   "learningGoals": [
-    "Plan drop position before action.",
-    "Understand merge progression and cause/effect."
+    "plan drop position before action.",
+    "understand merge progression and cause/effect."
   ],
   "difficultyPresets": {
+    "8": {
+      "dropCooldownMs": 250,
+      "goalScore": 2000,
+      "maxObjectsHint": 42
+    },
     "4-5": {
       "dropCooldownMs": 420,
       "goalScore": 900,
@@ -28,11 +40,7 @@
       "dropCooldownMs": 320,
       "goalScore": 1400,
       "maxObjectsHint": 34
-    },
-    "8": {
-      "dropCooldownMs": 250,
-      "goalScore": 2000,
-      "maxObjectsHint": 42
     }
-  }
+  },
+  "cardIconFallback": "/assets/game-icons/fruit-stacker.svg"
 }

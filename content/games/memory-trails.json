@@ -4,21 +4,33 @@
   "path": "/games/memory-trails/",
   "status": "placeholder",
   "title": {
-    "en": "Memory Trails",
-    "es": "Caminos de Memoria"
+    "en": "memory trails",
+    "es": "caminos de memoria"
   },
   "description": {
-    "en": "Follow and replay short path sequences.",
-    "es": "Sigue y repite secuencias cortas de caminos."
+    "en": "follow and replay short path sequences.",
+    "es": "sigue y repite secuencias cortas de caminos."
   },
-  "cardIcon": "🧠",
-  "ageBands": ["4-5", "6-7", "8"],
-  "skills": ["memory", "logic"],
+  "cardIcon": "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F9E0.svg",
+  "ageBands": [
+    "4-5",
+    "6-7",
+    "8"
+  ],
+  "skills": [
+    "memory",
+    "logic"
+  ],
   "learningGoals": [
-    "Hold short sequences in working memory.",
-    "Recall order with visual cues."
+    "hold short sequences in working memory.",
+    "recall order with visual cues."
   ],
   "difficultyPresets": {
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 12,
+      "maxObjectsHint": 8
+    },
     "4-5": {
       "dropCooldownMs": 0,
       "goalScore": 4,
@@ -28,11 +40,7 @@
       "dropCooldownMs": 0,
       "goalScore": 8,
       "maxObjectsHint": 6
-    },
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 12,
-      "maxObjectsHint": 8
     }
-  }
+  },
+  "cardIconFallback": "/assets/game-icons/memory-trails.svg"
 }

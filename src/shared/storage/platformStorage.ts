@@ -36,6 +36,8 @@ export interface PlatformStorageApi {
   isGlobalMute(): boolean;
   setLocale(locale: LocaleCode): void;
   getLocale(): LocaleCode;
+  setThemePreference(theme: "system" | "light" | "dark"): void;
+  getThemePreference(): "system" | "light" | "dark";
 }
 
 const nowIso = (): string => new Date().toISOString();
@@ -55,7 +57,8 @@ const defaultState = (): PlatformState => ({
   badges: {},
   settings: {
     globalMute: false,
-    locale: "en"
+    locale: "en",
+    themePreference: "system"
   }
 });
 
@@ -93,6 +96,10 @@ const sanitizeState = (raw: unknown): PlatformState => {
   if (settings && typeof settings === "object") {
     safe.settings.globalMute = !!settings.globalMute;
     safe.settings.locale = settings.locale === "es" ? "es" : "en";
+    safe.settings.themePreference =
+      settings.themePreference === "light" || settings.themePreference === "dark"
+        ? settings.themePreference
+        : "system";
   }
 
   return safe;
@@ -134,7 +141,7 @@ export const createPlatformStorage = (storageCandidate?: StorageLike): PlatformS
 
   const createProfile = (name: string, avatarId: string): ChildProfile =>
     withState((state) => {
-      const trimmed = name.trim() || "Player";
+      const trimmed = name.trim() || "player";
       const profile: ChildProfile = {
         id: generateId("profile"),
         name: trimmed,
@@ -219,6 +226,17 @@ export const createPlatformStorage = (storageCandidate?: StorageLike): PlatformS
     return state.settings.locale;
   };
 
+  const setThemePreference = (theme: "system" | "light" | "dark"): void => {
+    withState((state) => {
+      state.settings.themePreference = theme;
+    });
+  };
+
+  const getThemePreference = (): "system" | "light" | "dark" => {
+    const state = loadState(storage);
+    return state.settings.themePreference;
+  };
+
   return {
     listProfiles,
     createProfile,
@@ -231,7 +249,9 @@ export const createPlatformStorage = (storageCandidate?: StorageLike): PlatformS
     setGlobalMute,
     isGlobalMute,
     setLocale,
-    getLocale
+    getLocale,
+    setThemePreference,
+    getThemePreference
   };
 };
 

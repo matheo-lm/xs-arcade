@@ -4,6 +4,7 @@ import { createI18n } from "@shared/i18n";
 import { playUiClick, setMuted, toggleMuted, unlockAudioContext, isMuted } from "@shared/audio/platformAudio";
 import { filterGames } from "@platform/gameRegistry";
 import { platformStorage } from "@shared/storage/platformStorage";
+import { applyTheme, watchSystemTheme, type ThemePreference } from "@shared/ui/theme";
 import type { AgeBand, GameManifest, SkillTag } from "@shared/types/game";
 
 const app = document.getElementById("app");
@@ -14,6 +15,23 @@ const avatarRotation = ["berry", "rocket", "leaf", "sun"];
 
 let selectedAge: AgeBand | "" = "";
 let selectedSkill: SkillTag | "" = "";
+let settingsMenuOpen = false;
+let themePreference: ThemePreference = platformStorage.getThemePreference();
+let stopThemeWatch: (() => void) | null = null;
+
+const syncTheme = (): void => {
+  applyTheme(themePreference);
+  stopThemeWatch?.();
+  stopThemeWatch = watchSystemTheme(themePreference, () => {
+    applyTheme(themePreference);
+  });
+};
+
+const setThemePreference = (next: ThemePreference): void => {
+  themePreference = next;
+  platformStorage.setThemePreference(next);
+  syncTheme();
+};
 
 const ensureDefaultProfile = (): void => {
   const profiles = platformStorage.listProfiles();
@@ -46,6 +64,11 @@ const skillLabel = (skill: SkillTag): string => {
   return map[skill];
 };
 
+const iconMarkup = (game: GameManifest): string => {
+  const fallback = game.cardIconFallback ?? "/assets/icon.svg";
+  return `<img class="card-icon-img" src="${game.cardIcon}" data-fallback="${fallback}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
+};
+
 const renderCards = (games: GameManifest[]): string =>
   games
     .map((game) => {
@@ -59,7 +82,7 @@ const renderCards = (games: GameManifest[]): string =>
       return `
         <article class="panel game-card" data-game-id="${game.id}">
           <div class="card-top">
-            <span class="card-icon" aria-hidden="true">${game.cardIcon}</span>
+            <span class="card-icon" aria-hidden="true">${iconMarkup(game)}</span>
             <span class="status-pill ${statusClass}">${statusText}</span>
           </div>
           <h2>${game.title[i18n.locale]}</h2>
@@ -75,6 +98,21 @@ const renderCards = (games: GameManifest[]): string =>
       `;
     })
     .join("");
+
+const wireImageFallbacks = (root: ParentNode): void => {
+  const icons = root.querySelectorAll<HTMLImageElement>("img[data-fallback]");
+  icons.forEach((img) => {
+    const fallback = img.dataset.fallback;
+    if (!fallback) return;
+
+    let usedFallback = false;
+    img.addEventListener("error", () => {
+      if (usedFallback) return;
+      usedFallback = true;
+      img.src = fallback;
+    });
+  });
+};
 
 const registerServiceWorker = async (): Promise<void> => {
   if (!("serviceWorker" in navigator)) return;
@@ -106,11 +144,49 @@ const render = (): void => {
 
   app.innerHTML = `
     <header class="panel launcher-header">
-      <h1 class="launcher-title">${i18n.t("appTitle")}</h1>
-      <p class="launcher-subtitle">${i18n.t("appSubtitle")}</p>
+      <div class="launcher-brand">
+        <h1 class="launcher-title">${i18n.t("appTitle")}</h1>
+        <p class="launcher-subtitle">${i18n.t("appSubtitle")}</p>
+      </div>
+      <div class="launcher-menu-wrap">
+        <button
+          type="button"
+          id="settingsMenuBtn"
+          class="menu-toggle"
+          aria-label="${settingsMenuOpen ? i18n.t("settingsClose") : i18n.t("settingsOpen")}"
+          aria-controls="settingsPanel"
+          aria-expanded="${settingsMenuOpen ? "true" : "false"}"
+        >
+          <span class="menu-toggle-lines" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
+        </button>
+        <section class="panel settings-menu ${settingsMenuOpen ? "open" : ""}" id="settingsPanel" ${settingsMenuOpen ? "" : "hidden"}>
+          <h2>${i18n.t("settingsLabel")}</h2>
+          <div class="settings-row">
+            <label class="field-label" for="themeSelect">${i18n.t("themeLabel")}</label>
+            <select class="select" id="themeSelect">
+              <option value="system" ${themePreference === "system" ? "selected" : ""}>${i18n.t("themeSystem")}</option>
+              <option value="light" ${themePreference === "light" ? "selected" : ""}>${i18n.t("themeLight")}</option>
+              <option value="dark" ${themePreference === "dark" ? "selected" : ""}>${i18n.t("themeDark")}</option>
+            </select>
+          </div>
+          <div class="settings-row">
+            <span class="field-label">${i18n.t("languageLabel")}</span>
+            <div class="lang-switch">
+              <button type="button" id="langEn" ${i18n.locale === "en" ? "disabled" : ""}>en</button>
+              <button type="button" id="langEs" ${i18n.locale === "es" ? "disabled" : ""}>es</button>
+            </div>
+          </div>
+          <div class="settings-row">
+            <span class="field-label">${i18n.t("audioLabel")}</span>
+            <button type="button" id="muteBtn">${isMuted() ? i18n.t("muteOff") : i18n.t("muteOn")}</button>
+          </div>
+        </section>
+      </div>
     </header>
 
-    <section class="panel top-controls" aria-label="Launcher controls">
+    <section class="panel top-controls" aria-label="launcher controls">
       <div>
         <label class="field-label" for="profileSelect">${i18n.t("profileLabel")}</label>
         <select class="select" id="profileSelect">
@@ -147,30 +223,23 @@ const render = (): void => {
         </select>
       </div>
 
-      <div class="lang-switch">
-        <button type="button" id="langEn" ${i18n.locale === "en" ? "disabled" : ""}>EN</button>
-        <button type="button" id="langEs" ${i18n.locale === "es" ? "disabled" : ""}>ES</button>
-      </div>
-
       <div>
         <button type="button" id="createProfileBtn">${i18n.t("profileCreate")}</button>
       </div>
-
-      <div>
-        <button type="button" id="muteBtn">${isMuted() ? i18n.t("muteOff") : i18n.t("muteOn")}</button>
-      </div>
     </section>
 
-    <section class="panel profile-stats" aria-label="Profile summary">
+    <section class="panel profile-stats" aria-label="profile summary">
       <span class="stat-pill">${i18n.t("starsLabel")}: ${totalStars}</span>
       <span class="stat-pill">${i18n.t("badgesLabel")}: ${totalBadges}</span>
-      <span class="stat-pill">${i18n.t("highScoreLabel")} (Fruit Stacker): ${fruitBest}</span>
+      <span class="stat-pill">${i18n.t("highScoreLabel")} (fruit stacker): ${fruitBest}</span>
     </section>
 
-    <section class="game-grid" aria-label="Game list">
+    <section class="game-grid" aria-label="game list">
       ${renderCards(games)}
     </section>
   `;
+
+  wireImageFallbacks(app);
 
   const profileSelect = document.getElementById("profileSelect") as HTMLSelectElement | null;
   const ageFilter = document.getElementById("ageFilter") as HTMLSelectElement | null;
@@ -179,6 +248,9 @@ const render = (): void => {
   const muteBtn = document.getElementById("muteBtn") as HTMLButtonElement | null;
   const langEn = document.getElementById("langEn") as HTMLButtonElement | null;
   const langEs = document.getElementById("langEs") as HTMLButtonElement | null;
+  const themeSelect = document.getElementById("themeSelect") as HTMLSelectElement | null;
+  const settingsMenuBtn = document.getElementById("settingsMenuBtn") as HTMLButtonElement | null;
+  const settingsPanel = document.getElementById("settingsPanel") as HTMLElement | null;
 
   profileSelect?.addEventListener("change", (event) => {
     const target = event.target as HTMLSelectElement;
@@ -226,9 +298,39 @@ const render = (): void => {
     i18n.setLocale("es");
     render();
   });
+
+  themeSelect?.addEventListener("change", (event) => {
+    const target = event.target as HTMLSelectElement;
+    const next = target.value === "light" || target.value === "dark" ? target.value : "system";
+    setThemePreference(next);
+  });
+
+  settingsMenuBtn?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    settingsMenuOpen = !settingsMenuOpen;
+    render();
+  });
+
+  settingsPanel?.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
 };
 
 window.addEventListener("pointerdown", unlockAudioContext, { passive: true });
+window.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || !settingsMenuOpen) return;
+  settingsMenuOpen = false;
+  render();
+  const button = document.getElementById("settingsMenuBtn") as HTMLButtonElement | null;
+  button?.focus();
+});
+window.addEventListener("click", () => {
+  if (!settingsMenuOpen) return;
+  settingsMenuOpen = false;
+  render();
+});
+
 registerServiceWorker().catch(() => undefined);
 setMuted(platformStorage.isGlobalMute());
+syncTheme();
 render();

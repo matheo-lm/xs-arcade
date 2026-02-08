@@ -5,6 +5,7 @@ test("launcher shows nine game cards and supports filters", async ({ page }) => 
 
   const cards = page.locator("[data-game-id]");
   await expect(cards).toHaveCount(9);
+  await expect(page.locator("[data-game-id] .card-icon-img")).toHaveCount(9);
 
   await page.selectOption("#skillFilter", "literacy");
   await expect(cards).toHaveCount(3);
@@ -16,7 +17,13 @@ test("launcher shows nine game cards and supports filters", async ({ page }) => 
 test("locale switch and fruit stacker navigation smoke", async ({ page }) => {
   await page.goto("/");
 
+  await page.click("#settingsMenuBtn");
   await page.click("#langEs");
+  await expect(page.locator(".launcher-subtitle")).toContainText("aprender");
+  await page.selectOption("#themeSelect", "dark");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(page.locator(".launcher-subtitle")).toContainText("aprender");
 
   await page.locator('[data-game-id="fruit-stacker"] .button').click();

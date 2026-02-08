@@ -69,8 +69,28 @@ describe("platform storage", () => {
 
     storage.setGlobalMute(true);
     storage.setLocale("es");
+    storage.setThemePreference("dark");
 
     expect(storage.isGlobalMute()).toBe(true);
     expect(storage.getLocale()).toBe("es");
+    expect(storage.getThemePreference()).toBe("dark");
+  });
+
+  test("defaults missing theme preference to system in compatible saved state", () => {
+    const memory = new MemoryStorage();
+    memory.setItem(
+      "berries.platform.v1",
+      JSON.stringify({
+        version: 1,
+        profiles: [],
+        activeProfileId: null,
+        progress: {},
+        badges: {},
+        settings: { locale: "es", globalMute: false }
+      })
+    );
+
+    const storage = createPlatformStorage(memory);
+    expect(storage.getThemePreference()).toBe("system");
   });
 });

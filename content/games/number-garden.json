@@ -4,21 +4,33 @@
   "path": "/games/number-garden/",
   "status": "placeholder",
   "title": {
-    "en": "Number Garden",
-    "es": "Jardin de Numeros"
+    "en": "number garden",
+    "es": "jardin de numeros"
   },
   "description": {
-    "en": "Count blossoms and match numbers in a calm garden.",
-    "es": "Cuenta flores y relaciona numeros en un jardin tranquilo."
+    "en": "count blossoms and match numbers in a calm garden.",
+    "es": "cuenta flores y relaciona numeros en un jardin tranquilo."
   },
-  "cardIcon": "🌼",
-  "ageBands": ["4-5", "6-7", "8"],
-  "skills": ["numeracy", "memory"],
+  "cardIcon": "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F33C.svg",
+  "ageBands": [
+    "4-5",
+    "6-7",
+    "8"
+  ],
+  "skills": [
+    "numeracy",
+    "memory"
+  ],
   "learningGoals": [
-    "Recognize numerals quickly.",
-    "Connect counting sets to numeric symbols."
+    "recognize numerals quickly.",
+    "connect counting sets to numeric symbols."
   ],
   "difficultyPresets": {
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 20,
+      "maxObjectsHint": 10
+    },
     "4-5": {
       "dropCooldownMs": 0,
       "goalScore": 8,
@@ -28,11 +40,7 @@
       "dropCooldownMs": 0,
       "goalScore": 14,
       "maxObjectsHint": 8
-    },
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 20,
-      "maxObjectsHint": 10
     }
-  }
+  },
+  "cardIconFallback": "/assets/game-icons/number-garden.svg"
 }

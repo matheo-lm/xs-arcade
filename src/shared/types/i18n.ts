@@ -40,6 +40,15 @@ export interface TranslationDictionary {
   gameSoundOn: string;
   gameSoundOff: string;
   gameTargetReached: string;
+  settingsLabel: string;
+  settingsOpen: string;
+  settingsClose: string;
+  themeLabel: string;
+  themeSystem: string;
+  themeLight: string;
+  themeDark: string;
+  languageLabel: string;
+  audioLabel: string;
 }
 
 export type TranslationKey = keyof TranslationDictionary;

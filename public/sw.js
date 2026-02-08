@@ -1,4 +1,4 @@
-const CACHE_NAME = "berries-shell-v1";
+const CACHE_NAME = "xs-arcade-shell-v2";
 const SHELL_ASSETS = [
   "/",
   "/manifest.webmanifest",

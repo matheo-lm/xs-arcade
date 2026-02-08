@@ -4,21 +4,33 @@
   "path": "/games/pattern-parade/",
   "status": "placeholder",
   "title": {
-    "en": "Pattern Parade",
-    "es": "Desfile de Patrones"
+    "en": "pattern parade",
+    "es": "desfile de patrones"
   },
   "description": {
-    "en": "Find what comes next in playful color and sound patterns.",
-    "es": "Descubre que sigue en patrones de color y sonido."
+    "en": "find what comes next in playful color and sound patterns.",
+    "es": "descubre que sigue en patrones de color y sonido."
   },
-  "cardIcon": "🎵",
-  "ageBands": ["4-5", "6-7", "8"],
-  "skills": ["logic", "memory"],
+  "cardIcon": "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F3B5.svg",
+  "ageBands": [
+    "4-5",
+    "6-7",
+    "8"
+  ],
+  "skills": [
+    "logic",
+    "memory"
+  ],
   "learningGoals": [
-    "Predict missing items in repeated sequences.",
-    "Strengthen ordering and pattern transfer."
+    "predict missing items in repeated sequences.",
+    "strengthen ordering and pattern transfer."
   ],
   "difficultyPresets": {
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 13,
+      "maxObjectsHint": 9
+    },
     "4-5": {
       "dropCooldownMs": 0,
       "goalScore": 5,
@@ -28,11 +40,7 @@
       "dropCooldownMs": 0,
       "goalScore": 9,
       "maxObjectsHint": 7
-    },
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 13,
-      "maxObjectsHint": 9
     }
-  }
+  },
+  "cardIconFallback": "/assets/game-icons/pattern-parade.svg"
 }

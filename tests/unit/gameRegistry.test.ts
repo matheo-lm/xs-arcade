@@ -22,7 +22,7 @@ describe("game registry", () => {
       status: "placeholder",
       title: { en: "", es: "" },
       description: { en: "", es: "" },
-      cardIcon: "?",
+      cardIcon: "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F9E9.svg",
       ageBands: [],
       skills: [],
       learningGoals: [],
@@ -36,6 +36,7 @@ describe("game registry", () => {
     const errors = validateManifest(badManifest);
     expect(errors).toContain("id is required");
     expect(errors).toContain("path must start with /games/");
+    expect(errors).toContain("cardIconFallback is required for external cardIcon");
     expect(errors).toContain("ageBands must be a non-empty array");
     expect(errors).toContain("skills must be a non-empty array");
   });

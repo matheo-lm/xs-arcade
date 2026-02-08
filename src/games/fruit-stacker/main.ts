@@ -4,6 +4,7 @@ import { createI18n } from "@shared/i18n";
 import { getAllGames } from "@platform/gameRegistry";
 import { platformStorage } from "@shared/storage/platformStorage";
 import { initFruitStacker } from "@games/fruit-stacker/game";
+import { applyTheme, watchSystemTheme } from "@shared/ui/theme";
 
 const byId = <T extends HTMLElement>(id: string): T => {
   const node = document.getElementById(id);
@@ -12,6 +13,12 @@ const byId = <T extends HTMLElement>(id: string): T => {
 };
 
 const i18n = createI18n(window.location.search);
+const themePreference = platformStorage.getThemePreference();
+
+applyTheme(themePreference);
+watchSystemTheme(themePreference, () => {
+  applyTheme(themePreference);
+});
 
 const canvas = byId<HTMLCanvasElement>("game");
 const boardEl = byId<HTMLElement>("board");

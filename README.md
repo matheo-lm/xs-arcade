@@ -1,6 +1,6 @@
-# Berries Arcade
+# x's arcade
 
-Berries Arcade is a kid-friendly web arcade platform for ages 4-8. It is designed as one deployable web app that hosts multiple lightweight learning games.
+x's arcade is a kid-friendly web arcade platform for ages 4-8. It is designed as one deployable web app that hosts multiple lightweight learning games.
 
 ## Current Platform Scope
 - Multi-page launcher + game routes.

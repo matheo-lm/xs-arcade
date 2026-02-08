@@ -4,21 +4,33 @@
   "path": "/games/phonics-pop/",
   "status": "placeholder",
   "title": {
-    "en": "Phonics Pop",
-    "es": "Explota Fonemas"
+    "en": "phonics pop",
+    "es": "explota fonemas"
   },
   "description": {
-    "en": "Pop bubbles that match beginning sounds.",
-    "es": "Explota burbujas que coinciden con sonidos iniciales."
+    "en": "pop bubbles that match beginning sounds.",
+    "es": "explota burbujas que coinciden con sonidos iniciales."
   },
-  "cardIcon": "🫧",
-  "ageBands": ["4-5", "6-7", "8"],
-  "skills": ["literacy", "logic"],
+  "cardIcon": "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F50A.svg",
+  "ageBands": [
+    "4-5",
+    "6-7",
+    "8"
+  ],
+  "skills": [
+    "literacy",
+    "logic"
+  ],
   "learningGoals": [
-    "Connect letter symbols to beginning sounds.",
-    "Sort words by first phoneme."
+    "connect letter symbols to beginning sounds.",
+    "sort words by first phoneme."
   ],
   "difficultyPresets": {
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 16,
+      "maxObjectsHint": 10
+    },
     "4-5": {
       "dropCooldownMs": 0,
       "goalScore": 6,
@@ -28,11 +40,7 @@
       "dropCooldownMs": 0,
       "goalScore": 11,
       "maxObjectsHint": 8
-    },
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 16,
-      "maxObjectsHint": 10
     }
-  }
+  },
+  "cardIconFallback": "/assets/game-icons/phonics-pop.svg"
 }

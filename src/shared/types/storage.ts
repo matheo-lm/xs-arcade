@@ -22,4 +22,5 @@ export interface BadgeProgress {
 export interface PlatformSettings {
   globalMute: boolean;
   locale: LocaleCode;
+  themePreference: "system" | "light" | "dark";
 }

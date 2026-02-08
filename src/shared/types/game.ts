@@ -24,6 +24,7 @@ export interface GameManifest {
   title: Record<LocaleCode, string>;
   description: Record<LocaleCode, string>;
   cardIcon: string;
+  cardIconFallback?: string;
   ageBands: AgeBand[];
   skills: SkillTag[];
   learningGoals: string[];

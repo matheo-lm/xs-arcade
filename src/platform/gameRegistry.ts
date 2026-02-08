@@ -37,6 +37,12 @@ export const validateManifest = (manifest: GameManifest): string[] => {
   if (!manifest.description.en || !manifest.description.es) {
     errors.push("description.en and description.es are required");
   }
+  if (!manifest.cardIcon || !manifest.cardIcon.trim()) {
+    errors.push("cardIcon is required");
+  }
+  if (/^https?:\/\//.test(manifest.cardIcon) && !manifest.cardIconFallback) {
+    errors.push("cardIconFallback is required for external cardIcon");
+  }
   if (!Array.isArray(manifest.ageBands) || manifest.ageBands.length === 0) {
     errors.push("ageBands must be a non-empty array");
   }
