@@ -1,16 +1,16 @@
 .launcher-header {
-  padding: 10px;
+  padding: 12px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
-  gap: 10px;
+  gap: 12px;
   position: relative;
 }
 
 .launcher-header-main {
   min-width: 0;
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 
 .launcher-brand {
@@ -23,7 +23,7 @@
 
 .launcher-title {
   margin: 0;
-  font-size: clamp(0.96rem, 2.3vw, 1.16rem);
+  font-size: clamp(1.02rem, 2.5vw, 1.28rem);
   letter-spacing: 0.04em;
   line-height: 1.2;
   text-shadow: 0 0 12px var(--crt-glow);
@@ -31,8 +31,8 @@
 
 .launcher-subtitle {
   margin: 0;
-  font-size: 0.8rem;
-  line-height: 1.28;
+  font-size: 0.94rem;
+  line-height: 1.35;
   color: var(--text-soft);
   white-space: nowrap;
   overflow: hidden;
@@ -42,33 +42,33 @@
 .launcher-stats {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   flex-wrap: wrap;
 }
 
 .stat-chip {
-  min-height: 36px;
-  min-width: 60px;
+  min-height: 40px;
+  min-width: 66px;
   border: 2px solid var(--status-border);
   border-radius: 3px;
   background: var(--status-bg);
-  padding: 4px 7px;
+  padding: 5px 8px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   color: var(--status-text);
   justify-content: flex-start;
 }
 
 .stat-chip img {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   display: block;
   image-rendering: pixelated;
 }
 
 .stat-chip strong {
-  font-size: 0.62rem;
+  font-size: 0.67rem;
   line-height: 1;
 }
 
@@ -83,56 +83,56 @@
 .launcher-controls {
   display: grid;
   grid-template-columns: minmax(170px, 1.3fr) repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
   align-items: end;
 }
 
 .launcher-control-field {
   min-width: 0;
   display: grid;
-  gap: 4px;
+  gap: 6px;
 }
 
 .launcher-control-label {
   margin-bottom: 0;
-  font-size: 0.56rem;
+  font-size: 0.66rem;
   line-height: 1.25;
 }
 
 .launcher-controls .select {
   width: 100%;
-  min-height: 42px;
+  min-height: 46px;
 }
 
 .game-grid {
   display: grid;
-  gap: 10px;
+  gap: 12px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .game-card {
-  padding: 8px;
+  padding: 10px;
   display: grid;
-  gap: 6px;
-  min-height: clamp(140px, 17vh, 188px);
+  gap: 8px;
+  min-height: clamp(168px, 20vh, 216px);
 }
 
 .game-card h2 {
   margin: 0;
-  font-size: 0.7rem;
-  line-height: 1.3;
+  font-size: 0.76rem;
+  line-height: 1.36;
 }
 
 .card-top {
   display: flex;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
 }
 
 .card-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: inline-flex;
   border-radius: 4px;
   align-items: center;
@@ -143,16 +143,16 @@
 }
 
 .card-icon-img {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   display: block;
   image-rendering: pixelated;
 }
 
 .status-pill {
-  font-size: 0.5rem;
+  font-size: 0.54rem;
   line-height: 1.3;
-  padding: 4px 6px;
+  padding: 5px 7px;
   border-radius: 3px;
   border: 2px solid var(--status-border);
   background: var(--status-bg);
@@ -166,8 +166,8 @@
 
 .game-card p {
   margin: 0;
-  font-size: 0.84rem;
-  line-height: 1.35;
+  font-size: 0.94rem;
+  line-height: 1.48;
   color: var(--text-soft);
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -178,28 +178,28 @@
 .card-details {
   margin-top: auto;
   display: grid;
-  gap: 5px;
+  gap: 6px;
   grid-template-columns: 1fr auto;
   align-items: end;
 }
 
 .card-tags {
   display: grid;
-  gap: 4px;
+  gap: 5px;
 }
 
 .tag-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 5px;
 }
 
 .tag {
-  font-size: 0.45rem;
+  font-size: 0.52rem;
   line-height: 1.3;
-  border: 1px solid var(--tag-border);
+  border: 2px solid var(--tag-border);
   border-radius: 3px;
-  padding: 2px 4px;
+  padding: 3px 6px;
   color: var(--text-soft);
   background: var(--tag-bg);
 }
@@ -214,13 +214,13 @@
 }
 
 .card-actions .button {
-  min-height: 40px;
-  font-size: 0.56rem;
-  padding: 7px 10px;
+  min-height: 42px;
+  font-size: 0.62rem;
+  padding: 8px 10px;
 }
 
 .launcher-footer {
-  padding: 8px 10px;
+  padding: 10px 12px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
@@ -228,7 +228,7 @@
 }
 
 .footer-link {
-  min-height: 40px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-self: start;
@@ -240,15 +240,15 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-pixel);
-  font-size: 0.54rem;
+  font-size: 0.6rem;
   line-height: 1.3;
   color: var(--text-soft);
   justify-self: center;
 }
 
 .footer-heart {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: inline-grid;
   place-items: center;
   border: 1px solid var(--tag-border);
@@ -256,15 +256,15 @@
   background: var(--tag-bg);
 }
 
-.footer-heart-img {
-  width: 14px;
-  height: 14px;
-  display: block;
-  image-rendering: pixelated;
+.footer-heart svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--accent);
+  shape-rendering: crispEdges;
 }
 
 .footer-github-link {
-  min-height: 40px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -275,7 +275,7 @@
   color: var(--link);
   text-decoration: none;
   font-family: var(--font-pixel);
-  font-size: 0.54rem;
+  font-size: 0.6rem;
   line-height: 1.25;
   justify-self: end;
 }
@@ -285,24 +285,62 @@
 }
 
 .footer-github-icon {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   display: block;
   image-rendering: pixelated;
 }
 
-@media (max-width: 1120px) and (min-width: 900px) {
+/* Short viewport compact mode (e.g., 1024x768) */
+@media (max-height: 820px) and (min-width: 900px) {
+  .launcher-header {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .launcher-header-main {
+    gap: 6px;
+  }
+
+  .launcher-title {
+    font-size: clamp(0.9rem, 2vw, 1.02rem);
+  }
+
+  .launcher-brand {
+    gap: 6px;
+  }
+
+  .launcher-stats {
+    gap: 5px;
+  }
+
+  .stat-chip {
+    min-height: 34px;
+    min-width: 56px;
+    padding: 4px 7px;
+    gap: 6px;
+  }
+
+  .stat-chip img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .stat-chip strong {
+    font-size: 0.58rem;
+  }
+
   .launcher-controls {
     grid-template-columns: minmax(130px, 1fr) repeat(3, minmax(0, 1fr));
     gap: 6px;
   }
 
   .launcher-subtitle {
-    font-size: 0.66rem;
+    font-size: 0.68rem;
   }
 
   .launcher-control-label {
-    font-size: 0.5rem;
+    font-size: 0.52rem;
   }
 
   .launcher-controls .select {
@@ -345,6 +383,12 @@
     -webkit-line-clamp: 1;
   }
 
+  .tag {
+    font-size: 0.42rem;
+    border-width: 1px;
+    padding: 2px 4px;
+  }
+
   .card-actions .button {
     min-height: 34px;
     font-size: 0.5rem;
@@ -362,7 +406,7 @@
   }
 
   .footer-credit {
-    font-size: 0.48rem;
+    font-size: 0.5rem;
     gap: 5px;
   }
 }
@@ -420,7 +464,7 @@
 
 @media (max-width: 680px) {
   .launcher-title {
-    font-size: 0.86rem;
+    font-size: 0.9rem;
   }
 
   .launcher-controls .select {
