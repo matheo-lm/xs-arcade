@@ -1,10 +1,12 @@
 import "@shared/ui/base.css";
+import "@shared/ui/gameHeader.css";
 import "@games/fruit-stacker/styles.css";
 import { createI18n } from "@shared/i18n";
 import { getAllGames } from "@platform/gameRegistry";
 import { platformStorage } from "@shared/storage/platformStorage";
 import { initFruitStacker } from "@games/fruit-stacker/game";
 import { applyTheme, watchSystemTheme } from "@shared/ui/theme";
+import { renderGameHeader } from "@shared/ui/gameHeader";
 
 const byId = <T extends HTMLElement>(id: string): T => {
   const node = document.getElementById(id);
@@ -20,22 +22,14 @@ watchSystemTheme(themePreference, () => {
   applyTheme(themePreference);
 });
 
+const headerRoot = byId<HTMLElement>("gameHeaderMount");
 const canvas = byId<HTMLCanvasElement>("game");
 const boardEl = byId<HTMLElement>("board");
-const scoreEl = byId<HTMLElement>("score");
-const bestScoreEl = byId<HTMLElement>("bestScore");
 const gameOverEl = byId<HTMLElement>("gameOver");
 const finalScoreEl = byId<HTMLElement>("finalScore");
 const gameOverTitleEl = byId<HTMLElement>("gameOverTitle");
-const soundToggleBtn = byId<HTMLButtonElement>("soundToggleBtn");
-const restartBtn = byId<HTMLButtonElement>("restartBtn");
 const playAgainBtn = byId<HTMLButtonElement>("playAgainBtn");
-
 const hint = byId<HTMLElement>("hint");
-const backLabel = byId<HTMLElement>("backLabel");
-
-hint.textContent = i18n.t("gameHintFruitStacker");
-backLabel.textContent = i18n.t("gameBackToLauncher");
 
 const profiles = platformStorage.listProfiles();
 let activeId = platformStorage.getActiveProfileId();
@@ -50,6 +44,28 @@ if (!profileId) throw new Error("No active profile available");
 
 const manifest = getAllGames().find((game) => game.id === "fruit-stacker");
 if (!manifest) throw new Error("Fruit Stacker manifest is missing");
+
+renderGameHeader(headerRoot, {
+  title: manifest.title[i18n.locale],
+  backHref: "/",
+  backLabel: i18n.t("gameBackToLauncher"),
+  leftMeta: [
+    { id: "score", text: `${i18n.t("gameScorePrefix")}: 0` },
+    { id: "bestScore", text: `${i18n.t("highScoreLabel")}: 0` }
+  ],
+  rightActions: [
+    { id: "soundToggleBtn", label: platformStorage.isGlobalMute() ? i18n.t("gameSoundOff") : i18n.t("gameSoundOn"), pressed: platformStorage.isGlobalMute() },
+    { id: "restartBtn", label: i18n.t("gameRestart") }
+  ],
+  ariaLabel: "game status"
+});
+
+const scoreEl = byId<HTMLElement>("score");
+const bestScoreEl = byId<HTMLElement>("bestScore");
+const soundToggleBtn = byId<HTMLButtonElement>("soundToggleBtn");
+const restartBtn = byId<HTMLButtonElement>("restartBtn");
+
+hint.textContent = i18n.t("gameHintFruitStacker");
 
 const mediumPreset = manifest.difficultyPresets["6-7"];
 

@@ -1,9 +1,11 @@
 import "@shared/ui/base.css";
+import "@shared/ui/gameHeader.css";
 import "@games/placeholder/styles.css";
 import { getAllGames } from "@platform/gameRegistry";
 import { createI18n } from "@shared/i18n";
 import { platformStorage } from "@shared/storage/platformStorage";
 import { applyTheme, watchSystemTheme } from "@shared/ui/theme";
+import { renderGameHeader } from "@shared/ui/gameHeader";
 
 const root = document.getElementById("placeholderApp");
 if (!root) throw new Error("Missing #placeholderApp root");
@@ -26,8 +28,8 @@ if (!game) {
   const fallback = game.cardIconFallback ?? "/assets/icon.svg";
 
   root.innerHTML = `
+    <div id="placeholderHeader"></div>
     <section class="panel placeholder">
-      <a class="pixel-link" href="/">&larr; ${i18n.t("gameBackToLauncher")}</a>
       <h1>
         <img class="placeholder-icon" src="${game.cardIcon}" data-fallback="${fallback}" alt="" aria-hidden="true" />
         <span>${game.title[i18n.locale]}</span>
@@ -35,9 +37,19 @@ if (!game) {
       <p>${game.description[i18n.locale]}</p>
       <div class="tag-row">${ageTags}</div>
       <div class="tag-row">${skillTags}</div>
-      <button type="button" disabled>${i18n.t("ctaComingSoon")}</button>
     </section>
   `;
+
+  const headerRoot = document.getElementById("placeholderHeader");
+  if (headerRoot) {
+    renderGameHeader(headerRoot, {
+      title: game.title[i18n.locale],
+      backHref: "/",
+      backLabel: i18n.t("gameBackToLauncher"),
+      rightActions: [{ id: "placeholderComingSoon", label: i18n.t("ctaComingSoon"), disabled: true }],
+      ariaLabel: "game header"
+    });
+  }
 
   const icon = root.querySelector<HTMLImageElement>(".placeholder-icon");
   if (icon) {

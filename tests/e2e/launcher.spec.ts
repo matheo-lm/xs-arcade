@@ -16,6 +16,23 @@ test("launcher shows nine game cards and supports filters", async ({ page }) => 
 
 test("locale switch and fruit stacker navigation smoke", async ({ page }) => {
   await page.goto("/");
+  const settingsPanel = page.locator("#settingsPanel");
+
+  await expect(settingsPanel).toBeHidden();
+  await page.click("#settingsMenuBtn");
+  await expect(settingsPanel).toBeVisible();
+  await page.click("#settingsMenuBtn");
+  await expect(settingsPanel).toBeHidden();
+
+  await page.click("#settingsMenuBtn");
+  await expect(settingsPanel).toBeVisible();
+  await page.mouse.click(8, 8);
+  await expect(settingsPanel).toBeHidden();
+
+  await page.click("#settingsMenuBtn");
+  await expect(settingsPanel).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(settingsPanel).toBeHidden();
 
   await page.click("#settingsMenuBtn");
   await page.click("#langEs");
@@ -29,9 +46,15 @@ test("locale switch and fruit stacker navigation smoke", async ({ page }) => {
   await page.locator('[data-game-id="fruit-stacker"] .button').click();
   await expect(page).toHaveURL(/\/games\/fruit-stacker\/?$/);
 
+  await expect(page.locator(".game-header")).toBeVisible();
+  await expect(page.locator(".game-header-title")).toBeVisible();
+  await expect(page.locator(".game-header-back")).toBeVisible();
   await expect(page.locator("#score")).toBeVisible();
+  await expect(page.locator("#bestScore")).toBeVisible();
+  await expect(page.locator("#soundToggleBtn")).toBeVisible();
+  await expect(page.locator("#restartBtn")).toBeVisible();
   await page.click("canvas#game", { position: { x: 220, y: 110 } });
 
-  await page.click("a.pixel-link");
+  await page.click("a.game-header-back");
   await expect(page).toHaveURL(/\/$/);
 });

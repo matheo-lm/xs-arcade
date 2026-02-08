@@ -161,7 +161,12 @@ const render = (): void => {
             <span></span><span></span><span></span>
           </span>
         </button>
-        <section class="panel settings-menu ${settingsMenuOpen ? "open" : ""}" id="settingsPanel" ${settingsMenuOpen ? "" : "hidden"}>
+        <section
+          class="panel settings-menu ${settingsMenuOpen ? "open" : ""}"
+          id="settingsPanel"
+          aria-hidden="${settingsMenuOpen ? "false" : "true"}"
+          ${settingsMenuOpen ? "" : "hidden"}
+        >
           <h2>${i18n.t("settingsLabel")}</h2>
           <div class="settings-row">
             <label class="field-label" for="themeSelect">${i18n.t("themeLabel")}</label>
@@ -324,8 +329,17 @@ window.addEventListener("keydown", (event) => {
   const button = document.getElementById("settingsMenuBtn") as HTMLButtonElement | null;
   button?.focus();
 });
-window.addEventListener("click", () => {
+window.addEventListener("click", (event) => {
   if (!settingsMenuOpen) return;
+  const panel = document.getElementById("settingsPanel");
+  const button = document.getElementById("settingsMenuBtn");
+  const eventTarget = event.target;
+  if (
+    eventTarget instanceof Node &&
+    (panel?.contains(eventTarget) || button?.contains(eventTarget))
+  ) {
+    return;
+  }
   settingsMenuOpen = false;
   render();
 });

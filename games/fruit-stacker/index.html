@@ -7,14 +7,7 @@
 </head>
 <body>
   <main class="app-shell game-shell">
-    <section class="panel topbar" aria-label="game status">
-      <a class="pixel-link" href="/">&larr; <span id="backLabel">back to arcade</span></a>
-      <h1 class="title">fruit stacker</h1>
-      <div class="pill" id="score">score: 0</div>
-      <div class="pill" id="bestScore">high score: 0</div>
-      <button id="soundToggleBtn" type="button" aria-pressed="false">sfx: on</button>
-      <button id="restartBtn" type="button">restart</button>
-    </section>
+    <div id="gameHeaderMount"></div>
 
     <section class="panel board" id="board" aria-label="play area">
       <canvas id="game" width="460" height="620"></canvas>

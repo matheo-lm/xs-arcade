@@ -1,5 +1,5 @@
 .launcher-header {
-  padding: 18px;
+  padding: 14px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -14,17 +14,18 @@
 
 .launcher-title {
   margin: 0;
-  font-size: clamp(1.65rem, 3.4vw, 2.15rem);
-  letter-spacing: 0.02em;
-  line-height: 1.1;
+  font-size: clamp(1rem, 2.9vw, 1.3rem);
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  text-shadow: 0 0 12px var(--crt-glow);
 }
 
 .launcher-subtitle {
   margin: 0;
   font-size: 1rem;
-  line-height: 1.55;
+  line-height: 1.65;
   color: var(--text-soft);
-  max-width: 62ch;
+  max-width: 64ch;
 }
 
 .launcher-menu-wrap {
@@ -32,9 +33,9 @@
 }
 
 .menu-toggle {
-  width: 46px;
-  min-height: 46px;
-  border-radius: 12px;
+  width: 48px;
+  min-height: 48px;
+  border-radius: 4px;
   padding: 0;
   display: inline-grid;
   place-items: center;
@@ -49,24 +50,28 @@
 .menu-toggle-lines span {
   display: block;
   height: 2px;
-  border-radius: 999px;
+  border-radius: 2px;
   background: #ffffff;
 }
 
 .settings-menu {
   position: absolute;
   right: 0;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   z-index: 10;
-  width: min(320px, 82vw);
-  padding: 14px;
+  width: min(340px, 88vw);
+  padding: 12px;
   display: grid;
   gap: 12px;
 }
 
+.settings-menu[hidden] {
+  display: none;
+}
+
 .settings-menu h2 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.78rem;
 }
 
 .settings-row {
@@ -81,7 +86,7 @@
 }
 
 .top-controls {
-  padding: 16px;
+  padding: 14px;
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -89,38 +94,39 @@
 }
 
 .profile-stats {
-  padding: 12px 16px;
+  padding: 12px 14px;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
 .stat-pill {
-  border: 1px solid var(--panel-edge);
-  border-radius: 999px;
+  border: 2px solid var(--status-border);
+  border-radius: 3px;
   background: var(--status-bg);
-  padding: 8px 12px;
-  font-size: 0.93rem;
-  color: var(--text-soft);
+  padding: 7px 10px;
+  font-size: 0.68rem;
+  line-height: 1.3;
+  color: var(--status-text);
 }
 
 .game-grid {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .game-card {
-  padding: 14px;
+  padding: 12px;
   display: grid;
-  gap: 10px;
-  min-height: 250px;
+  gap: 9px;
+  min-height: 244px;
 }
 
 .game-card h2 {
   margin: 0;
-  font-size: 1.18rem;
-  line-height: 1.35;
+  font-size: 0.82rem;
+  line-height: 1.45;
 }
 
 .card-top {
@@ -131,14 +137,15 @@
 }
 
 .card-icon {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   display: inline-flex;
-  border-radius: 10px;
+  border-radius: 4px;
   align-items: center;
   justify-content: center;
   background: var(--tag-bg);
-  border: 1px solid var(--tag-border);
+  border: 2px solid var(--tag-border);
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--tag-border) 74%, black);
 }
 
 .card-icon-img {
@@ -148,38 +155,39 @@
 }
 
 .status-pill {
-  font-size: 0.82rem;
-  font-weight: 700;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--status-border);
+  font-size: 0.6rem;
+  line-height: 1.35;
+  padding: 6px 8px;
+  border-radius: 3px;
+  border: 2px solid var(--status-border);
   background: var(--status-bg);
-  color: var(--text-soft);
+  color: var(--status-text);
 }
 
 .status-placeholder {
   color: var(--warn);
-  border-color: color-mix(in srgb, var(--warn) 50%, var(--panel-edge));
+  border-color: color-mix(in srgb, var(--warn) 56%, var(--status-border));
 }
 
 .game-card p {
   margin: 0;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--text-soft);
 }
 
 .tag-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tag {
-  font-size: 0.88rem;
-  border: 1px solid var(--tag-border);
-  border-radius: 999px;
-  padding: 4px 10px;
+  font-size: 0.56rem;
+  line-height: 1.35;
+  border: 2px solid var(--tag-border);
+  border-radius: 3px;
+  padding: 4px 7px;
   color: var(--text-soft);
   background: var(--tag-bg);
 }
@@ -208,7 +216,7 @@
   }
 
   .launcher-title {
-    font-size: 1.5rem;
+    font-size: 0.98rem;
   }
 
   .top-controls,
