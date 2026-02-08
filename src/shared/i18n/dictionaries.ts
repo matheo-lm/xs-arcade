@@ -55,7 +55,8 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     audioLabel: "sound",
     settingsProfileLabel: "profile",
     footerAbout: "about",
-    footerMadeWithHeartBy: "made with pixel art heart by x",
+    footerMadeWith: "made with",
+    footerByX: "by x",
     footerContribute: "contribute",
     footerContributeAria: "open github repository to contribute"
   },
@@ -113,7 +114,8 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     audioLabel: "sonido",
     settingsProfileLabel: "perfil",
     footerAbout: "acerca de",
-    footerMadeWithHeartBy: "hecho con corazon pixel art por x",
+    footerMadeWith: "hecho con",
+    footerByX: "por x",
     footerContribute: "contribuir",
     footerContributeAria: "abrir repositorio github para contribuir"
   }

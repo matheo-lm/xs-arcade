@@ -52,7 +52,8 @@
   "audioLabel": "sound",
   "settingsProfileLabel": "profile",
   "footerAbout": "about",
-  "footerMadeWithHeartBy": "made with pixel art heart by x",
+  "footerMadeWith": "made with",
+  "footerByX": "by x",
   "footerContribute": "contribute",
   "footerContributeAria": "open github repository to contribute"
 }

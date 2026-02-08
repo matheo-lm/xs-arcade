@@ -54,7 +54,8 @@ export interface TranslationDictionary {
   audioLabel: string;
   settingsProfileLabel: string;
   footerAbout: string;
-  footerMadeWithHeartBy: string;
+  footerMadeWith: string;
+  footerByX: string;
   footerContribute: string;
   footerContributeAria: string;
 }

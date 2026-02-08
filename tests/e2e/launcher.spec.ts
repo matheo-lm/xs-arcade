@@ -1,9 +1,15 @@
 import { expect, test } from "@playwright/test";
 
 test("launcher shows nine game cards and supports filters", async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 768 });
   await page.goto("/");
 
   const cards = page.locator("[data-game-id]");
+  await expect(page.locator(".launcher-controls-meta")).toBeVisible();
+  await expect(page.locator(".launcher-controls-meta .launcher-subtitle")).toContainText("pick a game");
+  await expect(page.locator('label[for="profileSelect"]')).toContainText(/player|jugador/i);
+  await expect(page.locator('label[for="ageFilter"]')).toContainText(/age|edad/i);
+  await expect(page.locator('label[for="skillFilter"]')).toContainText(/skill|habilidad/i);
   await expect(cards).toHaveCount(9);
   await expect(page.locator("[data-game-id] .card-icon-img")).toHaveCount(9);
   await expect(page.locator(".launcher-stats .stat-chip")).toHaveCount(3);
@@ -12,6 +18,12 @@ test("launcher shows nine game cards and supports filters", async ({ page }) => 
   await expect(page.locator(".launcher-footer")).toBeVisible();
   await expect(page.locator('.launcher-footer a[href*="github.com/matheo-lm/berries#readme"]')).toBeVisible();
   await expect(page.locator('.launcher-footer a[href="https://github.com/matheo-lm/berries"]')).toBeVisible();
+  await expect(page.locator(".launcher-footer .footer-credit .footer-heart svg")).toBeVisible();
+
+  const viewportFit = await page.evaluate(() => {
+    return document.documentElement.scrollHeight <= document.documentElement.clientHeight;
+  });
+  expect(viewportFit).toBe(true);
 
   await page.selectOption("#skillFilter", "literacy");
   await expect(cards).toHaveCount(3);
