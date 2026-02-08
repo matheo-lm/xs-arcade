@@ -11,12 +11,7 @@
   aspect-ratio: 3 / 4;
   border-radius: 4px;
   border: 3px solid var(--panel-edge);
-  background:
-    repeating-linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--panel) 95%, black) 0 10px,
-      color-mix(in srgb, var(--panel) 82%, black) 10px 20px
-    );
+  background: #111827;
   overflow: hidden;
   position: relative;
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--panel-shadow) 68%, transparent), 0 0 18px var(--crt-glow);

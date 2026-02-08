@@ -1,12 +1,14 @@
 import "@shared/ui/base.css";
 import "@shared/ui/gameHeader.css";
+import "@shared/ui/settingsMenu.css";
 import "@games/fruit-stacker/styles.css";
 import { createI18n } from "@shared/i18n";
 import { getAllGames } from "@platform/gameRegistry";
 import { platformStorage } from "@shared/storage/platformStorage";
 import { initFruitStacker } from "@games/fruit-stacker/game";
-import { applyTheme, watchSystemTheme } from "@shared/ui/theme";
+import { applyTheme, watchSystemTheme, type ThemePreference } from "@shared/ui/theme";
 import { renderGameHeader } from "@shared/ui/gameHeader";
+import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } from "@shared/ui/settingsMenu";
 
 const byId = <T extends HTMLElement>(id: string): T => {
   const node = document.getElementById(id);
@@ -15,12 +17,20 @@ const byId = <T extends HTMLElement>(id: string): T => {
 };
 
 const i18n = createI18n(window.location.search);
-const themePreference = platformStorage.getThemePreference();
+let themePreference: ThemePreference = platformStorage.getThemePreference();
+let gameSettingsOpen = false;
+let cleanupGameSettingsMenu: (() => void) | null = null;
+let stopThemeWatch: (() => void) | null = null;
 
-applyTheme(themePreference);
-watchSystemTheme(themePreference, () => {
+const syncTheme = (): void => {
   applyTheme(themePreference);
-});
+  stopThemeWatch?.();
+  stopThemeWatch = watchSystemTheme(themePreference, () => {
+    applyTheme(themePreference);
+  });
+};
+
+syncTheme();
 
 const headerRoot = byId<HTMLElement>("gameHeaderMount");
 const canvas = byId<HTMLCanvasElement>("game");
@@ -54,7 +64,11 @@ renderGameHeader(headerRoot, {
     { id: "bestScore", text: `${i18n.t("highScoreLabel")}: 0` }
   ],
   rightActions: [
-    { id: "soundToggleBtn", label: platformStorage.isGlobalMute() ? i18n.t("gameSoundOff") : i18n.t("gameSoundOn"), pressed: platformStorage.isGlobalMute() },
+    {
+      id: "soundToggleBtn",
+      label: platformStorage.isGlobalMute() ? i18n.t("gameSoundOff") : i18n.t("gameSoundOn"),
+      pressed: platformStorage.isGlobalMute()
+    },
     { id: "restartBtn", label: i18n.t("gameRestart") }
   ],
   ariaLabel: "game status"
@@ -83,7 +97,7 @@ const updateBestScoreUi = (): void => {
 
 updateBestScoreUi();
 
-initFruitStacker({
+const gameApi = initFruitStacker({
   canvas,
   boardEl,
   scoreEl,
@@ -107,6 +121,7 @@ initFruitStacker({
   dropCooldownMs: mediumPreset.dropCooldownMs,
   onMutedChange(muted) {
     platformStorage.setGlobalMute(muted);
+    renderGameSettingsMenu();
   },
   onGameOver(score) {
     const current = platformStorage.getGameProgress(profileId, "fruit-stacker");
@@ -125,3 +140,85 @@ initFruitStacker({
     updateBestScoreUi();
   }
 });
+
+const createProfile = (): void => {
+  const name = window.prompt(i18n.t("profileCreatePrompt"));
+  if (!name) return;
+  const profile = platformStorage.createProfile(name, "berry");
+  platformStorage.setActiveProfile(profile.id);
+  window.location.reload();
+};
+
+const ensureSettingsRoot = (): HTMLElement => {
+  let root = headerRoot.querySelector<HTMLElement>("#gameSettingsMenuMount");
+  if (root) return root;
+
+  root = document.createElement("div");
+  root.id = "gameSettingsMenuMount";
+  root.className = "settings-menu-wrap game-settings-wrap";
+  const actions = headerRoot.querySelector<HTMLElement>(".game-header-actions");
+  actions?.appendChild(root);
+  return root;
+};
+
+const renderGameSettingsMenu = (): void => {
+  cleanupGameSettingsMenu?.();
+  cleanupGameSettingsMenu = null;
+
+  const menuRoot = ensureSettingsRoot();
+
+  const config: SettingsMenuConfig = {
+    idPrefix: "game",
+    isOpen: gameSettingsOpen,
+    locale: i18n.locale,
+    themePreference,
+    muted: gameApi.getMuted(),
+    includeCreateProfile: true,
+    labels: {
+      settingsLabel: i18n.t("settingsLabel"),
+      settingsOpen: i18n.t("settingsOpen"),
+      settingsClose: i18n.t("settingsClose"),
+      themeLabel: i18n.t("themeLabel"),
+      themeSystem: i18n.t("themeSystem"),
+      themeLight: i18n.t("themeLight"),
+      themeDark: i18n.t("themeDark"),
+      languageLabel: i18n.t("languageLabel"),
+      audioLabel: i18n.t("audioLabel"),
+      soundOn: i18n.t("gameSoundOn"),
+      soundOff: i18n.t("gameSoundOff"),
+      profileLabel: i18n.t("settingsProfileLabel"),
+      createProfileLabel: i18n.t("profileCreate")
+    }
+  };
+
+  renderSettingsMenu(menuRoot, config);
+
+  cleanupGameSettingsMenu = bindSettingsMenuEvents(menuRoot, config, {
+    onOpenChange(open) {
+      gameSettingsOpen = open;
+      renderGameSettingsMenu();
+    },
+    onThemeChange(theme) {
+      themePreference = theme;
+      platformStorage.setThemePreference(theme);
+      syncTheme();
+      renderGameSettingsMenu();
+    },
+    onLocaleChange(locale) {
+      i18n.setLocale(locale);
+      window.location.reload();
+    },
+    onToggleMuted() {
+      const next = !gameApi.getMuted();
+      gameApi.setMuted(next);
+      renderGameSettingsMenu();
+    },
+    onCreateProfile() {
+      createProfile();
+      gameSettingsOpen = false;
+      renderGameSettingsMenu();
+    }
+  });
+};
+
+renderGameSettingsMenu();

@@ -6,6 +6,9 @@ test("launcher shows nine game cards and supports filters", async ({ page }) => 
   const cards = page.locator("[data-game-id]");
   await expect(cards).toHaveCount(9);
   await expect(page.locator("[data-game-id] .card-icon-img")).toHaveCount(9);
+  await expect(page.locator(".launcher-stats .stat-chip")).toHaveCount(3);
+  await expect(page.locator("#createProfileBtn")).toHaveCount(0);
+  await expect(page.locator("[data-game-id] .card-details .card-actions .button").first()).toBeVisible();
 
   await page.selectOption("#skillFilter", "literacy");
   await expect(cards).toHaveCount(3);
@@ -16,28 +19,29 @@ test("launcher shows nine game cards and supports filters", async ({ page }) => 
 
 test("locale switch and fruit stacker navigation smoke", async ({ page }) => {
   await page.goto("/");
-  const settingsPanel = page.locator("#settingsPanel");
+  const settingsPanel = page.locator("#launcherSettingsPanel");
 
   await expect(settingsPanel).toBeHidden();
-  await page.click("#settingsMenuBtn");
+  await page.click("#launcherSettingsMenuBtn");
   await expect(settingsPanel).toBeVisible();
-  await page.click("#settingsMenuBtn");
+  await expect(page.locator("#launcherCreateProfileBtn")).toBeVisible();
+  await page.click("#launcherSettingsMenuBtn");
   await expect(settingsPanel).toBeHidden();
 
-  await page.click("#settingsMenuBtn");
+  await page.click("#launcherSettingsMenuBtn");
   await expect(settingsPanel).toBeVisible();
   await page.mouse.click(8, 8);
   await expect(settingsPanel).toBeHidden();
 
-  await page.click("#settingsMenuBtn");
+  await page.click("#launcherSettingsMenuBtn");
   await expect(settingsPanel).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(settingsPanel).toBeHidden();
 
-  await page.click("#settingsMenuBtn");
-  await page.click("#langEs");
+  await page.click("#launcherSettingsMenuBtn");
+  await page.click("#launcherLangEs");
   await expect(page.locator(".launcher-subtitle")).toContainText("aprender");
-  await page.selectOption("#themeSelect", "dark");
+  await page.selectOption("#launcherThemeSelect", "dark");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
@@ -49,10 +53,23 @@ test("locale switch and fruit stacker navigation smoke", async ({ page }) => {
   await expect(page.locator(".game-header")).toBeVisible();
   await expect(page.locator(".game-header-title")).toBeVisible();
   await expect(page.locator(".game-header-back")).toBeVisible();
+  await expect(page.locator("#gameSettingsMenuBtn")).toBeVisible();
   await expect(page.locator("#score")).toBeVisible();
   await expect(page.locator("#bestScore")).toBeVisible();
   await expect(page.locator("#soundToggleBtn")).toBeVisible();
   await expect(page.locator("#restartBtn")).toBeVisible();
+
+  const gameSettingsPanel = page.locator("#gameSettingsPanel");
+  await expect(gameSettingsPanel).toBeHidden();
+  await page.click("#gameSettingsMenuBtn");
+  await expect(gameSettingsPanel).toBeVisible();
+  await page.selectOption("#gameThemeSelect", "light");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await page.click("#gameSoundBtn");
+  await expect(page.locator("#soundToggleBtn")).toContainText(/sound|sonido/i);
+  await page.keyboard.press("Escape");
+  await expect(gameSettingsPanel).toBeHidden();
+
   await page.click("canvas#game", { position: { x: 220, y: 110 } });
 
   await page.click("a.game-header-back");

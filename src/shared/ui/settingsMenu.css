@@ -1,0 +1,76 @@
+.settings-menu-wrap {
+  position: relative;
+}
+
+.menu-toggle {
+  width: 48px;
+  min-height: 48px;
+  border-radius: 4px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+}
+
+.menu-toggle-lines {
+  width: 20px;
+  display: grid;
+  gap: 4px;
+}
+
+.menu-toggle-lines span {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: #ffffff;
+}
+
+.settings-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 20;
+  width: min(340px, 88vw);
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.settings-menu[hidden] {
+  display: none;
+}
+
+.settings-menu h2 {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.settings-row {
+  display: grid;
+  gap: 8px;
+}
+
+.lang-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.game-settings-wrap {
+  justify-self: end;
+}
+
+.game-settings-wrap .settings-menu {
+  right: 0;
+  top: calc(100% + 6px);
+}
+
+@media (max-width: 900px) {
+  .game-settings-wrap {
+    justify-self: start;
+  }
+
+  .game-settings-wrap .settings-menu {
+    left: 0;
+    right: auto;
+  }
+}

@@ -1,17 +1,8 @@
-interface FruitMeta {
-  name: string;
-  label: string;
-  r: number;
-  points: number;
-  spriteUrl: string;
-  fallbackSpriteUrl: string;
-  fallbackA: string;
-  fallbackB: string;
-  special?: "watermelon";
-  drawScale: number;
-  spriteScale: number;
+import { FRUIT_TIERS, TERMINAL_FRUIT_ID, type FruitTier } from "@games/fruit-stacker/config";
+
+type FruitMeta = FruitTier & {
   sprite?: HTMLImageElement | null;
-}
+};
 
 interface FruitState {
   id: string;
@@ -66,105 +57,7 @@ export interface FruitStackerApi {
 
 const TOP_LINE = 96;
 
-const FRUITS: FruitMeta[] = [
-  {
-    name: "Cherry",
-    label: "CH",
-    r: 18,
-    points: 10,
-    spriteUrl: "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F352.svg",
-    fallbackSpriteUrl: "/assets/fruits/cherry.svg",
-    fallbackA: "#ff8a9a",
-    fallbackB: "#ff2e50",
-    drawScale: 1.02,
-    spriteScale: 1.1
-  },
-  {
-    name: "Lemon",
-    label: "LE",
-    r: 23,
-    points: 20,
-    spriteUrl: "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F34B.svg",
-    fallbackSpriteUrl: "/assets/fruits/lemon.svg",
-    fallbackA: "#fff08a",
-    fallbackB: "#ffc738",
-    drawScale: 1,
-    spriteScale: 1.1
-  },
-  {
-    name: "Orange",
-    label: "OR",
-    r: 34,
-    points: 80,
-    spriteUrl: "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F34A.svg",
-    fallbackSpriteUrl: "/assets/fruits/orange.svg",
-    fallbackA: "#ffd390",
-    fallbackB: "#ff922f",
-    drawScale: 1,
-    spriteScale: 1.08
-  },
-  {
-    name: "Apple",
-    label: "AP",
-    r: 41,
-    points: 160,
-    spriteUrl: "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F34E.svg",
-    fallbackSpriteUrl: "/assets/fruits/apple.svg",
-    fallbackA: "#ffb39f",
-    fallbackB: "#ff3f3f",
-    drawScale: 1,
-    spriteScale: 1.08
-  },
-  {
-    name: "Pear",
-    label: "PE",
-    r: 49,
-    points: 320,
-    spriteUrl: "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F350.svg",
-    fallbackSpriteUrl: "/assets/fruits/pear.svg",
-    fallbackA: "#e5ffa5",
-    fallbackB: "#90db44",
-    drawScale: 1,
-    spriteScale: 1.07
-  },
-  {
-    name: "Peach",
-    label: "PC",
-    r: 59,
-    points: 640,
-    spriteUrl: "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F351.svg",
-    fallbackSpriteUrl: "/assets/fruits/peach.svg",
-    fallbackA: "#ffd9bf",
-    fallbackB: "#ff9e6a",
-    drawScale: 1,
-    spriteScale: 1.06
-  },
-  {
-    name: "Melon",
-    label: "ML",
-    r: 72,
-    points: 1280,
-    spriteUrl: "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F348.svg",
-    fallbackSpriteUrl: "/assets/fruits/melon.svg",
-    fallbackA: "#f4bf79",
-    fallbackB: "#dd8b43",
-    drawScale: 1,
-    spriteScale: 1.08
-  },
-  {
-    name: "Watermelon",
-    label: "WM",
-    r: 92,
-    points: 2560,
-    spriteUrl: "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F349.svg",
-    fallbackSpriteUrl: "/assets/fruits/watermelon.svg",
-    fallbackA: "#6acb57",
-    fallbackB: "#2a8f43",
-    special: "watermelon",
-    drawScale: 1,
-    spriteScale: 1.06
-  }
-];
+const FRUITS: FruitMeta[] = FRUIT_TIERS.map((tier) => ({ ...tier }));
 
 const GRAVITY = 0.23;
 const AIR = 0.996;
@@ -173,6 +66,10 @@ const REST_SPEED = 0.06;
 const OVERFLOW_LIMIT = 42;
 const KEY_STEP = 26;
 const WALL_MARGIN = 3;
+const TERMINAL_TYPE_INDEX = (() => {
+  const index = FRUITS.findIndex((fruit) => fruit.id === TERMINAL_FRUIT_ID);
+  return index === -1 ? FRUITS.length - 1 : index;
+})();
 
 export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi => {
   const ctx = options.canvas.getContext("2d");
@@ -407,7 +304,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   const mergeFruits = (a: FruitState, b: FruitState): boolean => {
     const type = a.type;
     if (type !== b.type) return false;
-    if (type >= FRUITS.length - 1) return false;
+    if (type >= TERMINAL_TYPE_INDEX) return false;
 
     const nx = (a.x + b.x) * 0.5;
     const ny = (a.y + b.y) * 0.5;
@@ -447,12 +344,12 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   };
 
   const drawSpecialFruit = (meta: FruitMeta, radius: number): boolean => {
-    if (meta.special !== "watermelon") return false;
+    if (meta.special !== "pumpkin") return false;
 
     const gradient = ctx.createRadialGradient(-radius * 0.35, -radius * 0.4, radius * 0.2, 0, 0, radius);
-    gradient.addColorStop(0, "#8be170");
-    gradient.addColorStop(0.5, "#4cb24d");
-    gradient.addColorStop(1, "#277d3a");
+    gradient.addColorStop(0, "#ffc180");
+    gradient.addColorStop(0.55, "#ef8a2f");
+    gradient.addColorStop(1, "#ba4f1b");
 
     ctx.fillStyle = gradient;
     ctx.beginPath();
@@ -464,7 +361,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     ctx.arc(0, 0, radius * 0.97, 0, Math.PI * 2);
     ctx.clip();
 
-    ctx.strokeStyle = "#1f6732";
+    ctx.strokeStyle = "#c56124";
     ctx.lineWidth = Math.max(2, radius * 0.12);
     for (let i = -2; i <= 2; i++) {
       ctx.beginPath();
@@ -478,7 +375,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     ctx.ellipse(-radius * 0.34, -radius * 0.3, radius * 0.2, radius * 0.13, -0.5, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.strokeStyle = "#1d5e2f";
+    ctx.strokeStyle = "#9a3f15";
     ctx.lineWidth = Math.max(2, radius * 0.07);
     ctx.beginPath();
     ctx.arc(0, 0, radius, 0, Math.PI * 2);
@@ -647,10 +544,6 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
       ctx.restore();
     }
 
-    ctx.fillStyle = "#00000022";
-    for (let y = 0; y < H; y += 4) {
-      ctx.fillRect(0, y, W, 1);
-    }
   };
 
   const loop = (): void => {

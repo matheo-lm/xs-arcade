@@ -88,9 +88,9 @@ npm run test:e2e
 ## Fruit Stacker Rules (Canonical)
 Merge chain:
 
-`Cherry -> Lemon -> Orange -> Apple -> Pear -> Peach -> Melon -> Watermelon`
+`Cherry -> Lemon -> Kiwi -> Orange -> Apple -> Pear -> Peach -> Melon -> Watermelon -> Pumpkin`
 
-- Watermelon is terminal and does not merge further.
+- Pumpkin is terminal and does not merge further.
 - Game over only triggers after sustained top-line overflow.
 
 ## Deployment (Vercel)

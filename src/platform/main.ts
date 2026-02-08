@@ -1,10 +1,12 @@
 import "@shared/ui/base.css";
+import "@shared/ui/settingsMenu.css";
 import "@platform/styles.css";
 import { createI18n } from "@shared/i18n";
 import { playUiClick, setMuted, toggleMuted, unlockAudioContext, isMuted } from "@shared/audio/platformAudio";
 import { filterGames } from "@platform/gameRegistry";
 import { platformStorage } from "@shared/storage/platformStorage";
 import { applyTheme, watchSystemTheme, type ThemePreference } from "@shared/ui/theme";
+import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } from "@shared/ui/settingsMenu";
 import type { AgeBand, GameManifest, SkillTag } from "@shared/types/game";
 
 const app = document.getElementById("app");
@@ -18,6 +20,7 @@ let selectedSkill: SkillTag | "" = "";
 let settingsMenuOpen = false;
 let themePreference: ThemePreference = platformStorage.getThemePreference();
 let stopThemeWatch: (() => void) | null = null;
+let cleanupSettingsMenu: (() => void) | null = null;
 
 const syncTheme = (): void => {
   applyTheme(themePreference);
@@ -64,6 +67,17 @@ const skillLabel = (skill: SkillTag): string => {
   return map[skill];
 };
 
+const createProfile = (): void => {
+  unlockAudioContext();
+  playUiClick();
+  const name = window.prompt(i18n.t("profileCreatePrompt"));
+  if (!name) return;
+
+  const avatarId = avatarRotation[Math.floor(Math.random() * avatarRotation.length)];
+  const profile = platformStorage.createProfile(name, avatarId);
+  platformStorage.setActiveProfile(profile.id);
+};
+
 const iconMarkup = (game: GameManifest): string => {
   const fallback = game.cardIconFallback ?? "/assets/icon.svg";
   return `<img class="card-icon-img" src="${game.cardIcon}" data-fallback="${fallback}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
@@ -87,12 +101,16 @@ const renderCards = (games: GameManifest[]): string =>
           </div>
           <h2>${game.title[i18n.locale]}</h2>
           <p>${game.description[i18n.locale]}</p>
-          <div class="tag-row">${ageTags}</div>
-          <div class="tag-row">${skillTags}</div>
-          <div class="card-actions">
-            <a href="${game.path}">
-              <button class="button" type="button" ${playable ? "" : "disabled"}>${buttonText}</button>
-            </a>
+          <div class="card-details">
+            <div class="card-tags">
+              <div class="tag-row">${ageTags}</div>
+              <div class="tag-row">${skillTags}</div>
+            </div>
+            <div class="card-actions">
+              <a href="${game.path}">
+                <button class="button" type="button" ${playable ? "" : "disabled"}>${buttonText}</button>
+              </a>
+            </div>
           </div>
         </article>
       `;
@@ -124,6 +142,9 @@ const registerServiceWorker = async (): Promise<void> => {
 };
 
 const render = (): void => {
+  cleanupSettingsMenu?.();
+  cleanupSettingsMenu = null;
+
   ensureDefaultProfile();
 
   const active = getActiveProfile();
@@ -147,48 +168,22 @@ const render = (): void => {
       <div class="launcher-brand">
         <h1 class="launcher-title">${i18n.t("appTitle")}</h1>
         <p class="launcher-subtitle">${i18n.t("appSubtitle")}</p>
-      </div>
-      <div class="launcher-menu-wrap">
-        <button
-          type="button"
-          id="settingsMenuBtn"
-          class="menu-toggle"
-          aria-label="${settingsMenuOpen ? i18n.t("settingsClose") : i18n.t("settingsOpen")}"
-          aria-controls="settingsPanel"
-          aria-expanded="${settingsMenuOpen ? "true" : "false"}"
-        >
-          <span class="menu-toggle-lines" aria-hidden="true">
-            <span></span><span></span><span></span>
+        <div class="launcher-stats" aria-label="profile summary">
+          <span class="stat-chip" title="${i18n.t("statsStarsTooltip")}: ${totalStars}" aria-label="${i18n.t("statsStarsTooltip")}: ${totalStars}">
+            <img src="/assets/ui/stat-stars.svg" alt="" aria-hidden="true" />
+            <strong>${totalStars}</strong>
           </span>
-        </button>
-        <section
-          class="panel settings-menu ${settingsMenuOpen ? "open" : ""}"
-          id="settingsPanel"
-          aria-hidden="${settingsMenuOpen ? "false" : "true"}"
-          ${settingsMenuOpen ? "" : "hidden"}
-        >
-          <h2>${i18n.t("settingsLabel")}</h2>
-          <div class="settings-row">
-            <label class="field-label" for="themeSelect">${i18n.t("themeLabel")}</label>
-            <select class="select" id="themeSelect">
-              <option value="system" ${themePreference === "system" ? "selected" : ""}>${i18n.t("themeSystem")}</option>
-              <option value="light" ${themePreference === "light" ? "selected" : ""}>${i18n.t("themeLight")}</option>
-              <option value="dark" ${themePreference === "dark" ? "selected" : ""}>${i18n.t("themeDark")}</option>
-            </select>
-          </div>
-          <div class="settings-row">
-            <span class="field-label">${i18n.t("languageLabel")}</span>
-            <div class="lang-switch">
-              <button type="button" id="langEn" ${i18n.locale === "en" ? "disabled" : ""}>en</button>
-              <button type="button" id="langEs" ${i18n.locale === "es" ? "disabled" : ""}>es</button>
-            </div>
-          </div>
-          <div class="settings-row">
-            <span class="field-label">${i18n.t("audioLabel")}</span>
-            <button type="button" id="muteBtn">${isMuted() ? i18n.t("muteOff") : i18n.t("muteOn")}</button>
-          </div>
-        </section>
+          <span class="stat-chip" title="${i18n.t("statsBadgesTooltip")}: ${totalBadges}" aria-label="${i18n.t("statsBadgesTooltip")}: ${totalBadges}">
+            <img src="/assets/ui/stat-badges.svg" alt="" aria-hidden="true" />
+            <strong>${totalBadges}</strong>
+          </span>
+          <span class="stat-chip" title="${i18n.t("statsHighScoreTooltip")}: ${fruitBest}" aria-label="${i18n.t("statsHighScoreTooltip")}: ${fruitBest}">
+            <img src="/assets/ui/stat-high-score.svg" alt="" aria-hidden="true" />
+            <strong>${fruitBest}</strong>
+          </span>
+        </div>
       </div>
+      <div id="settingsMenuMount" class="settings-menu-wrap launcher-menu-wrap"></div>
     </header>
 
     <section class="panel top-controls" aria-label="launcher controls">
@@ -227,16 +222,6 @@ const render = (): void => {
           <option value="spatial" ${selectedSkill === "spatial" ? "selected" : ""}>${i18n.t("skillSpatial")}</option>
         </select>
       </div>
-
-      <div>
-        <button type="button" id="createProfileBtn">${i18n.t("profileCreate")}</button>
-      </div>
-    </section>
-
-    <section class="panel profile-stats" aria-label="profile summary">
-      <span class="stat-pill">${i18n.t("starsLabel")}: ${totalStars}</span>
-      <span class="stat-pill">${i18n.t("badgesLabel")}: ${totalBadges}</span>
-      <span class="stat-pill">${i18n.t("highScoreLabel")} (fruit stacker): ${fruitBest}</span>
     </section>
 
     <section class="game-grid" aria-label="game list">
@@ -244,18 +229,65 @@ const render = (): void => {
     </section>
   `;
 
+  const settingsMenuMount = document.getElementById("settingsMenuMount") as HTMLElement | null;
+  const settingsConfig: SettingsMenuConfig = {
+    idPrefix: "launcher",
+    isOpen: settingsMenuOpen,
+    locale: i18n.locale,
+    themePreference,
+    muted: isMuted(),
+    includeCreateProfile: true,
+    labels: {
+      settingsLabel: i18n.t("settingsLabel"),
+      settingsOpen: i18n.t("settingsOpen"),
+      settingsClose: i18n.t("settingsClose"),
+      themeLabel: i18n.t("themeLabel"),
+      themeSystem: i18n.t("themeSystem"),
+      themeLight: i18n.t("themeLight"),
+      themeDark: i18n.t("themeDark"),
+      languageLabel: i18n.t("languageLabel"),
+      audioLabel: i18n.t("audioLabel"),
+      soundOn: i18n.t("muteOn"),
+      soundOff: i18n.t("muteOff"),
+      profileLabel: i18n.t("settingsProfileLabel"),
+      createProfileLabel: i18n.t("profileCreate")
+    }
+  };
+
+  if (settingsMenuMount) {
+    renderSettingsMenu(settingsMenuMount, settingsConfig);
+    cleanupSettingsMenu = bindSettingsMenuEvents(settingsMenuMount, settingsConfig, {
+      onOpenChange(open) {
+        settingsMenuOpen = open;
+        render();
+      },
+      onThemeChange(theme) {
+        setThemePreference(theme);
+        render();
+      },
+      onLocaleChange(locale) {
+        i18n.setLocale(locale);
+        render();
+      },
+      onToggleMuted() {
+        unlockAudioContext();
+        toggleMuted();
+        playUiClick();
+        render();
+      },
+      onCreateProfile() {
+        createProfile();
+        settingsMenuOpen = false;
+        render();
+      }
+    });
+  }
+
   wireImageFallbacks(app);
 
   const profileSelect = document.getElementById("profileSelect") as HTMLSelectElement | null;
   const ageFilter = document.getElementById("ageFilter") as HTMLSelectElement | null;
   const skillFilter = document.getElementById("skillFilter") as HTMLSelectElement | null;
-  const createProfileBtn = document.getElementById("createProfileBtn") as HTMLButtonElement | null;
-  const muteBtn = document.getElementById("muteBtn") as HTMLButtonElement | null;
-  const langEn = document.getElementById("langEn") as HTMLButtonElement | null;
-  const langEs = document.getElementById("langEs") as HTMLButtonElement | null;
-  const themeSelect = document.getElementById("themeSelect") as HTMLSelectElement | null;
-  const settingsMenuBtn = document.getElementById("settingsMenuBtn") as HTMLButtonElement | null;
-  const settingsPanel = document.getElementById("settingsPanel") as HTMLElement | null;
 
   profileSelect?.addEventListener("change", (event) => {
     const target = event.target as HTMLSelectElement;
@@ -274,76 +306,9 @@ const render = (): void => {
     selectedSkill = target.value as SkillTag | "";
     render();
   });
-
-  createProfileBtn?.addEventListener("click", () => {
-    unlockAudioContext();
-    playUiClick();
-    const name = window.prompt(i18n.t("profileCreatePrompt"));
-    if (!name) return;
-
-    const avatarId = avatarRotation[Math.floor(Math.random() * avatarRotation.length)];
-    const profile = platformStorage.createProfile(name, avatarId);
-    platformStorage.setActiveProfile(profile.id);
-    render();
-  });
-
-  muteBtn?.addEventListener("click", () => {
-    unlockAudioContext();
-    toggleMuted();
-    playUiClick();
-    render();
-  });
-
-  langEn?.addEventListener("click", () => {
-    i18n.setLocale("en");
-    render();
-  });
-
-  langEs?.addEventListener("click", () => {
-    i18n.setLocale("es");
-    render();
-  });
-
-  themeSelect?.addEventListener("change", (event) => {
-    const target = event.target as HTMLSelectElement;
-    const next = target.value === "light" || target.value === "dark" ? target.value : "system";
-    setThemePreference(next);
-  });
-
-  settingsMenuBtn?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    settingsMenuOpen = !settingsMenuOpen;
-    render();
-  });
-
-  settingsPanel?.addEventListener("click", (event) => {
-    event.stopPropagation();
-  });
 };
 
 window.addEventListener("pointerdown", unlockAudioContext, { passive: true });
-window.addEventListener("keydown", (event) => {
-  if (event.key !== "Escape" || !settingsMenuOpen) return;
-  settingsMenuOpen = false;
-  render();
-  const button = document.getElementById("settingsMenuBtn") as HTMLButtonElement | null;
-  button?.focus();
-});
-window.addEventListener("click", (event) => {
-  if (!settingsMenuOpen) return;
-  const panel = document.getElementById("settingsPanel");
-  const button = document.getElementById("settingsMenuBtn");
-  const eventTarget = event.target;
-  if (
-    eventTarget instanceof Node &&
-    (panel?.contains(eventTarget) || button?.contains(eventTarget))
-  ) {
-    return;
-  }
-  settingsMenuOpen = false;
-  render();
-});
-
 registerServiceWorker().catch(() => undefined);
 setMuted(platformStorage.isGlobalMute());
 syncTheme();

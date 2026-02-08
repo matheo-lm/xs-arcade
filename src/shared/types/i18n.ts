@@ -29,6 +29,9 @@ export interface TranslationDictionary {
   starsLabel: string;
   badgesLabel: string;
   highScoreLabel: string;
+  statsStarsTooltip: string;
+  statsBadgesTooltip: string;
+  statsHighScoreTooltip: string;
   gameBackToLauncher: string;
   gameHintFruitStacker: string;
   gameScorePrefix: string;
@@ -49,6 +52,7 @@ export interface TranslationDictionary {
   themeDark: string;
   languageLabel: string;
   audioLabel: string;
+  settingsProfileLabel: string;
 }
 
 export type TranslationKey = keyof TranslationDictionary;

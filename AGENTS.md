@@ -41,10 +41,10 @@ Each file in `/Users/m/Desktop/berries/content/games/*.json` must include:
 ## Fruit Stacker Gameplay Contract
 Canonical merge chain must remain:
 
-`Cherry -> Lemon -> Orange -> Apple -> Pear -> Peach -> Melon -> Watermelon`
+`Cherry -> Lemon -> Kiwi -> Orange -> Apple -> Pear -> Peach -> Melon -> Watermelon -> Pumpkin`
 
 Rules:
-- Watermelon is terminal.
+- Pumpkin is terminal.
 - Same-type touching merges into next tier.
 - Game over triggers only after sustained top-line overflow.
 
@@ -82,8 +82,8 @@ Rules:
    - verify EN/ES switching updates labels.
 5. Fruit Stacker smoke:
    - mouse/touch/keyboard aiming changes drop lane.
-   - merge through `Peach -> Melon -> Watermelon`.
-   - confirm Watermelon does not merge further.
+   - merge through `Watermelon -> Pumpkin`.
+   - confirm Pumpkin does not merge further.
    - verify restart and game-over overlays.
 
 ## Near-Term Roadmap

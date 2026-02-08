@@ -49,4 +49,4 @@
 
 ## Sound and Feedback
 - Global mute is always available.
-- SFX support actions and outcomes, but game remains playable muted.
+- sound effects support actions and outcomes, but game remains playable muted.

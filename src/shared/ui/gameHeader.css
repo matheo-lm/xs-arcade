@@ -26,8 +26,9 @@
 
 .game-header-meta {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
 }
 
 .game-header-pill {
@@ -46,9 +47,10 @@
 
 .game-header-actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   justify-content: flex-end;
+  overflow-x: auto;
 }
 
 .game-header-action {
@@ -57,8 +59,9 @@
 
 @media (max-width: 900px) {
   .game-header-main {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
   }
 
   .game-header-title {
@@ -67,5 +70,12 @@
 
   .game-header-actions {
     justify-content: flex-start;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .game-header-meta {
+    flex-wrap: wrap;
+    overflow-x: visible;
   }
 }
