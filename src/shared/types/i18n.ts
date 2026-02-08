@@ -1,0 +1,45 @@
+export type LocaleCode = "en" | "es";
+
+export interface TranslationDictionary {
+  appTitle: string;
+  appSubtitle: string;
+  profileLabel: string;
+  profileCreate: string;
+  profileCreatePrompt: string;
+  profileGuest: string;
+  filterAge: string;
+  filterSkill: string;
+  filterAllAges: string;
+  filterAllSkills: string;
+  ctaPlay: string;
+  ctaComingSoon: string;
+  statusPlayable: string;
+  statusPlaceholder: string;
+  skillNumeracy: string;
+  skillLiteracy: string;
+  skillLogic: string;
+  skillMemory: string;
+  skillCreativity: string;
+  skillSpatial: string;
+  ageBand45: string;
+  ageBand67: string;
+  ageBand8: string;
+  muteOn: string;
+  muteOff: string;
+  starsLabel: string;
+  badgesLabel: string;
+  highScoreLabel: string;
+  gameBackToLauncher: string;
+  gameHintFruitStacker: string;
+  gameScorePrefix: string;
+  gameOverTitle: string;
+  gameOverScore: string;
+  gamePlayAgain: string;
+  gameRestart: string;
+  gameNext: string;
+  gameSoundOn: string;
+  gameSoundOff: string;
+  gameTargetReached: string;
+}
+
+export type TranslationKey = keyof TranslationDictionary;

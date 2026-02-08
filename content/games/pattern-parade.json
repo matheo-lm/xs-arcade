@@ -1,0 +1,38 @@
+{
+  "id": "pattern-parade",
+  "slug": "pattern-parade",
+  "path": "/games/pattern-parade/",
+  "status": "placeholder",
+  "title": {
+    "en": "Pattern Parade",
+    "es": "Desfile de Patrones"
+  },
+  "description": {
+    "en": "Find what comes next in playful color and sound patterns.",
+    "es": "Descubre que sigue en patrones de color y sonido."
+  },
+  "cardIcon": "🎵",
+  "ageBands": ["4-5", "6-7", "8"],
+  "skills": ["logic", "memory"],
+  "learningGoals": [
+    "Predict missing items in repeated sequences.",
+    "Strengthen ordering and pattern transfer."
+  ],
+  "difficultyPresets": {
+    "4-5": {
+      "dropCooldownMs": 0,
+      "goalScore": 5,
+      "maxObjectsHint": 5
+    },
+    "6-7": {
+      "dropCooldownMs": 0,
+      "goalScore": 9,
+      "maxObjectsHint": 7
+    },
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 13,
+      "maxObjectsHint": 9
+    }
+  }
+}

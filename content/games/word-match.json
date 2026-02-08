@@ -1,0 +1,38 @@
+{
+  "id": "word-match",
+  "slug": "word-match",
+  "path": "/games/word-match/",
+  "status": "placeholder",
+  "title": {
+    "en": "Word Match",
+    "es": "Une Palabras"
+  },
+  "description": {
+    "en": "Match simple words to pictures and sounds.",
+    "es": "Relaciona palabras simples con imagenes y sonidos."
+  },
+  "cardIcon": "📚",
+  "ageBands": ["4-5", "6-7", "8"],
+  "skills": ["literacy", "memory"],
+  "learningGoals": [
+    "Build sight-word recognition.",
+    "Connect words with concrete visuals."
+  ],
+  "difficultyPresets": {
+    "4-5": {
+      "dropCooldownMs": 0,
+      "goalScore": 5,
+      "maxObjectsHint": 6
+    },
+    "6-7": {
+      "dropCooldownMs": 0,
+      "goalScore": 9,
+      "maxObjectsHint": 8
+    },
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 13,
+      "maxObjectsHint": 10
+    }
+  }
+}

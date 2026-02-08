@@ -1,0 +1,38 @@
+{
+  "id": "color-craft",
+  "slug": "color-craft",
+  "path": "/games/color-craft/",
+  "status": "placeholder",
+  "title": {
+    "en": "Color Craft",
+    "es": "Taller de Color"
+  },
+  "description": {
+    "en": "Mix colors and decorate playful pixel scenes.",
+    "es": "Mezcla colores y decora escenas divertidas de pixeles."
+  },
+  "cardIcon": "🎨",
+  "ageBands": ["4-5", "6-7", "8"],
+  "skills": ["creativity", "spatial"],
+  "learningGoals": [
+    "Recognize primary and secondary colors.",
+    "Express ideas through guided art tasks."
+  ],
+  "difficultyPresets": {
+    "4-5": {
+      "dropCooldownMs": 0,
+      "goalScore": 4,
+      "maxObjectsHint": 7
+    },
+    "6-7": {
+      "dropCooldownMs": 0,
+      "goalScore": 8,
+      "maxObjectsHint": 10
+    },
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 12,
+      "maxObjectsHint": 12
+    }
+  }
+}

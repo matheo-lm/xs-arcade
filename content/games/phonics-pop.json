@@ -1,0 +1,38 @@
+{
+  "id": "phonics-pop",
+  "slug": "phonics-pop",
+  "path": "/games/phonics-pop/",
+  "status": "placeholder",
+  "title": {
+    "en": "Phonics Pop",
+    "es": "Explota Fonemas"
+  },
+  "description": {
+    "en": "Pop bubbles that match beginning sounds.",
+    "es": "Explota burbujas que coinciden con sonidos iniciales."
+  },
+  "cardIcon": "🫧",
+  "ageBands": ["4-5", "6-7", "8"],
+  "skills": ["literacy", "logic"],
+  "learningGoals": [
+    "Connect letter symbols to beginning sounds.",
+    "Sort words by first phoneme."
+  ],
+  "difficultyPresets": {
+    "4-5": {
+      "dropCooldownMs": 0,
+      "goalScore": 6,
+      "maxObjectsHint": 6
+    },
+    "6-7": {
+      "dropCooldownMs": 0,
+      "goalScore": 11,
+      "maxObjectsHint": 8
+    },
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 16,
+      "maxObjectsHint": 10
+    }
+  }
+}

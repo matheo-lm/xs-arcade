@@ -4,6 +4,7 @@ const boardEl = document.getElementById("board");
 const scoreEl = document.getElementById("score");
 const gameOverEl = document.getElementById("gameOver");
 const finalScoreEl = document.getElementById("finalScore");
+const soundToggleBtn = document.getElementById("soundToggleBtn");
 const restartBtn = document.getElementById("restartBtn");
 const playAgainBtn = document.getElementById("playAgainBtn");
 
@@ -20,79 +21,109 @@ const FRUITS = [
     spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f352.png",
     fallbackA: "#ff8a9a",
     fallbackB: "#ff2e50",
-    drawScale: 1.02
+    drawScale: 1.02,
+    spriteScale: 1.1
   },
   {
     name: "Lemon",
     label: "LE",
-    r: 24,
+    r: 23,
     points: 20,
     spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f34b.png",
     fallbackA: "#fff08a",
     fallbackB: "#ffc738",
-    drawScale: 1
+    drawScale: 1,
+    spriteScale: 1.1
+  },
+  {
+    name: "Kiwi",
+    label: "KI",
+    r: 28,
+    points: 40,
+    spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f95d.png",
+    fallbackA: "#b9df8b",
+    fallbackB: "#5f9a3f",
+    drawScale: 1,
+    spriteScale: 1.08
   },
   {
     name: "Orange",
     label: "OR",
-    r: 30,
-    points: 40,
+    r: 34,
+    points: 80,
     spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f34a.png",
     fallbackA: "#ffd390",
     fallbackB: "#ff922f",
-    drawScale: 1
+    drawScale: 1,
+    spriteScale: 1.08
   },
   {
     name: "Apple",
     label: "AP",
-    r: 38,
-    points: 80,
+    r: 41,
+    points: 160,
     spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f34e.png",
     fallbackA: "#ffb39f",
     fallbackB: "#ff3f3f",
-    drawScale: 1
+    drawScale: 1,
+    spriteScale: 1.08
   },
   {
     name: "Pear",
     label: "PE",
-    r: 46,
-    points: 160,
+    r: 49,
+    points: 320,
     spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f350.png",
     fallbackA: "#e5ffa5",
     fallbackB: "#90db44",
-    drawScale: 1
+    drawScale: 1,
+    spriteScale: 1.07
   },
   {
     name: "Peach",
     label: "PC",
-    r: 54,
-    points: 320,
+    r: 59,
+    points: 640,
     spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f351.png",
     fallbackA: "#ffd9bf",
     fallbackB: "#ff9e6a",
-    drawScale: 1
+    drawScale: 1,
+    spriteScale: 1.06
   },
   {
     name: "Melon",
     label: "ML",
-    r: 70,
-    points: 640,
-    spriteUrl: null,
+    r: 72,
+    points: 1280,
+    // Use Twemoji melon for a cleaner, consistent sprite style.
+    spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f348.png",
     fallbackA: "#f4bf79",
     fallbackB: "#dd8b43",
-    special: "cantaloupe",
-    drawScale: 1
+    drawScale: 1,
+    spriteScale: 1.08
   },
   {
     name: "Watermelon",
     label: "WM",
-    r: 88,
-    points: 1280,
-    spriteUrl: null,
+    r: 92,
+    points: 2560,
+    spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f349.png",
     fallbackA: "#6acb57",
     fallbackB: "#2a8f43",
     special: "watermelon",
-    drawScale: 1
+    drawScale: 1,
+    spriteScale: 1.06
+  },
+  {
+    name: "Pumpkin",
+    label: "PK",
+    r: 116,
+    points: 5120,
+    spriteUrl: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f383.png",
+    fallbackA: "#ffcc8c",
+    fallbackB: "#ef8e31",
+    drawScale: 1,
+    spriteScale: 1.02
   }
 ];
 
@@ -104,6 +135,7 @@ const COOLDOWN = 320;
 const OVERFLOW_LIMIT = 42;
 const KEY_STEP = 26;
 const WALL_MARGIN = 3;
+const SOUND_PREF_KEY = "fruitStackerSfxMuted";
 
 let fruits = [];
 let effects = [];
@@ -113,6 +145,112 @@ let nextType = 0;
 let lastDropTime = 0;
 let gameOver = false;
 let overflowFrames = 0;
+let sfxMuted = readMutedPreference();
+let audioCtx = null;
+let masterGain = null;
+let lastMergeSfxTime = 0;
+
+function readMutedPreference() {
+  try {
+    return localStorage.getItem(SOUND_PREF_KEY) === "1";
+  } catch (_err) {
+    return false;
+  }
+}
+
+function writeMutedPreference() {
+  try {
+    localStorage.setItem(SOUND_PREF_KEY, sfxMuted ? "1" : "0");
+  } catch (_err) {
+    // Ignore storage failures (private mode, denied access, etc.).
+  }
+}
+
+function ensureAudioContext() {
+  if (audioCtx) return audioCtx;
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return null;
+  audioCtx = new AudioCtx();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.2;
+  masterGain.connect(audioCtx.destination);
+  return audioCtx;
+}
+
+function unlockAudio() {
+  const ac = ensureAudioContext();
+  if (!ac || sfxMuted || ac.state !== "suspended") return;
+  ac.resume().catch(() => {});
+}
+
+function playArcadeTone({
+  type = "square",
+  freq = 280,
+  slideTo = null,
+  duration = 0.1,
+  volume = 0.06,
+  when = 0
+} = {}) {
+  if (sfxMuted) return;
+  const ac = ensureAudioContext();
+  if (!ac || ac.state !== "running") return;
+
+  const start = ac.currentTime + when;
+  const end = start + duration;
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, start);
+  if (slideTo !== null) {
+    osc.frequency.exponentialRampToValueAtTime(Math.max(30, slideTo), end);
+  }
+
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(volume, start + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001, end);
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(start);
+  osc.stop(end + 0.01);
+}
+
+function playUiSfx() {
+  playArcadeTone({ type: "square", freq: 360, slideTo: 300, duration: 0.06, volume: 0.04 });
+}
+
+function playDropSfx(type) {
+  const base = 220 + type * 18;
+  playArcadeTone({ type: "triangle", freq: base, slideTo: base - 45, duration: 0.07, volume: 0.038 });
+}
+
+function playMergeSfx(type) {
+  const now = performance.now();
+  if (now - lastMergeSfxTime < 85) return;
+  lastMergeSfxTime = now;
+  const base = 300 + Math.min(type, 8) * 22;
+  playArcadeTone({ type: "square", freq: base, slideTo: base * 1.06, duration: 0.06, volume: 0.045 });
+  playArcadeTone({ type: "square", freq: base * 1.22, duration: 0.06, volume: 0.038, when: 0.055 });
+}
+
+function playGameOverSfx() {
+  playArcadeTone({ type: "sawtooth", freq: 310, slideTo: 250, duration: 0.13, volume: 0.042, when: 0 });
+  playArcadeTone({ type: "sawtooth", freq: 250, slideTo: 205, duration: 0.13, volume: 0.04, when: 0.12 });
+  playArcadeTone({ type: "triangle", freq: 210, slideTo: 160, duration: 0.19, volume: 0.04, when: 0.24 });
+}
+
+function updateSoundToggleUi() {
+  if (!soundToggleBtn) return;
+  soundToggleBtn.textContent = sfxMuted ? "SFX: OFF" : "SFX: ON";
+  soundToggleBtn.setAttribute("aria-pressed", sfxMuted ? "true" : "false");
+}
+
+function setSoundMuted(nextMuted) {
+  sfxMuted = !!nextMuted;
+  writeMutedPreference();
+  updateSoundToggleUi();
+}
 
 function loadSprite(url) {
   if (!url) return null;
@@ -151,6 +289,7 @@ function dropFruit() {
   if (gameOver) return;
   const now = performance.now();
   if (now - lastDropTime < COOLDOWN) return;
+  unlockAudio();
   lastDropTime = now;
 
   const type = nextType;
@@ -167,6 +306,7 @@ function dropFruit() {
   });
 
   nextType = randType();
+  playDropSfx(type);
 }
 
 function clamp(v, min, max) {
@@ -247,6 +387,7 @@ function mergeFruits(a, b) {
   score += points;
   updateScore();
   addEffect(nx, ny, `+${points}`);
+  playMergeSfx(newType);
   return true;
 }
 
@@ -309,6 +450,7 @@ function update() {
     gameOver = true;
     finalScoreEl.textContent = `You scored ${score}`;
     gameOverEl.classList.add("show");
+    playGameOverSfx();
   }
 }
 
@@ -410,34 +552,60 @@ function drawFruitSprite(f, alpha = 1, scale = 1) {
   const meta = FRUITS[f.type];
   const r = meta.r * scale;
   const drawR = r * (meta.drawScale || 1);
+  const spriteScale = meta.spriteScale || 1;
 
   ctx.save();
   ctx.globalAlpha = alpha;
   ctx.translate(f.x, f.y);
 
-  const drewSpecial = drawSpecialFruit(meta, r);
-  if (!drewSpecial) {
-    const ready = meta.sprite && meta.sprite.complete && meta.sprite.naturalWidth > 0;
-    if (ready) {
-      try {
-        ctx.imageSmoothingEnabled = true;
-        ctx.drawImage(meta.sprite, -drawR, -drawR, drawR * 2, drawR * 2);
-      } catch (_err) {
+  const ready = meta.sprite && meta.sprite.complete && meta.sprite.naturalWidth > 0;
+  if (ready) {
+    try {
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(
+        meta.sprite,
+        -drawR * spriteScale,
+        -drawR * spriteScale,
+        drawR * 2 * spriteScale,
+        drawR * 2 * spriteScale
+      );
+    } catch (_err) {
+      if (!drawSpecialFruit(meta, r)) {
         drawFallbackFruit(meta, r);
       }
-    } else {
-      drawFallbackFruit(meta, r);
     }
+  } else if (!drawSpecialFruit(meta, r)) {
+    drawFallbackFruit(meta, r);
+  }
+
+  if (ready && meta.name === "Cherry") {
+    // Cherry sprite is visually left-biased; draw center marker for clear aim.
+    ctx.fillStyle = "#78f2ffcc";
+    ctx.beginPath();
+    ctx.arc(0, 0, Math.max(2, r * 0.14), 0, Math.PI * 2);
+    ctx.fill();
   }
 
   ctx.restore();
 }
 
+function drawTopHud(preview) {
+  ctx.fillStyle = "#101946e6";
+  ctx.fillRect(0, 0, W, TOP_LINE - 2);
+
+  ctx.fillStyle = "#ffe57d";
+  ctx.font = "700 16px \"Press Start 2P\", \"Courier New\", monospace";
+  ctx.textAlign = "left";
+  ctx.fillText("NEXT", 10, 24);
+  ctx.font = "700 11px \"Press Start 2P\", \"Courier New\", monospace";
+  ctx.fillText(preview.name.toUpperCase(), 86, 24);
+}
+
 function draw() {
   ctx.clearRect(0, 0, W, H);
 
-  ctx.fillStyle = "#1a2454";
-  ctx.fillRect(0, 0, W, TOP_LINE);
+  const preview = FRUITS[nextType];
+  drawTopHud(preview);
 
   ctx.strokeStyle = "#ffdc58";
   ctx.lineWidth = 3;
@@ -459,8 +627,9 @@ function draw() {
     launchR + WALL_MARGIN + 6,
     W - launchR - WALL_MARGIN - 6
   );
+  const launchY = TOP_LINE - launchR - 8;
 
-  ctx.strokeStyle = "#7deeff88";
+  ctx.strokeStyle = "#7deeff9f";
   ctx.lineWidth = 2;
   ctx.setLineDash([5, 5]);
   ctx.beginPath();
@@ -469,21 +638,7 @@ function draw() {
   ctx.stroke();
   ctx.setLineDash([]);
 
-  drawFruitSprite({ type: nextType, x: launchX, y: launchR + 10 }, 0.5);
-
-  const preview = FRUITS[nextType];
-  const previewScale = 0.42;
-  const previewR = preview.r * previewScale * (preview.drawScale || 1);
-  const previewX = 92;
-  const previewY = 36;
-  drawFruitSprite({ type: nextType, x: previewX, y: previewY }, 1, previewScale);
-
-  ctx.fillStyle = "#ffe57d";
-  ctx.font = "700 16px \"Press Start 2P\", \"Courier New\", monospace";
-  ctx.textAlign = "left";
-  ctx.fillText("NEXT", 10, 24);
-  ctx.font = "700 11px \"Press Start 2P\", \"Courier New\", monospace";
-  ctx.fillText(preview.name.toUpperCase(), previewX + previewR + 12, 24);
+  drawFruitSprite({ type: nextType, x: launchX, y: launchY }, 0.58);
 
   for (const e of effects) {
     ctx.save();
@@ -545,8 +700,30 @@ canvas.addEventListener(
   { passive: false }
 );
 
-restartBtn.addEventListener("click", resetGame);
-playAgainBtn.addEventListener("click", resetGame);
+if (soundToggleBtn) {
+  soundToggleBtn.addEventListener("click", () => {
+    const nextMuted = !sfxMuted;
+    setSoundMuted(nextMuted);
+    if (!nextMuted) {
+      unlockAudio();
+      playUiSfx();
+    }
+  });
+}
+
+restartBtn.addEventListener("click", () => {
+  unlockAudio();
+  playUiSfx();
+  resetGame();
+});
+
+playAgainBtn.addEventListener("click", () => {
+  unlockAudio();
+  playUiSfx();
+  resetGame();
+});
+
+window.addEventListener("pointerdown", unlockAudio, { passive: true });
 
 window.addEventListener("keydown", (e) => {
   let handled = false;
@@ -571,4 +748,5 @@ window.addEventListener("keydown", (e) => {
 });
 
 resetGame();
+updateSoundToggleUi();
 loop();

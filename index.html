@@ -3,34 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fruit Stacker Arcade</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./css/styles.css" />
+  <title>Berries Arcade</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
 </head>
 <body>
-  <main class="game-wrap">
-    <section class="topbar" aria-label="Game status">
-      <h1 class="title">FRUIT STACKER ARCADE</h1>
-      <div class="pill" id="score">Score: 0</div>
-      <button id="restartBtn" type="button">Restart</button>
-    </section>
-
-    <section class="board" id="board" aria-label="Play area">
-      <canvas id="game" width="460" height="620"></canvas>
-      <div class="overlay" id="gameOver">
-        <div>
-          <h2>Game Over</h2>
-          <p id="finalScore">You scored 0</p>
-          <button id="playAgainBtn" type="button">Play Again</button>
-        </div>
-      </div>
-    </section>
-
-    <p class="hint">Move left or right, then tap/click to drop. Match 2 of the same fruit to grow a bigger one.</p>
-  </main>
-
-  <script src="./js/game.js"></script>
+  <main id="app" class="app-shell"></main>
+  <script type="module" src="/src/platform/main.ts"></script>
 </body>
 </html>

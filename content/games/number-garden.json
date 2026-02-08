@@ -1,0 +1,38 @@
+{
+  "id": "number-garden",
+  "slug": "number-garden",
+  "path": "/games/number-garden/",
+  "status": "placeholder",
+  "title": {
+    "en": "Number Garden",
+    "es": "Jardin de Numeros"
+  },
+  "description": {
+    "en": "Count blossoms and match numbers in a calm garden.",
+    "es": "Cuenta flores y relaciona numeros en un jardin tranquilo."
+  },
+  "cardIcon": "🌼",
+  "ageBands": ["4-5", "6-7", "8"],
+  "skills": ["numeracy", "memory"],
+  "learningGoals": [
+    "Recognize numerals quickly.",
+    "Connect counting sets to numeric symbols."
+  ],
+  "difficultyPresets": {
+    "4-5": {
+      "dropCooldownMs": 0,
+      "goalScore": 8,
+      "maxObjectsHint": 6
+    },
+    "6-7": {
+      "dropCooldownMs": 0,
+      "goalScore": 14,
+      "maxObjectsHint": 8
+    },
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 20,
+      "maxObjectsHint": 10
+    }
+  }
+}

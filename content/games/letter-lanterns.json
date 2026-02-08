@@ -1,0 +1,38 @@
+{
+  "id": "letter-lanterns",
+  "slug": "letter-lanterns",
+  "path": "/games/letter-lanterns/",
+  "status": "placeholder",
+  "title": {
+    "en": "Letter Lanterns",
+    "es": "Faroles de Letras"
+  },
+  "description": {
+    "en": "Spot and collect target letters in glowing lanterns.",
+    "es": "Encuentra y junta letras objetivo en faroles brillantes."
+  },
+  "cardIcon": "🔤",
+  "ageBands": ["4-5", "6-7", "8"],
+  "skills": ["literacy", "memory"],
+  "learningGoals": [
+    "Recognize uppercase and lowercase letters.",
+    "Match visual letter forms quickly."
+  ],
+  "difficultyPresets": {
+    "4-5": {
+      "dropCooldownMs": 0,
+      "goalScore": 7,
+      "maxObjectsHint": 6
+    },
+    "6-7": {
+      "dropCooldownMs": 0,
+      "goalScore": 12,
+      "maxObjectsHint": 8
+    },
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 18,
+      "maxObjectsHint": 10
+    }
+  }
+}

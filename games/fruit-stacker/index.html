@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fruit Stacker | Berries Arcade</title>
+</head>
+<body>
+  <main class="app-shell game-shell">
+    <section class="panel topbar" aria-label="Game status">
+      <a class="pixel-link" href="/">&larr; <span id="backLabel">Back To Arcade</span></a>
+      <h1 class="title">FRUIT STACKER</h1>
+      <div class="pill" id="score">Score: 0</div>
+      <div class="pill" id="bestScore">High Score: 0</div>
+      <button id="soundToggleBtn" type="button" aria-pressed="false">SFX: ON</button>
+      <button id="restartBtn" type="button">Restart</button>
+    </section>
+
+    <section class="panel board" id="board" aria-label="Play area">
+      <canvas id="game" width="460" height="620"></canvas>
+      <div class="overlay" id="gameOver">
+        <div>
+          <h2 id="gameOverTitle">Game Over</h2>
+          <p id="finalScore">You scored 0</p>
+          <button id="playAgainBtn" type="button">Play Again</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="hint" id="hint">Move left or right, then tap/click to drop. Match 2 fruits to grow bigger fruit.</p>
+  </main>
+
+  <script type="module" src="/src/games/fruit-stacker/main.ts"></script>
+</body>
+</html>

@@ -41,7 +41,7 @@ body {
   border-radius: 8px;
   padding: 12px 14px;
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   gap: 12px;
   align-items: center;
   box-shadow: 0 0 0 3px #0a0d1d, 0 0 18px #52f5ff6e;
@@ -81,6 +81,12 @@ button {
 
 button:active {
   transform: translateY(1px) scale(0.99);
+}
+
+#soundToggleBtn[aria-pressed="true"] {
+  background: linear-gradient(180deg, #7f7f7f, #555);
+  border-color: #e8e8e8;
+  box-shadow: inset 0 -2px 0 #2e2e2e;
 }
 
 .board {

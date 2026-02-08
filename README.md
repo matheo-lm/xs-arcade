@@ -1,61 +1,100 @@
 # Berries Arcade
 
-Berries Arcade is a kid-friendly web arcade project that starts with one game and grows into a small platform of classic-style browser games.
+Berries Arcade is a kid-friendly web arcade platform for ages 4-8. It is designed as one deployable web app that hosts multiple lightweight learning games.
 
-## Current Game
-- **Fruit Stacker Arcade**: drop fruits, match two of the same type, and grow bigger fruits.
-- Merge chain: Cherry -> Lemon -> Orange -> Apple -> Pear -> Peach -> Melon -> Watermelon.
-- Designed for kids ages 5-7 with simple controls and clear visuals.
-- Works on desktop and mobile browsers.
+## Current Platform Scope
+- Multi-page launcher + game routes.
+- 9 game slots organized by learning goals.
+- Bilingual UI at launch (`en`, `es`).
+- Local-only profiles, stars, badges, and per-game progress.
+- PWA-ready baseline (`manifest.webmanifest` + `sw.js`).
 
-## Controls
-- **Mouse**: move to aim, click to drop.
-- **Touch**: slide to aim, tap to drop.
-- **Keyboard**: left/right arrows to move, space or enter to drop.
+## Game Slots
+1. `fruit-stacker` (playable)
+2. `number-garden` (placeholder)
+3. `shape-builder` (placeholder)
+4. `pattern-parade` (placeholder)
+5. `memory-trails` (placeholder)
+6. `letter-lanterns` (placeholder)
+7. `phonics-pop` (placeholder)
+8. `word-match` (placeholder)
+9. `color-craft` (placeholder)
 
 ## Tech Stack
-- Plain HTML, CSS, and JavaScript.
-- No build step required.
-- External assets:
-  - Google Fonts (`Press Start 2P`) for retro UI typography.
-  - Twemoji CDN sprites for fruit images.
+- Vite + TypeScript (strict mode).
+- Plain DOM rendering (no framework).
+- Vitest for unit tests.
+- Playwright for smoke E2E.
 
 ## Project Structure
-- `/Users/m/Desktop/berries/index.html`
-- `/Users/m/Desktop/berries/css/styles.css`
-- `/Users/m/Desktop/berries/js/game.js`
-- `/Users/m/Desktop/berries/vercel.json`
-- `/Users/m/Desktop/berries/AGENTS.md`
+- `/Users/m/Desktop/berries/index.html`: launcher entry page.
+- `/Users/m/Desktop/berries/games/<slug>/index.html`: per-game pages.
+- `/Users/m/Desktop/berries/src/platform/`: launcher shell and registry.
+- `/Users/m/Desktop/berries/src/shared/`: shared i18n/audio/storage/types/ui.
+- `/Users/m/Desktop/berries/src/games/`: game implementations.
+- `/Users/m/Desktop/berries/content/games/`: game manifest metadata.
+- `/Users/m/Desktop/berries/public/`: static assets, locales, PWA files.
+- `/Users/m/Desktop/berries/docs/`: architecture, design, content, template docs.
 
-## Run Locally
-1. Open `/Users/m/Desktop/berries/index.html` in a browser.
-
-## Validation
-Run a syntax check after JS changes:
+## Development
+Install dependencies:
 
 ```bash
-node --check /Users/m/Desktop/berries/js/game.js
+npm install
 ```
 
-Then test in browser:
-- Fruit drops and merges correctly.
-- Peach merges into Melon, and Melon merges into Watermelon.
-- Mouse/touch/arrow aiming moves the drop location correctly.
-- Game over only after sustained top overflow.
-- Restart and Play Again reset the game.
+Run locally:
+
+```bash
+npm run dev
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+Preview built site:
+
+```bash
+npm run preview
+```
+
+## Validation Commands
+Type safety:
+
+```bash
+npm run typecheck
+```
+
+Unit tests:
+
+```bash
+npm run test
+```
+
+E2E smoke tests:
+
+```bash
+npm run test:e2e
+```
+
+## Fruit Stacker Rules (Canonical)
+Merge chain:
+
+`Cherry -> Lemon -> Orange -> Apple -> Pear -> Peach -> Melon -> Watermelon`
+
+- Watermelon is terminal and does not merge further.
+- Game over only triggers after sustained top-line overflow.
 
 ## Deployment (Vercel)
-This project is static, so it can be deployed as a static site on Vercel.
-`/Users/m/Desktop/berries/vercel.json` is included for clean URL behavior.
+- Static output (`dist/`) from Vite build.
+- `vercel.json` is configured for clean URLs and static output directory.
 
-Typical flow:
-1. Push repo to GitHub.
-2. Import project in Vercel.
-3. Use default static-site settings.
-4. Deploy and open from phone browser.
-
-## Platform Roadmap
-- Add a game launcher/home screen.
-- Add multiple games under a unified structure.
-- Share common UI/audio/storage utilities.
-- Track per-game high scores locally.
+## Documentation
+- Vision: `/Users/m/Desktop/berries/VISION.md`
+- Architecture: `/Users/m/Desktop/berries/docs/architecture.md`
+- Design principles: `/Users/m/Desktop/berries/docs/design-principles.md`
+- EN/ES content style: `/Users/m/Desktop/berries/docs/content-style-en-es.md`
+- New game template: `/Users/m/Desktop/berries/docs/game-template.md`

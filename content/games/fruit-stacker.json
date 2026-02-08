@@ -1,0 +1,38 @@
+{
+  "id": "fruit-stacker",
+  "slug": "fruit-stacker",
+  "path": "/games/fruit-stacker/",
+  "status": "playable",
+  "title": {
+    "en": "Fruit Stacker",
+    "es": "Apila Frutas"
+  },
+  "description": {
+    "en": "Drop and merge matching fruits to make bigger ones.",
+    "es": "Suelta y combina frutas iguales para hacerlas mas grandes."
+  },
+  "cardIcon": "🍉",
+  "ageBands": ["4-5", "6-7", "8"],
+  "skills": ["spatial", "logic"],
+  "learningGoals": [
+    "Plan drop position before action.",
+    "Understand merge progression and cause/effect."
+  ],
+  "difficultyPresets": {
+    "4-5": {
+      "dropCooldownMs": 420,
+      "goalScore": 900,
+      "maxObjectsHint": 26
+    },
+    "6-7": {
+      "dropCooldownMs": 320,
+      "goalScore": 1400,
+      "maxObjectsHint": 34
+    },
+    "8": {
+      "dropCooldownMs": 250,
+      "goalScore": 2000,
+      "maxObjectsHint": 42
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "shape-builder",
+  "slug": "shape-builder",
+  "path": "/games/shape-builder/",
+  "status": "placeholder",
+  "title": {
+    "en": "Shape Builder",
+    "es": "Constructor de Formas"
+  },
+  "description": {
+    "en": "Build pictures with circles, squares, and triangles.",
+    "es": "Construye dibujos con circulos, cuadrados y triangulos."
+  },
+  "cardIcon": "🧩",
+  "ageBands": ["4-5", "6-7", "8"],
+  "skills": ["spatial", "creativity"],
+  "learningGoals": [
+    "Identify shape names and outlines.",
+    "Combine simple shapes into larger forms."
+  ],
+  "difficultyPresets": {
+    "4-5": {
+      "dropCooldownMs": 0,
+      "goalScore": 6,
+      "maxObjectsHint": 8
+    },
+    "6-7": {
+      "dropCooldownMs": 0,
+      "goalScore": 10,
+      "maxObjectsHint": 12
+    },
+    "8": {
+      "dropCooldownMs": 0,
+      "goalScore": 14,
+      "maxObjectsHint": 16
+    }
+  }
+}

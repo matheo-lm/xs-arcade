@@ -1,0 +1,32 @@
+.placeholder {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.placeholder h1 {
+  margin: 0;
+  font-size: clamp(0.9rem, 2.6vw, 1.2rem);
+}
+
+.placeholder p {
+  margin: 0;
+  line-height: 1.7;
+  font-size: 0.62rem;
+  color: var(--text-soft);
+}
+
+.placeholder .tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.placeholder .tag {
+  font-size: 0.5rem;
+  border: 1px solid #5d98d7;
+  border-radius: 6px;
+  padding: 4px 7px;
+  color: #bfe1ff;
+  background: #091025;
+}
