@@ -39,40 +39,34 @@ describe("asset family consistency", () => {
     for (const path of fruitPaths) {
       const asset = catalog.get(path);
       expect(asset).toBeTruthy();
-      expect(asset?.familyId).toBe("fruit-stacker-fruits-v1");
+      expect(asset?.familyId).toBe("fruit-stacker-fruits-v2");
       expect(asset?.normalized).toBe(true);
       if (asset) styleProfiles.add(asset.styleProfile);
-      expect(
-        [
-          "opengameart-food-potions",
-          "opengameart-fruit-vege-sprites",
-          "opengameart-fruits-vegies-icons"
-        ].includes(asset?.sourceLibrary ?? "")
-      ).toBe(true);
+      expect(asset?.sourceLibrary).toBe("berries-internal");
     }
 
     expect(styleProfiles.size).toBe(1);
-    expect(styleProfiles.has("fruit-stacker-hybrid-pixel-v1")).toBe(true);
+    expect(styleProfiles.has("fruit-stacker-outlined-v2")).toBe(true);
   });
 
-  test("launcher card icons use one phosphor-derived family", () => {
+  test("launcher card icons use one custom in-house family", () => {
     const catalog = byPath();
 
     for (const game of getAllGames()) {
       const icon = catalog.get(game.cardIcon);
       expect(icon).toBeTruthy();
-      expect(icon?.familyId).toBe("launcher-card-icons-v1");
-      expect(icon?.styleProfile).toBe("launcher-phosphor-icons-v1");
-      expect(icon?.sourceLibrary).toBe("phosphor-icons");
+      expect(icon?.familyId).toBe("launcher-card-icons-v2");
+      expect(icon?.styleProfile).toBe("launcher-custom-icons-v2");
+      expect(icon?.sourceLibrary).toBe("berries-internal");
       expect(icon?.normalized).toBe(true);
       expect(game.cardIcon.startsWith("/assets/game-icons/")).toBe(true);
 
       if (!game.cardIconFallback) continue;
       const fallback = catalog.get(game.cardIconFallback);
       expect(fallback).toBeTruthy();
-      expect(fallback?.familyId).toBe("launcher-card-icons-v1");
-      expect(fallback?.styleProfile).toBe("launcher-phosphor-icons-v1");
-      expect(fallback?.sourceLibrary).toBe("phosphor-icons");
+      expect(fallback?.familyId).toBe("launcher-card-icons-v2");
+      expect(fallback?.styleProfile).toBe("launcher-custom-icons-v2");
+      expect(fallback?.sourceLibrary).toBe("berries-internal");
       expect(fallback?.normalized).toBe(true);
       expect(game.cardIconFallback.startsWith("/assets/game-icons/")).toBe(true);
     }

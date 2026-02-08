@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="watermelon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="watermelon">
   <rect width="64" height="64" fill="transparent"/>
-  <circle cx="32" cy="35" r="22" fill="#2f6f3f" stroke="#1f2a44" stroke-width="2"/>
-  <circle cx="32" cy="35" r="18" fill="#61ab58"/>
-  <path d="M20 35h24" fill="none" stroke="#4d954e" stroke-width="2" stroke-linecap="square"/>
-  <path d="M25 20c0 10 0 21 0 30M32 18c0 11 0 24 0 34M39 20c0 10 0 21 0 30" fill="none" stroke="#478a48" stroke-width="2" stroke-linecap="square"/>
-  <ellipse cx="26" cy="28" rx="5" ry="3" fill="#c2e3a5"/>
-  <rect x="31" y="8" width="3" height="8" fill="#5d4a32"/>
+  <circle cx="32" cy="36" r="21" fill="#57a858" stroke="#111827" stroke-width="3"/>
+  <circle cx="32" cy="36" r="16" fill="#74be6b"/>
+  <path d="M20 36h24" fill="none" stroke="#4a964a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M25 22c0 8 0 18 0 28M32 20c0 10 0 21 0 32M39 22c0 8 0 18 0 28" fill="none" stroke="#3d8740" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="26" cy="29" rx="5" ry="3" fill="#c6e7ab"/>
+  <rect x="31" y="9" width="3" height="8" rx="1" fill="#64452f"/>
 </svg>

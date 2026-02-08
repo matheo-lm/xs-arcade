@@ -1,6 +1,6 @@
 {
-  "styleVersion": "family-consistency-v1",
-  "familyPolicyVersion": "family-level-consistency-v1",
+  "styleVersion": "family-consistency-v2",
+  "familyPolicyVersion": "family-level-consistency-v2",
   "assets": [
     {
       "id": "fruits-apple",
@@ -10,26 +10,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-food-potions",
-      "sourceAssetId": "food-potions/apple",
-      "sourceLicense": "CC BY-SA 3.0",
-      "sourceUrl": "https://opengameart.org/content/food-and-potions-16x16-and-32x32-icon-set-cby-sa"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/apple",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/apple",
+      "normalized": true
     },
     {
       "id": "fruits-cherry",
@@ -39,26 +26,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-food-potions",
-      "sourceAssetId": "food-potions/cherry",
-      "sourceLicense": "CC BY-SA 3.0",
-      "sourceUrl": "https://opengameart.org/content/food-and-potions-16x16-and-32x32-icon-set-cby-sa"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/cherry",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/cherry",
+      "normalized": true
     },
     {
       "id": "fruits-kiwi",
@@ -68,26 +42,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-fruit-vege-sprites",
-      "sourceAssetId": "fruit-vege-sprites/kiwi",
-      "sourceLicense": "CC BY 3.0",
-      "sourceUrl": "https://opengameart.org/art-search-advanced?field_art_tags_tid_op=or&field_art_tags_tid=fruit%2Cvege%2Csprites"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/kiwi",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/kiwi",
+      "normalized": true
     },
     {
       "id": "fruits-lemon",
@@ -97,26 +58,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-food-potions",
-      "sourceAssetId": "food-potions/lemon",
-      "sourceLicense": "CC BY-SA 3.0",
-      "sourceUrl": "https://opengameart.org/content/food-and-potions-16x16-and-32x32-icon-set-cby-sa"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/lemon",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/lemon",
+      "normalized": true
     },
     {
       "id": "fruits-melon",
@@ -126,26 +74,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-fruit-vege-sprites",
-      "sourceAssetId": "fruit-vege-sprites/melon",
-      "sourceLicense": "CC BY 3.0",
-      "sourceUrl": "https://opengameart.org/art-search-advanced?field_art_tags_tid_op=or&field_art_tags_tid=fruit%2Cvege%2Csprites"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/melon",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/melon",
+      "normalized": true
     },
     {
       "id": "fruits-orange",
@@ -155,26 +90,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-food-potions",
-      "sourceAssetId": "food-potions/orange",
-      "sourceLicense": "CC BY-SA 3.0",
-      "sourceUrl": "https://opengameart.org/content/food-and-potions-16x16-and-32x32-icon-set-cby-sa"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/orange",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/orange",
+      "normalized": true
     },
     {
       "id": "fruits-peach",
@@ -184,26 +106,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-food-potions",
-      "sourceAssetId": "food-potions/peach",
-      "sourceLicense": "CC BY-SA 3.0",
-      "sourceUrl": "https://opengameart.org/content/food-and-potions-16x16-and-32x32-icon-set-cby-sa"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/peach",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/peach",
+      "normalized": true
     },
     {
       "id": "fruits-pear",
@@ -213,26 +122,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-food-potions",
-      "sourceAssetId": "food-potions/pear",
-      "sourceLicense": "CC BY-SA 3.0",
-      "sourceUrl": "https://opengameart.org/content/food-and-potions-16x16-and-32x32-icon-set-cby-sa"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/pear",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/pear",
+      "normalized": true
     },
     {
       "id": "fruits-pumpkin",
@@ -242,26 +138,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-fruits-vegies-icons",
-      "sourceAssetId": "fruits-vegies-icons/pumpkin",
-      "sourceLicense": "CC0",
-      "sourceUrl": "https://opengameart.org/content/icons-for-game-dev-fruits-and-vegies"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/pumpkin",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/pumpkin",
+      "normalized": true
     },
     {
       "id": "fruits-watermelon",
@@ -271,26 +154,13 @@
         "fruit-stacker-gameplay",
         "fruit-stacker-preview"
       ],
-      "familyId": "fruit-stacker-fruits-v1",
-      "styleProfile": "fruit-stacker-hybrid-pixel-v1",
-      "normalized": true,
-      "grid": "32x32@2px",
-      "palette": [
-        "#1f2a44",
-        "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
-        "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
-      ],
-      "sourceLibrary": "opengameart-fruit-vege-sprites",
-      "sourceAssetId": "fruit-vege-sprites/watermelon",
-      "sourceLicense": "CC BY 3.0",
-      "sourceUrl": "https://opengameart.org/art-search-advanced?field_art_tags_tid_op=or&field_art_tags_tid=fruit%2Cvege%2Csprites"
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/watermelon",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/watermelon",
+      "normalized": true
     },
     {
       "id": "game-icons-color-craft",
@@ -299,12 +169,12 @@
       "contexts": [
         "launcher-card"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "palette",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/color-craft",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/color-craft",
       "normalized": true
     },
     {
@@ -314,12 +184,12 @@
       "contexts": [
         "launcher-card"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "stack",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/fruit-stacker",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/fruit-stacker",
       "normalized": true
     },
     {
@@ -329,12 +199,12 @@
       "contexts": [
         "launcher-card"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "lamp",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/letter-lanterns",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/letter-lanterns",
       "normalized": true
     },
     {
@@ -344,12 +214,12 @@
       "contexts": [
         "launcher-card"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "path",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/memory-trails",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/memory-trails",
       "normalized": true
     },
     {
@@ -359,12 +229,12 @@
       "contexts": [
         "launcher-card"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "plant",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/number-garden",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/number-garden",
       "normalized": true
     },
     {
@@ -374,12 +244,12 @@
       "contexts": [
         "launcher-card"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "rows-plus",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/pattern-parade",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/pattern-parade",
       "normalized": true
     },
     {
@@ -389,12 +259,12 @@
       "contexts": [
         "launcher-card"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "chat-circle",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/phonics-pop",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/phonics-pop",
       "normalized": true
     },
     {
@@ -404,12 +274,12 @@
       "contexts": [
         "launcher-card"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "shapes",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/shape-builder",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/shape-builder",
       "normalized": true
     },
     {
@@ -419,12 +289,12 @@
       "contexts": [
         "launcher-card"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "cards",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/word-match",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/word-match",
       "normalized": true
     },
     {
@@ -434,12 +304,12 @@
       "contexts": [
         "launcher-card-fallback"
       ],
-      "familyId": "launcher-card-icons-v1",
-      "styleProfile": "launcher-phosphor-icons-v1",
-      "sourceLibrary": "phosphor-icons",
-      "sourceAssetId": "asterisk",
-      "sourceLicense": "MIT",
-      "sourceUrl": "https://github.com/phosphor-icons/core",
+      "familyId": "launcher-card-icons-v2",
+      "styleProfile": "launcher-custom-icons-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "game-icons/fallback",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/game-icons/fallback",
       "normalized": true
     },
     {
@@ -449,7 +319,7 @@
       "contexts": [
         "launcher-footer"
       ],
-      "familyId": "platform-footer-v1",
+      "familyId": "launcher-platform-marks-v1",
       "styleProfile": "retro-pixel-platform-v1",
       "sourceLibrary": "berries-internal",
       "sourceAssetId": "platform/footer-heart",
@@ -458,16 +328,16 @@
       "normalized": true,
       "grid": "24x24@1px",
       "palette": [
-        "#1f2a44",
+        "#111827",
+        "#1f2937",
         "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
         "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
+        "#8fc85f",
+        "#ffe68d",
+        "#f9b985",
+        "#f79a3e",
+        "#ef5560",
+        "#9fd071"
       ]
     },
     {
@@ -477,7 +347,7 @@
       "contexts": [
         "launcher-footer"
       ],
-      "familyId": "platform-footer-v1",
+      "familyId": "launcher-platform-marks-v1",
       "styleProfile": "retro-pixel-platform-v1",
       "sourceLibrary": "berries-internal",
       "sourceAssetId": "platform/github",
@@ -486,16 +356,16 @@
       "normalized": true,
       "grid": "24x24@1px",
       "palette": [
-        "#1f2a44",
+        "#111827",
+        "#1f2937",
         "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
         "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
+        "#8fc85f",
+        "#ffe68d",
+        "#f9b985",
+        "#f79a3e",
+        "#ef5560",
+        "#9fd071"
       ]
     },
     {
@@ -505,7 +375,7 @@
       "contexts": [
         "launcher-stats"
       ],
-      "familyId": "launcher-ui-stats-v1",
+      "familyId": "launcher-ui-controls-v1",
       "styleProfile": "retro-pixel-ui-v1",
       "sourceLibrary": "berries-internal",
       "sourceAssetId": "ui/stat-badges",
@@ -514,16 +384,16 @@
       "normalized": true,
       "grid": "24x24@1px",
       "palette": [
-        "#1f2a44",
+        "#111827",
+        "#1f2937",
         "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
         "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
+        "#8fc85f",
+        "#ffe68d",
+        "#f9b985",
+        "#f79a3e",
+        "#ef5560",
+        "#9fd071"
       ]
     },
     {
@@ -533,7 +403,7 @@
       "contexts": [
         "launcher-stats"
       ],
-      "familyId": "launcher-ui-stats-v1",
+      "familyId": "launcher-ui-controls-v1",
       "styleProfile": "retro-pixel-ui-v1",
       "sourceLibrary": "berries-internal",
       "sourceAssetId": "ui/stat-high-score",
@@ -542,16 +412,16 @@
       "normalized": true,
       "grid": "24x24@1px",
       "palette": [
-        "#1f2a44",
+        "#111827",
+        "#1f2937",
         "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
         "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
+        "#8fc85f",
+        "#ffe68d",
+        "#f9b985",
+        "#f79a3e",
+        "#ef5560",
+        "#9fd071"
       ]
     },
     {
@@ -561,7 +431,7 @@
       "contexts": [
         "launcher-stats"
       ],
-      "familyId": "launcher-ui-stats-v1",
+      "familyId": "launcher-ui-controls-v1",
       "styleProfile": "retro-pixel-ui-v1",
       "sourceLibrary": "berries-internal",
       "sourceAssetId": "ui/stat-stars",
@@ -570,16 +440,16 @@
       "normalized": true,
       "grid": "24x24@1px",
       "palette": [
-        "#1f2a44",
+        "#111827",
+        "#1f2937",
         "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
         "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
+        "#8fc85f",
+        "#ffe68d",
+        "#f9b985",
+        "#f79a3e",
+        "#ef5560",
+        "#9fd071"
       ]
     },
     {
@@ -589,7 +459,7 @@
       "contexts": [
         "settings-theme-toggle"
       ],
-      "familyId": "launcher-ui-theme-v1",
+      "familyId": "launcher-ui-controls-v1",
       "styleProfile": "retro-pixel-ui-v1",
       "sourceLibrary": "berries-internal",
       "sourceAssetId": "ui/theme-dark",
@@ -598,16 +468,16 @@
       "normalized": true,
       "grid": "24x24@1px",
       "palette": [
-        "#1f2a44",
+        "#111827",
+        "#1f2937",
         "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
         "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
+        "#8fc85f",
+        "#ffe68d",
+        "#f9b985",
+        "#f79a3e",
+        "#ef5560",
+        "#9fd071"
       ]
     },
     {
@@ -617,7 +487,7 @@
       "contexts": [
         "settings-theme-toggle"
       ],
-      "familyId": "launcher-ui-theme-v1",
+      "familyId": "launcher-ui-controls-v1",
       "styleProfile": "retro-pixel-ui-v1",
       "sourceLibrary": "berries-internal",
       "sourceAssetId": "ui/theme-light",
@@ -626,16 +496,16 @@
       "normalized": true,
       "grid": "24x24@1px",
       "palette": [
-        "#1f2a44",
+        "#111827",
+        "#1f2937",
         "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
         "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
+        "#8fc85f",
+        "#ffe68d",
+        "#f9b985",
+        "#f79a3e",
+        "#ef5560",
+        "#9fd071"
       ]
     },
     {
@@ -645,7 +515,7 @@
       "contexts": [
         "settings-theme-toggle"
       ],
-      "familyId": "launcher-ui-theme-v1",
+      "familyId": "launcher-ui-controls-v1",
       "styleProfile": "retro-pixel-ui-v1",
       "sourceLibrary": "berries-internal",
       "sourceAssetId": "ui/theme-system",
@@ -654,16 +524,16 @@
       "normalized": true,
       "grid": "24x24@1px",
       "palette": [
-        "#1f2a44",
+        "#111827",
+        "#1f2937",
         "#223458",
-        "#eaf2ff",
-        "#9ec5ff",
         "#5f9350",
-        "#6b4a32",
-        "#ffd9b8",
-        "#f6cd4f",
-        "#dc4d72",
-        "#ea973f"
+        "#8fc85f",
+        "#ffe68d",
+        "#f9b985",
+        "#f79a3e",
+        "#ef5560",
+        "#9fd071"
       ]
     }
   ]

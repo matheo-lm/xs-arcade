@@ -14,8 +14,8 @@ Use this checklist for UI work.
   - different families can use different profiles
 
 ## Family Examples
-- `fruit-stacker-fruits-v1`: normalized pixel fruit sprite set.
-- `launcher-card-icons-v1`: Phosphor-derived launcher card icon set.
+- `fruit-stacker-fruits-v2`: outlined playful fruit sprite set tuned for Fruit Stacker readability.
+- `launcher-card-icons-v2`: custom in-house launcher game card icon set.
 
 ## Typography
 - Pixel font: headings, controls, labels, pills, tags.

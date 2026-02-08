@@ -1,9 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="orange">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="orange">
   <rect width="64" height="64" fill="transparent"/>
-  <circle cx="32" cy="35" r="21" fill="#b7602a" stroke="#1f2a44" stroke-width="2"/>
-  <circle cx="32" cy="35" r="16" fill="#e7924e"/>
-  <path d="M24 46c2 1 5 2 8 2s6-1 8-2" fill="none" stroke="#d77f3f" stroke-width="2" stroke-linecap="square"/>
-  <ellipse cx="26" cy="28" rx="5" ry="3" fill="#ffdcb8"/>
-  <rect x="31" y="10" width="3" height="7" fill="#6a4a32"/>
-  <path d="M33 12c4-3 7-3 10 0-3 0-6 2-8 4Z" fill="#5f9350"/>
+  <circle cx="32" cy="36" r="19.5" fill="#f79a3e" stroke="#111827" stroke-width="3"/>
+  <path d="M32 17c8 1 14 8 14 16s-6 15-14 16" fill="#e57e33"/>
+  <path d="M24 47c2 1 5 2 8 2s6-1 8-2" fill="none" stroke="#ce6f2e" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="26" cy="29" rx="5" ry="3" fill="#ffdcb6"/>
+  <rect x="31" y="10" width="3" height="8" rx="1" fill="#64452f"/>
+  <path d="M33 13c4-3 8-3 11 0-4 0-7 2-9 4Z" fill="#8fc85f" stroke="#111827" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="25" cy="41" r="1.2" fill="#d66f2d"/>
+  <circle cx="39" cy="42" r="1.2" fill="#d66f2d"/>
 </svg>

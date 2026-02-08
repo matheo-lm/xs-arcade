@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="lemon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="lemon">
   <rect width="64" height="64" fill="transparent"/>
-  <path d="M8 33c0-10 11-18 24-18s24 8 24 18-11 18-24 18S8 43 8 33Z" fill="#b78a29" stroke="#1f2a44" stroke-width="2"/>
-  <path d="M12 33c0-8 9-14 20-14s20 6 20 14-9 14-20 14-20-6-20-14Z" fill="#f6cd4f"/>
-  <path d="M8 33l4-3v6ZM56 33l-4-3v6Z" fill="#b78a29"/>
-  <ellipse cx="24" cy="28" rx="5" ry="3" fill="#fff1bf"/>
-  <path d="M20 34c4-2 11-2 16 0" fill="none" stroke="#e6b845" stroke-width="2" stroke-linecap="square"/>
+  <path d="M9 34C9 23 19 15 32 15s23 8 23 19-10 19-23 19S9 45 9 34Z" fill="#ffd84f" stroke="#111827" stroke-width="3"/>
+  <path d="M9 34l5-3v6Z" fill="#e5ba3d" stroke="#111827" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M55 34l-5-3v6Z" fill="#e5ba3d" stroke="#111827" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M15 34c0-8 8-14 17-14s17 6 17 14-8 14-17 14-17-6-17-14Z" fill="#ffe466"/>
+  <path d="M21 38c4-2 11-2 16 0" fill="none" stroke="#f0c347" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="24" cy="28" rx="5" ry="3" fill="#fff3b8"/>
 </svg>

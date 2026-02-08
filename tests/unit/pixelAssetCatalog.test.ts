@@ -55,8 +55,8 @@ describe("asset catalog", () => {
   test("catalog entries are complete and local", () => {
     const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8")) as AssetCatalog;
 
-    expect(catalog.styleVersion).toBe("family-consistency-v1");
-    expect(catalog.familyPolicyVersion).toBe("family-level-consistency-v1");
+    expect(catalog.styleVersion).toBe("family-consistency-v2");
+    expect(catalog.familyPolicyVersion).toBe("family-level-consistency-v2");
     expect(Array.isArray(catalog.assets)).toBe(true);
     expect(catalog.assets.length).toBeGreaterThan(0);
 

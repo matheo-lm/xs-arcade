@@ -1,11 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="word match icon">
-  <rect x="8" y="8" width="80" height="80" rx="16" fill="#eaf2ff"/>
-  <g fill="none" stroke="#223458" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-    
-    <rect x="22" y="30" width="22" height="30" rx="4" fill="#9ec5ff" stroke="#223458"/>
-    <rect x="52" y="36" width="22" height="30" rx="4" fill="#9ec5ff" stroke="#223458"/>
-    <path d="M58 50l5 5 8-10"/>
-    <path d="M28 40h10M28 48h8"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c4d7ff"/>
+      <stop offset="1" stop-color="#8aaef8"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="84" height="84" rx="18" fill="url(#bg)" stroke="#111827" stroke-width="4"/>
+  <rect x="12" y="12" width="72" height="14" rx="8" fill="#ffffff26"/>
   
-  </g>
+  <rect x="22" y="31" width="22" height="30" rx="4" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
+  <rect x="52" y="37" width="22" height="30" rx="4" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
+  <path d="M27 41h12M27 49h8" fill="none" stroke="#111827" stroke-width="3" stroke-linecap="round"/>
+  <path d="M57 51l5 5 8-10" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
 </svg>

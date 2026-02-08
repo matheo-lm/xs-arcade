@@ -60,13 +60,14 @@ Rules:
 - `content/games/*.json` `cardIcon` values must be local `/assets/...svg` paths.
 - Fruit Stacker sprite URLs must be local `/assets/fruits/*.svg` paths.
 - Family-level consistency contracts:
-  - `fruit-stacker-fruits-v1`: all 10 fruit tiers share the same normalized style profile.
-  - `launcher-card-icons-v1`: all launcher game card icons share one library-derived style profile.
+  - `fruit-stacker-fruits-v2`: all 10 fruit tiers share the same outlined playful style profile.
+  - `launcher-card-icons-v2`: all launcher game card icons share one custom in-house style profile.
 - New image files require:
   - placement in `/Users/m/Desktop/berries/public/assets/` (appropriate subfolder)
   - matching entry in `/Users/m/Desktop/berries/content/assets/pixel-art.json`
   - required catalog metadata: `familyId`, `styleProfile`, `sourceLibrary`, `sourceAssetId`, `sourceLicense`, `sourceUrl`, `normalized`
 - Third-party sourced images must be listed in `/Users/m/Desktop/berries/content/assets/THIRD_PARTY_ASSETS.md`.
+- Visual spec references for active families live in `/Users/m/Desktop/berries/docs/asset-style-families.md`.
 
 ## Localization Policy
 - All user-facing shared UI copy must be present in both `en` and `es`.
