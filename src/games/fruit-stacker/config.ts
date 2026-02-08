@@ -37,7 +37,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#ff8a9a",
     fallbackB: "#ff2e50",
     drawScale: 1.04,
-    spriteScale: 1.16
+    spriteScale: 1.3
   },
   {
     id: "lemon",
@@ -50,7 +50,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#fff08a",
     fallbackB: "#ffc738",
     drawScale: 1.03,
-    spriteScale: 1.14
+    spriteScale: 1.29
   },
   {
     id: "kiwi",
@@ -63,7 +63,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#cde87e",
     fallbackB: "#7bb24a",
     drawScale: 1.02,
-    spriteScale: 1.12
+    spriteScale: 1.27
   },
   {
     id: "orange",
@@ -76,7 +76,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#ffd390",
     fallbackB: "#ff922f",
     drawScale: 1.02,
-    spriteScale: 1.11
+    spriteScale: 1.26
   },
   {
     id: "apple",
@@ -89,7 +89,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#ffb39f",
     fallbackB: "#ff3f3f",
     drawScale: 1.01,
-    spriteScale: 1.1
+    spriteScale: 1.24
   },
   {
     id: "pear",
@@ -102,7 +102,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#e5ffa5",
     fallbackB: "#90db44",
     drawScale: 1.01,
-    spriteScale: 1.09
+    spriteScale: 1.22
   },
   {
     id: "peach",
@@ -115,7 +115,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#ffd9bf",
     fallbackB: "#ff9e6a",
     drawScale: 1.01,
-    spriteScale: 1.08
+    spriteScale: 1.22
   },
   {
     id: "melon",
@@ -128,7 +128,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#f4bf79",
     fallbackB: "#dd8b43",
     drawScale: 1,
-    spriteScale: 1.07
+    spriteScale: 1.2
   },
   {
     id: "watermelon",
@@ -141,7 +141,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackA: "#6acb57",
     fallbackB: "#2a8f43",
     drawScale: 1,
-    spriteScale: 1.06
+    spriteScale: 1.19
   },
   {
     id: "pumpkin",
@@ -155,7 +155,7 @@ export const FRUIT_TIERS: FruitTier[] = [
     fallbackB: "#e06f22",
     special: "pumpkin",
     drawScale: 1,
-    spriteScale: 1.05
+    spriteScale: 1.18
   }
 ];
 
