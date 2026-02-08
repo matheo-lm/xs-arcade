@@ -12,6 +12,7 @@ interface FruitState {
   vx: number;
   vy: number;
   merged: boolean;
+  bornAtMs: number;
 }
 
 interface EffectState {
@@ -247,7 +248,8 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
       y: meta.r + 8,
       vx: (Math.random() - 0.5) * 0.2,
       vy: 0,
-      merged: false
+      merged: false,
+      bornAtMs: now
     });
 
     nextType = randType();
@@ -313,6 +315,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     b.merged = true;
 
     const newType = type + 1;
+    const now = performance.now();
     fruits.push({
       id: Math.random().toString(36).slice(2),
       type: newType,
@@ -320,7 +323,8 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
       y: ny,
       vx: (a.vx + b.vx) * 0.35,
       vy: Math.min(a.vy, b.vy) - 0.8,
-      merged: false
+      merged: false,
+      bornAtMs: now
     });
 
     const points = FRUITS[newType].points;
@@ -422,15 +426,23 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   };
 
   const drawTopHud = (preview: FruitMeta): void => {
+    const nextLabel = options.strings.gameNext.toUpperCase();
+    const previewLabel = preview.name.toUpperCase();
+
     ctx.fillStyle = "#101946e6";
     ctx.fillRect(0, 0, W, TOP_LINE - 2);
 
     ctx.fillStyle = "#ffe57d";
-    ctx.font = "700 16px \"Press Start 2P\", \"Courier New\", monospace";
+    ctx.font = "700 14px \"Press Start 2P\", \"Courier New\", monospace";
     ctx.textAlign = "left";
-    ctx.fillText(options.strings.gameNext.toUpperCase(), 10, 24);
+    ctx.fillText(nextLabel, 10, 24);
+
+    const nextWidth = ctx.measureText(nextLabel).width;
     ctx.font = "700 11px \"Press Start 2P\", \"Courier New\", monospace";
-    ctx.fillText(preview.name.toUpperCase(), 86, 24);
+    const previewWidth = ctx.measureText(previewLabel).width;
+    const previewX = 10 + nextWidth + 18;
+    const previewFitsTopRow = previewX + previewWidth <= W - 10;
+    ctx.fillText(previewLabel, previewFitsTopRow ? previewX : 10, previewFitsTopRow ? 24 : 44);
   };
 
   const update = (): void => {
@@ -487,7 +499,17 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     }
     effects = effects.filter((effect) => effect.life > 0);
 
-    const blockedTop = fruits.some((fruit) => fruit.y - FRUITS[fruit.type].r < TOP_LINE);
+    const now = performance.now();
+    const blockedTop = fruits.some((fruit) => {
+      const fruitTop = fruit.y - FRUITS[fruit.type].r;
+      if (fruitTop >= TOP_LINE) return false;
+
+      // Ignore fresh or still-fast fruit so rapid drops don't false-trigger overflow.
+      if (now - fruit.bornAtMs < 850) return false;
+      if (Math.abs(fruit.vy) > 1.1 || Math.abs(fruit.vx) > 1.1) return false;
+
+      return true;
+    });
     overflowFrames = blockedTop ? overflowFrames + 1 : 0;
 
     if (overflowFrames > OVERFLOW_LIMIT) {
