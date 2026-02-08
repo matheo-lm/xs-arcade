@@ -76,11 +76,7 @@ export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig
                 aria-pressed="${themePreference === "system" ? "true" : "false"}"
                 title="${labels.themeSystem}"
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <rect x="3" y="5" width="18" height="12" rx="2"></rect>
-                  <line x1="8" y1="20" x2="16" y2="20"></line>
-                  <line x1="12" y1="17" x2="12" y2="20"></line>
-                </svg>
+                <img src="/assets/ui/theme-system.svg" alt="" aria-hidden="true" />
               </button>
               <button
                 type="button"
@@ -90,17 +86,7 @@ export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig
                 aria-pressed="${themePreference === "light" ? "true" : "false"}"
                 title="${labels.themeLight}"
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <circle cx="12" cy="12" r="4"></circle>
-                  <line x1="12" y1="2.5" x2="12" y2="5.5"></line>
-                  <line x1="12" y1="18.5" x2="12" y2="21.5"></line>
-                  <line x1="2.5" y1="12" x2="5.5" y2="12"></line>
-                  <line x1="18.5" y1="12" x2="21.5" y2="12"></line>
-                  <line x1="5.3" y1="5.3" x2="7.4" y2="7.4"></line>
-                  <line x1="16.6" y1="16.6" x2="18.7" y2="18.7"></line>
-                  <line x1="16.6" y1="7.4" x2="18.7" y2="5.3"></line>
-                  <line x1="5.3" y1="18.7" x2="7.4" y2="16.6"></line>
-                </svg>
+                <img src="/assets/ui/theme-light.svg" alt="" aria-hidden="true" />
               </button>
               <button
                 type="button"
@@ -110,9 +96,7 @@ export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig
                 aria-pressed="${themePreference === "dark" ? "true" : "false"}"
                 title="${labels.themeDark}"
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M16.8 2.8A9.5 9.5 0 1 0 21.2 17a8 8 0 0 1-4.4-14.2Z"></path>
-                </svg>
+                <img src="/assets/ui/theme-dark.svg" alt="" aria-hidden="true" />
               </button>
             </div>
           </div>

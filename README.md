@@ -36,6 +36,14 @@ x's arcade is a kid-friendly web arcade platform for ages 4-8. It is designed as
 - `/Users/m/Desktop/berries/public/`: static assets, locales, PWA files.
 - `/Users/m/Desktop/berries/docs/`: architecture, design, content, template docs.
 
+## Image Repository & Pixel Art Standard
+- All platform and game images use a single 8-bit pixel-art SVG system.
+- Runtime image assets are local-only under `/Users/m/Desktop/berries/public/assets/`.
+- External image/CDN URLs are not allowed in manifests or game sprite configs.
+- Canonical image catalog: `/Users/m/Desktop/berries/content/assets/pixel-art.json`.
+- Every image file referenced by launcher or games must be listed in that catalog with:
+  - `id`, `category`, `path`, `contexts`, `grid`, `palette`.
+
 ## Development
 Install dependencies:
 

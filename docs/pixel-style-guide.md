@@ -8,6 +8,8 @@ Use this checklist for UI work.
 - Use shared game header from `src/shared/ui/gameHeader.ts` + `src/shared/ui/gameHeader.css` for all game pages.
 - Keep controls >= 44x44.
 - Keep both dark/light themes pixel consistent.
+- Use local-only SVG image assets from `public/assets/` (no remote URLs).
+- Register every image in `content/assets/pixel-art.json`.
 
 ## Typography
 - Pixel font: headings, controls, labels, pills, tags.
@@ -32,3 +34,4 @@ Use this checklist for UI work.
 - Launcher and game pages look like one visual system.
 - Shared header appears and aligns consistently.
 - Theme switch keeps style identity in both modes.
+- Game cards, UI stats/icons, settings icons, footer icons, and game sprites all use the same pixel language.

@@ -29,6 +29,7 @@ export interface GameFilter {
 
 export const validateManifest = (manifest: GameManifest): string[] => {
   const errors: string[] = [];
+  const isLocalAssetPath = (value: string | undefined): boolean => !!value && value.startsWith("/assets/");
 
   if (!manifest.id) errors.push("id is required");
   if (!manifest.slug) errors.push("slug is required");
@@ -40,8 +41,11 @@ export const validateManifest = (manifest: GameManifest): string[] => {
   if (!manifest.cardIcon || !manifest.cardIcon.trim()) {
     errors.push("cardIcon is required");
   }
-  if (/^https?:\/\//.test(manifest.cardIcon) && !manifest.cardIconFallback) {
-    errors.push("cardIconFallback is required for external cardIcon");
+  if (manifest.cardIcon && !isLocalAssetPath(manifest.cardIcon)) {
+    errors.push("cardIcon must be a local /assets/ path");
+  }
+  if (manifest.cardIconFallback && !isLocalAssetPath(manifest.cardIconFallback)) {
+    errors.push("cardIconFallback must be a local /assets/ path");
   }
   if (!Array.isArray(manifest.ageBands) || manifest.ageBands.length === 0) {
     errors.push("ageBands must be a non-empty array");

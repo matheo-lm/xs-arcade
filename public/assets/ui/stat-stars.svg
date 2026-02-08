@@ -1,4 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="stars">
-  <rect width="24" height="24" fill="#13254b"/>
-  <polygon points="12,2 14.8,8.5 22,9 16.5,13.5 18.2,21 12,17 5.8,21 7.5,13.5 2,9 9.2,8.5" fill="#ffd463" stroke="#9f6d00" stroke-width="1.2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" shape-rendering="crispEdges" role="img" aria-label="stars">
+  <rect x="0" y="0" width="24" height="24" fill="#1b2747"/>
+  <rect x="8" y="2" width="8" height="4" fill="#ffd56b"/>
+  <rect x="6" y="6" width="12" height="4" fill="#ffd56b"/>
+  <rect x="4" y="10" width="16" height="4" fill="#ffd56b"/>
+  <rect x="8" y="14" width="8" height="4" fill="#ffd56b"/>
+  <rect x="6" y="18" width="4" height="4" fill="#ffd56b"/>
+  <rect x="14" y="18" width="4" height="4" fill="#ffd56b"/>
+  <rect x="8" y="6" width="8" height="4" fill="#ffefb7"/>
 </svg>

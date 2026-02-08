@@ -1,0 +1,528 @@
+{
+  "assets": [
+    {
+      "id": "fruits-apple",
+      "category": "fruits",
+      "path": "/assets/fruits/apple.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "fruits-cherry",
+      "category": "fruits",
+      "path": "/assets/fruits/cherry.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "fruits-kiwi",
+      "category": "fruits",
+      "path": "/assets/fruits/kiwi.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "fruits-lemon",
+      "category": "fruits",
+      "path": "/assets/fruits/lemon.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "fruits-melon",
+      "category": "fruits",
+      "path": "/assets/fruits/melon.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "fruits-orange",
+      "category": "fruits",
+      "path": "/assets/fruits/orange.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "fruits-peach",
+      "category": "fruits",
+      "path": "/assets/fruits/peach.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "fruits-pear",
+      "category": "fruits",
+      "path": "/assets/fruits/pear.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "fruits-pumpkin",
+      "category": "fruits",
+      "path": "/assets/fruits/pumpkin.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "fruits-watermelon",
+      "category": "fruits",
+      "path": "/assets/fruits/watermelon.svg",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "grid": "16x16@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "game-icons-color-craft",
+      "category": "game-icons",
+      "path": "/assets/game-icons/color-craft.svg",
+      "contexts": [
+        "launcher-game-card",
+        "placeholder-header"
+      ],
+      "grid": "24x24@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "game-icons-fruit-stacker",
+      "category": "game-icons",
+      "path": "/assets/game-icons/fruit-stacker.svg",
+      "contexts": [
+        "launcher-game-card",
+        "placeholder-header"
+      ],
+      "grid": "24x24@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "game-icons-letter-lanterns",
+      "category": "game-icons",
+      "path": "/assets/game-icons/letter-lanterns.svg",
+      "contexts": [
+        "launcher-game-card",
+        "placeholder-header"
+      ],
+      "grid": "24x24@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "game-icons-memory-trails",
+      "category": "game-icons",
+      "path": "/assets/game-icons/memory-trails.svg",
+      "contexts": [
+        "launcher-game-card",
+        "placeholder-header"
+      ],
+      "grid": "24x24@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "game-icons-number-garden",
+      "category": "game-icons",
+      "path": "/assets/game-icons/number-garden.svg",
+      "contexts": [
+        "launcher-game-card",
+        "placeholder-header"
+      ],
+      "grid": "24x24@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "game-icons-pattern-parade",
+      "category": "game-icons",
+      "path": "/assets/game-icons/pattern-parade.svg",
+      "contexts": [
+        "launcher-game-card",
+        "placeholder-header"
+      ],
+      "grid": "24x24@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "game-icons-phonics-pop",
+      "category": "game-icons",
+      "path": "/assets/game-icons/phonics-pop.svg",
+      "contexts": [
+        "launcher-game-card",
+        "placeholder-header"
+      ],
+      "grid": "24x24@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "game-icons-shape-builder",
+      "category": "game-icons",
+      "path": "/assets/game-icons/shape-builder.svg",
+      "contexts": [
+        "launcher-game-card",
+        "placeholder-header"
+      ],
+      "grid": "24x24@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "game-icons-word-match",
+      "category": "game-icons",
+      "path": "/assets/game-icons/word-match.svg",
+      "contexts": [
+        "launcher-game-card",
+        "placeholder-header"
+      ],
+      "grid": "24x24@4px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "icon",
+      "category": "platform",
+      "path": "/assets/icon.svg",
+      "contexts": [
+        "global-fallback",
+        "launcher-fallback"
+      ],
+      "grid": "12x12@2px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "platform-footer-heart",
+      "category": "platform",
+      "path": "/assets/platform/footer-heart.svg",
+      "contexts": [
+        "launcher-footer"
+      ],
+      "grid": "12x12@2px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "platform-github",
+      "category": "platform",
+      "path": "/assets/platform/github.svg",
+      "contexts": [
+        "launcher-footer"
+      ],
+      "grid": "12x12@2px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "ui-stat-badges",
+      "category": "ui",
+      "path": "/assets/ui/stat-badges.svg",
+      "contexts": [
+        "launcher-profile-stats"
+      ],
+      "grid": "12x12@2px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "ui-stat-high-score",
+      "category": "ui",
+      "path": "/assets/ui/stat-high-score.svg",
+      "contexts": [
+        "launcher-profile-stats"
+      ],
+      "grid": "12x12@2px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "ui-stat-stars",
+      "category": "ui",
+      "path": "/assets/ui/stat-stars.svg",
+      "contexts": [
+        "launcher-profile-stats"
+      ],
+      "grid": "12x12@2px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "ui-theme-dark",
+      "category": "ui",
+      "path": "/assets/ui/theme-dark.svg",
+      "contexts": [
+        "settings-theme-toggle"
+      ],
+      "grid": "12x12@2px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "ui-theme-light",
+      "category": "ui",
+      "path": "/assets/ui/theme-light.svg",
+      "contexts": [
+        "settings-theme-toggle"
+      ],
+      "grid": "12x12@2px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    },
+    {
+      "id": "ui-theme-system",
+      "category": "ui",
+      "path": "/assets/ui/theme-system.svg",
+      "contexts": [
+        "settings-theme-toggle"
+      ],
+      "grid": "12x12@2px",
+      "palette": [
+        "#1b2238",
+        "#122038",
+        "#fff7df",
+        "#6fa8ff",
+        "#ffd56b",
+        "#6bdba3",
+        "#ff7f7f"
+      ]
+    }
+  ]
+}

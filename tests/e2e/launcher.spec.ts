@@ -12,13 +12,17 @@ test("launcher shows nine game cards and supports filters", async ({ page }) => 
   await expect(page.locator('label[for="skillFilter"]')).toContainText(/skill|habilidad/i);
   await expect(cards).toHaveCount(9);
   await expect(page.locator("[data-game-id] .card-icon-img")).toHaveCount(9);
+  const iconSources = await page.locator("[data-game-id] .card-icon-img").evaluateAll((nodes) =>
+    nodes.map((node) => (node as HTMLImageElement).getAttribute("src") ?? "")
+  );
+  expect(iconSources.every((src) => src.startsWith("/assets/"))).toBe(true);
   await expect(page.locator(".launcher-stats .stat-chip")).toHaveCount(3);
   await expect(page.locator("#createProfileBtn")).toHaveCount(0);
   await expect(page.locator("[data-game-id] .card-details .card-actions .button").first()).toBeVisible();
   await expect(page.locator(".launcher-footer")).toBeVisible();
   await expect(page.locator('.launcher-footer a[href*="github.com/matheo-lm/berries#readme"]')).toBeVisible();
   await expect(page.locator('.launcher-footer a[href="https://github.com/matheo-lm/berries"]')).toBeVisible();
-  await expect(page.locator(".launcher-footer .footer-credit .footer-heart svg")).toBeVisible();
+  await expect(page.locator(".launcher-footer .footer-credit .footer-heart .footer-heart-img")).toBeVisible();
 
   const viewportFit = await page.evaluate(() => {
     return document.documentElement.scrollHeight <= document.documentElement.clientHeight;

@@ -11,7 +11,7 @@
     "en": "mix colors and decorate playful pixel scenes.",
     "es": "mezcla colores y decora escenas divertidas de pixeles."
   },
-  "cardIcon": "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F3A8.svg",
+  "cardIcon": "/assets/game-icons/color-craft.svg",
   "ageBands": [
     "4-5",
     "6-7",

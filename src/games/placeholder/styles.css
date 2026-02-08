@@ -24,6 +24,7 @@
   background: var(--tag-bg);
   border: 2px solid var(--tag-border);
   padding: 4px;
+  image-rendering: pixelated;
 }
 
 .placeholder p {

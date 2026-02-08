@@ -13,6 +13,7 @@ if (!root) throw new Error("Missing #placeholderApp root");
 const slug = document.body.dataset.gameSlug;
 const i18n = createI18n(window.location.search);
 const game = getAllGames().find((entry) => entry.slug === slug);
+const isLocalAssetPath = (value: string | undefined): boolean => !!value && value.startsWith("/assets/");
 
 const themePreference = platformStorage.getThemePreference();
 applyTheme(themePreference);
@@ -25,13 +26,17 @@ if (!game) {
 } else {
   const ageTags = game.ageBands.map((age) => `<span class=\"tag\">${age}</span>`).join("");
   const skillTags = game.skills.map((skill) => `<span class=\"tag\">${skill}</span>`).join("");
-  const fallback = game.cardIconFallback ?? "/assets/icon.svg";
+  const iconSrc = isLocalAssetPath(game.cardIcon)
+    ? game.cardIcon
+    : isLocalAssetPath(game.cardIconFallback)
+      ? game.cardIconFallback
+      : "/assets/icon.svg";
 
   root.innerHTML = `
     <div id="placeholderHeader"></div>
     <section class="panel placeholder">
       <h1>
-        <img class="placeholder-icon" src="${game.cardIcon}" data-fallback="${fallback}" alt="" aria-hidden="true" />
+        <img class="placeholder-icon" src="${iconSrc}" data-fallback="/assets/icon.svg" alt="" aria-hidden="true" />
         <span>${game.title[i18n.locale]}</span>
       </h1>
       <p>${game.description[i18n.locale]}</p>
@@ -57,7 +62,7 @@ if (!game) {
     icon.addEventListener("error", () => {
       if (usedFallback) return;
       usedFallback = true;
-      icon.src = fallback;
+      icon.src = "/assets/icon.svg";
     });
   }
 }

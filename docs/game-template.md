@@ -41,7 +41,10 @@ Add the new page to `vite.config.ts` `build.rollupOptions.input`.
 - Preserve 44x44 touch targets and keyboard focus visibility.
 
 ## 7. Assets
-- If using external CDN assets, add local fallback files in `public/assets/`.
+- Add game icon and gameplay image assets in `public/assets/` using 8-bit pixel-art SVG style.
+- `cardIcon` in `content/games/<slug>.json` must be a local `/assets/...svg` path.
+- Do not use external image/CDN URLs.
+- Add entries for every new image to `content/assets/pixel-art.json`.
 
 ## 8. Validation
 - `npm run typecheck`

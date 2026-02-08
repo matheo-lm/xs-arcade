@@ -47,5 +47,6 @@
 - Design remains online-first; game assets still load via network when needed.
 
 ## Asset Resilience
-- External sprites may come from pinned CDN URLs.
-- Every external sprite has a local fallback file under `public/assets/`.
+- Image assets are local-only under `public/assets/`.
+- `content/assets/pixel-art.json` is the canonical repository contract for all image metadata.
+- Game manifests and game configs must reference local `/assets/...svg` paths.

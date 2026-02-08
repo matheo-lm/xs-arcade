@@ -146,6 +146,7 @@
   width: 24px;
   height: 24px;
   display: block;
+  image-rendering: pixelated;
 }
 
 .status-pill {
@@ -255,11 +256,11 @@
   background: var(--tag-bg);
 }
 
-.footer-heart svg {
+.footer-heart-img {
   width: 14px;
   height: 14px;
-  fill: var(--accent);
-  shape-rendering: crispEdges;
+  display: block;
+  image-rendering: pixelated;
 }
 
 .footer-github-link {
@@ -287,7 +288,7 @@
   width: 14px;
   height: 14px;
   display: block;
-  fill: currentcolor;
+  image-rendering: pixelated;
 }
 
 @media (max-width: 1120px) and (min-width: 900px) {

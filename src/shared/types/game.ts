@@ -23,7 +23,9 @@ export interface GameManifest {
   status: "playable" | "placeholder";
   title: Record<LocaleCode, string>;
   description: Record<LocaleCode, string>;
+  // Local pixel asset path under /assets/...svg.
   cardIcon: string;
+  // Optional local fallback under /assets/...svg.
   cardIconFallback?: string;
   ageBands: AgeBand[];
   skills: SkillTag[];

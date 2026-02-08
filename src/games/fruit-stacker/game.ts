@@ -396,7 +396,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     const ready = !!(meta.sprite && meta.sprite.complete && meta.sprite.naturalWidth > 0);
     if (ready && meta.sprite) {
       try {
-        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingEnabled = false;
         ctx.drawImage(
           meta.sprite,
           -drawRadius * spriteScale,

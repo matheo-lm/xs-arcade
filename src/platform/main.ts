@@ -78,9 +78,17 @@ const createProfile = (): void => {
   platformStorage.setActiveProfile(profile.id);
 };
 
+const isLocalAssetPath = (value: string | undefined): boolean => !!value && value.startsWith("/assets/");
+
+const resolveGameIcon = (game: GameManifest): string => {
+  if (isLocalAssetPath(game.cardIcon)) return game.cardIcon;
+  if (isLocalAssetPath(game.cardIconFallback)) return game.cardIconFallback as string;
+  return "/assets/icon.svg";
+};
+
 const iconMarkup = (game: GameManifest): string => {
-  const fallback = game.cardIconFallback ?? "/assets/icon.svg";
-  return `<img class="card-icon-img" src="${game.cardIcon}" data-fallback="${fallback}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
+  const src = resolveGameIcon(game);
+  return `<img class="card-icon-img" src="${src}" data-fallback="/assets/icon.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
 };
 
 const renderCards = (games: GameManifest[]): string =>
@@ -239,20 +247,7 @@ const render = (): void => {
       <p class="footer-credit">
         <span>${i18n.t("footerMadeWith")}</span>
         <span class="footer-heart" aria-hidden="true">
-          <svg viewBox="0 0 24 24" focusable="false">
-            <rect x="6" y="4" width="4" height="4"></rect>
-            <rect x="14" y="4" width="4" height="4"></rect>
-            <rect x="4" y="8" width="4" height="4"></rect>
-            <rect x="8" y="8" width="4" height="4"></rect>
-            <rect x="12" y="8" width="4" height="4"></rect>
-            <rect x="16" y="8" width="4" height="4"></rect>
-            <rect x="6" y="12" width="4" height="4"></rect>
-            <rect x="10" y="12" width="4" height="4"></rect>
-            <rect x="14" y="12" width="4" height="4"></rect>
-            <rect x="8" y="16" width="4" height="4"></rect>
-            <rect x="12" y="16" width="4" height="4"></rect>
-            <rect x="10" y="20" width="4" height="2"></rect>
-          </svg>
+          <img class="footer-heart-img" src="/assets/platform/footer-heart.svg" alt="" aria-hidden="true" />
         </span>
         <span>${i18n.t("footerByX")}</span>
       </p>
@@ -263,9 +258,7 @@ const render = (): void => {
         rel="noopener noreferrer"
         aria-label="${i18n.t("footerContributeAria")}"
       >
-        <svg class="footer-github-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-2c-2.8.6-3.4-1.3-3.4-1.3-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 0 1.6 1 1.6 1 .9 1.5 2.4 1 3 1 .1-.7.3-1 .6-1.3-2.2-.2-4.6-1.1-4.6-4.9 0-1.1.4-2.1 1-2.8-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.9 1a9.7 9.7 0 0 1 5.2 0c2-1.3 2.9-1 2.9-1 .6 1.4.2 2.4.1 2.7.6.7 1 1.7 1 2.8 0 3.8-2.4 4.7-4.7 4.9.4.3.7 1 .7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"></path>
-        </svg>
+        <img class="footer-github-icon" src="/assets/platform/github.svg" alt="" aria-hidden="true" />
         <span>${i18n.t("footerContribute")}</span>
       </a>
     </footer>

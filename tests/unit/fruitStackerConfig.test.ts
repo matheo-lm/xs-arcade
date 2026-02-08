@@ -21,4 +21,11 @@ describe("fruit stacker config", () => {
     expect(TERMINAL_FRUIT_ID).toBe("pumpkin");
     expect(FRUIT_TIERS[FRUIT_TIERS.length - 1].id).toBe("pumpkin");
   });
+
+  test("uses local sprite URLs only", () => {
+    for (const tier of FRUIT_TIERS) {
+      expect(tier.spriteUrl.startsWith("/assets/fruits/")).toBe(true);
+      expect(tier.fallbackSpriteUrl.startsWith("/assets/fruits/")).toBe(true);
+    }
+  });
 });

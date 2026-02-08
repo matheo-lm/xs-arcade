@@ -49,9 +49,20 @@ Rules:
 - Game over triggers only after sustained top-line overflow.
 
 ## Asset Policy
-- CDN assets are allowed when lightweight and version-pinned.
-- Every external asset must include a local fallback in `/Users/m/Desktop/berries/public/assets/`.
+- Image assets must use 8-bit pixel-art style.
+- Image sources must be local-only under `/Users/m/Desktop/berries/public/assets/` (no CDN or remote image URLs).
+- Every image used by platform or games must have a catalog record in `/Users/m/Desktop/berries/content/assets/pixel-art.json`.
+- Use SVG assets only for the pixel imaging system.
 - Do not add heavyweight asset pipelines unless requested.
+
+## 8-Bit Pixel Imaging Policy (Required)
+- This policy applies to launcher UI, shared UI, game cards, placeholder pages, and all game sprites.
+- No visual icon/image exceptions: footer, settings, and gameplay imagery must all follow the same pixel-art system.
+- `content/games/*.json` `cardIcon` values must be local `/assets/...svg` paths.
+- Fruit Stacker sprite URLs must be local `/assets/fruits/*.svg` paths.
+- New image files require:
+  - placement in `/Users/m/Desktop/berries/public/assets/` (appropriate subfolder)
+  - matching entry in `/Users/m/Desktop/berries/content/assets/pixel-art.json`
 
 ## Localization Policy
 - All user-facing shared UI copy must be present in both `en` and `es`.
@@ -72,6 +83,7 @@ Rules:
    - `npm run typecheck`
 2. Unit tests:
    - `npm run test`
+   - includes pixel asset policy checks (`tests/unit/pixelAssetCatalog.test.ts`)
 3. Entry wiring:
    - verify routes/scripts in:
      - `/Users/m/Desktop/berries/index.html`
