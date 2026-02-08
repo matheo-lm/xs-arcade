@@ -1,9 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="lemon">
   <rect width="64" height="64" fill="transparent"/>
-  <path d="M9 33c0-10 10-18 23-18s23 8 23 18-10 18-23 18S9 43 9 33Z" fill="#c79a2f"/>
-  <path d="M12 33c0-8 9-14 20-14s20 6 20 14-9 14-20 14-20-6-20-14Z" fill="#f5c847"/>
-  <path d="M8 33l4-3v6Z" fill="#c79a2f"/>
-  <path d="M56 33l-4-3v6Z" fill="#c79a2f"/>
-  <ellipse cx="25" cy="28" rx="5" ry="3.4" fill="#fff0b7" opacity="0.74"/>
-  <path d="M20 34c5-2 12-2 17 0" fill="none" stroke="#e5b83c" stroke-width="2" stroke-linecap="square"/>
+  <path d="M8 33c0-10 11-18 24-18s24 8 24 18-11 18-24 18S8 43 8 33Z" fill="#b78a29" stroke="#1f2a44" stroke-width="2"/>
+  <path d="M12 33c0-8 9-14 20-14s20 6 20 14-9 14-20 14-20-6-20-14Z" fill="#f6cd4f"/>
+  <path d="M8 33l4-3v6ZM56 33l-4-3v6Z" fill="#b78a29"/>
+  <ellipse cx="24" cy="28" rx="5" ry="3" fill="#fff1bf"/>
+  <path d="M20 34c4-2 11-2 16 0" fill="none" stroke="#e6b845" stroke-width="2" stroke-linecap="square"/>
 </svg>

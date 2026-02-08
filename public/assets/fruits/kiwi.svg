@@ -1,19 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="kiwi">
   <rect width="64" height="64" fill="transparent"/>
-  <ellipse cx="32" cy="34" rx="22" ry="16" fill="#6f8c53"/>
-  <ellipse cx="32" cy="34" rx="19" ry="13" fill="#9ab76d"/>
-  <ellipse cx="32" cy="34" rx="13" ry="9" fill="#b9d98a"/>
-  <ellipse cx="32" cy="34" rx="5" ry="3.5" fill="#efe8cf"/>
-  <ellipse cx="32" cy="34" rx="2" ry="1.4" fill="#6c6a6b"/>
-  <circle cx="22" cy="31" r="1" fill="#2f3337"/>
-  <circle cx="26" cy="28" r="1" fill="#2f3337"/>
-  <circle cx="32" cy="27" r="1" fill="#2f3337"/>
-  <circle cx="38" cy="28" r="1" fill="#2f3337"/>
-  <circle cx="42" cy="31" r="1" fill="#2f3337"/>
-  <circle cx="22" cy="37" r="1" fill="#2f3337"/>
-  <circle cx="26" cy="40" r="1" fill="#2f3337"/>
-  <circle cx="32" cy="41" r="1" fill="#2f3337"/>
-  <circle cx="38" cy="40" r="1" fill="#2f3337"/>
-  <circle cx="42" cy="37" r="1" fill="#2f3337"/>
-  <ellipse cx="25" cy="29" rx="4" ry="2.6" fill="#dcecb7" opacity="0.68"/>
+  <ellipse cx="32" cy="34" rx="22" ry="16" fill="#6c5a3d" stroke="#1f2a44" stroke-width="2"/>
+  <ellipse cx="32" cy="34" rx="18" ry="13" fill="#95be69"/>
+  <ellipse cx="32" cy="34" rx="12" ry="9" fill="#b8de83"/>
+  <ellipse cx="32" cy="34" rx="5" ry="4" fill="#efe8d3"/>
+  <circle cx="24" cy="28" r="1" fill="#2c2f36"/>
+  <circle cx="30" cy="26" r="1" fill="#2c2f36"/>
+  <circle cx="36" cy="26" r="1" fill="#2c2f36"/>
+  <circle cx="40" cy="30" r="1" fill="#2c2f36"/>
+  <circle cx="24" cy="39" r="1" fill="#2c2f36"/>
+  <circle cx="30" cy="42" r="1" fill="#2c2f36"/>
+  <circle cx="36" cy="42" r="1" fill="#2c2f36"/>
+  <circle cx="40" cy="38" r="1" fill="#2c2f36"/>
+  <ellipse cx="25" cy="29" rx="4" ry="2" fill="#e6f2cb"/>
 </svg>

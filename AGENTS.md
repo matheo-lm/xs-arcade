@@ -49,20 +49,24 @@ Rules:
 - Game over triggers only after sustained top-line overflow.
 
 ## Asset Policy
-- Image assets must use retro pixel (16-bit clean) style.
-- Image sources must be local-only under `/Users/m/Desktop/berries/public/assets/` (no CDN or remote image URLs).
+- Runtime image assets must be local-only under `/Users/m/Desktop/berries/public/assets/` (no CDN or remote runtime image URLs).
 - Every image used by platform or games must have a catalog record in `/Users/m/Desktop/berries/content/assets/pixel-art.json`.
-- Use SVG assets only for the pixel imaging system.
+- Use SVG assets for launcher/game image delivery.
+- Consistency is enforced per asset family, not globally across every image.
+- Families may use different visual systems, but each family must remain internally consistent.
 - Do not add heavyweight asset pipelines unless requested.
 
-## Retro Pixel Imaging Policy (Required)
-- This policy applies to launcher UI, shared UI, game cards, placeholder pages, and all game sprites.
-- No visual icon/image exceptions: footer, settings, and gameplay imagery must all follow the same retro pixel system.
+## Image Family Policy (Required)
 - `content/games/*.json` `cardIcon` values must be local `/assets/...svg` paths.
 - Fruit Stacker sprite URLs must be local `/assets/fruits/*.svg` paths.
+- Family-level consistency contracts:
+  - `fruit-stacker-fruits-v1`: all 10 fruit tiers share the same normalized style profile.
+  - `launcher-card-icons-v1`: all launcher game card icons share one library-derived style profile.
 - New image files require:
   - placement in `/Users/m/Desktop/berries/public/assets/` (appropriate subfolder)
   - matching entry in `/Users/m/Desktop/berries/content/assets/pixel-art.json`
+  - required catalog metadata: `familyId`, `styleProfile`, `sourceLibrary`, `sourceAssetId`, `sourceLicense`, `sourceUrl`, `normalized`
+- Third-party sourced images must be listed in `/Users/m/Desktop/berries/content/assets/THIRD_PARTY_ASSETS.md`.
 
 ## Localization Policy
 - All user-facing shared UI copy must be present in both `en` and `es`.
@@ -83,7 +87,7 @@ Rules:
    - `npm run typecheck`
 2. Unit tests:
    - `npm run test`
-   - includes pixel asset policy checks (`tests/unit/pixelAssetCatalog.test.ts`)
+   - includes image catalog + family consistency checks (`tests/unit/pixelAssetCatalog.test.ts`, `tests/unit/assetFamilyConsistency.test.ts`)
 3. Entry wiring:
    - verify routes/scripts in:
      - `/Users/m/Desktop/berries/index.html`

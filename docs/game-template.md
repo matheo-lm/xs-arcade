@@ -35,16 +35,19 @@ Add the new page to `vite.config.ts` `build.rollupOptions.input`.
 - Respect persisted theme preference.
 - Use i18n strings for shared UI text.
 
-## 6. Pixel Style Rules
+## 6. Visual Style Rules
 - Use shared tokens from `src/shared/ui/base.css`.
-- Keep pixel-arcade framing and typography split (pixel headings/controls, readable body text).
 - Preserve 44x44 touch targets and keyboard focus visibility.
+- Choose an image family and keep family assets visually consistent.
 
 ## 7. Assets
-- Add game icon and gameplay image assets in `public/assets/` using retro pixel (16-bit clean) SVG style.
+- Add game icon and gameplay image assets in `public/assets/` as local SVG files.
 - `cardIcon` in `content/games/<slug>.json` must be a local `/assets/...svg` path.
-- Do not use external image/CDN URLs.
+- Do not use external image/CDN URLs for runtime image fields.
 - Add entries for every new image to `content/assets/pixel-art.json`.
+- Include family metadata fields:
+  - `familyId`, `styleProfile`, `sourceLibrary`, `sourceAssetId`, `sourceLicense`, `sourceUrl`, `normalized`
+- If any image comes from third-party sources, append the entry to `content/assets/THIRD_PARTY_ASSETS.md`.
 
 ## 8. Validation
 - `npm run typecheck`

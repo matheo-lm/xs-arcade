@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="peach">
   <rect width="64" height="64" fill="transparent"/>
-  <path d="M32 15c-9 0-17 6-19 15-2 10 3 21 19 21s21-11 19-21c-2-9-10-15-19-15Z" fill="#b96a42"/>
-  <path d="M32 18c-7 0-13 5-15 12-2 8 3 17 15 17s17-9 15-17c-2-7-8-12-15-12Z" fill="#f1aa72"/>
-  <path d="M32 20c-2 4-2 8-2 13 0 4 0 8 2 12" fill="none" stroke="#d48658" stroke-width="2" stroke-linecap="square"/>
-  <ellipse cx="26" cy="29" rx="5" ry="3.5" fill="#ffd9b6" opacity="0.72"/>
-  <rect x="31" y="10" width="3" height="7" fill="#6d4a33"/>
-  <path d="M33 12c4-3 8-3 10 0-3 0-6 2-8 4Z" fill="#5f924a"/>
+  <path d="M32 15c-9 0-17 6-19 15-2 10 3 21 19 21s21-11 19-21c-2-9-10-15-19-15Z" fill="#b56945" stroke="#1f2a44" stroke-width="2"/>
+  <path d="M32 18c-7 0-13 5-15 12-2 8 3 17 15 17s17-9 15-17c-2-7-8-12-15-12Z" fill="#f3b27a"/>
+  <path d="M32 20c-2 4-2 8-2 13 0 4 0 8 2 12" fill="none" stroke="#d6865c" stroke-width="2" stroke-linecap="square"/>
+  <ellipse cx="26" cy="29" rx="5" ry="3" fill="#ffdcbc"/>
+  <rect x="31" y="10" width="3" height="7" fill="#6b4a32"/>
+  <path d="M33 12c4-3 8-3 10 0-3 0-6 2-8 4Z" fill="#5f9350"/>
 </svg>

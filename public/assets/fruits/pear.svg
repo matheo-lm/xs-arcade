@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="pear">
   <rect width="64" height="64" fill="transparent"/>
-  <path d="M32 12c-4 0-7 3-7 7 0 4-2 6-5 9-5 4-7 10-6 16 2 8 9 13 18 13s16-5 18-13c1-6-1-12-6-16-3-3-5-5-5-9 0-4-3-7-7-7Z" fill="#85b24f"/>
-  <path d="M32 16c-3 0-5 2-5 5 0 4-2 7-5 9-4 3-5 8-4 13 2 6 7 10 14 10s12-4 14-10c1-5 0-10-4-13-3-2-5-5-5-9 0-3-2-5-5-5Z" fill="#a6d166"/>
-  <ellipse cx="27" cy="30" rx="4" ry="3" fill="#d6edaa" opacity="0.72"/>
-  <rect x="31" y="6" width="3" height="8" fill="#6d4a33"/>
-  <path d="M33 9c4-3 8-3 10 0-3 0-6 2-8 5Z" fill="#5f924a"/>
+  <path d="M32 12c-4 0-7 3-7 7 0 4-2 6-5 9-5 4-7 10-6 16 2 8 9 13 18 13s16-5 18-13c1-6-1-12-6-16-3-3-5-5-5-9 0-4-3-7-7-7Z" fill="#7ea84d" stroke="#1f2a44" stroke-width="2"/>
+  <path d="M32 16c-3 0-5 2-5 5 0 4-2 7-5 9-4 3-5 8-4 13 2 6 7 10 14 10s12-4 14-10c1-5 0-10-4-13-3-2-5-5-5-9 0-3-2-5-5-5Z" fill="#a8d56e"/>
+  <ellipse cx="27" cy="30" rx="4" ry="3" fill="#def0b5"/>
+  <rect x="31" y="6" width="3" height="8" fill="#6b4a32"/>
+  <path d="M33 9c4-3 8-3 10 0-3 0-6 2-8 5Z" fill="#5f9350"/>
 </svg>

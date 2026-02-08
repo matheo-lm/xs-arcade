@@ -4,19 +4,26 @@ import { join } from "node:path";
 import { getAllGames } from "@platform/gameRegistry";
 import { FRUIT_TIERS } from "@games/fruit-stacker/config";
 
-interface PixelAssetEntry {
+interface AssetEntry {
   id: string;
   category: "game-icons" | "fruits" | "ui" | "platform";
   path: string;
   contexts: string[];
-  grid: string;
-  palette: string[];
+  familyId: string;
+  styleProfile: string;
+  sourceLibrary: string;
+  sourceAssetId: string;
+  sourceLicense: string;
+  sourceUrl: string;
+  normalized: boolean;
+  grid?: string;
+  palette?: string[];
 }
 
-interface PixelAssetCatalog {
+interface AssetCatalog {
   styleVersion: string;
-  pixelEra: string;
-  assets: PixelAssetEntry[];
+  familyPolicyVersion: string;
+  assets: AssetEntry[];
 }
 
 const ROOT = process.cwd();
@@ -37,40 +44,64 @@ const listAssetPaths = (dir: string): string[] => {
     }
 
     if (!entry.endsWith(".svg")) continue;
-    const runtimePath = fullPath
-      .replace(`${ROOT}/public`, "")
-      .replace(/\\/g, "/");
+    const runtimePath = fullPath.replace(`${ROOT}/public`, "").replace(/\\/g, "/");
     output.push(runtimePath);
   }
 
   return output.sort();
 };
 
-describe("pixel asset catalog", () => {
+describe("asset catalog", () => {
   test("catalog entries are complete and local", () => {
-    const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8")) as PixelAssetCatalog;
+    const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8")) as AssetCatalog;
 
-    expect(catalog.styleVersion).toBe("retro-clean-v2");
-    expect(catalog.pixelEra).toBe("16-bit-inspired");
+    expect(catalog.styleVersion).toBe("family-consistency-v1");
+    expect(catalog.familyPolicyVersion).toBe("family-level-consistency-v1");
     expect(Array.isArray(catalog.assets)).toBe(true);
     expect(catalog.assets.length).toBeGreaterThan(0);
 
+    const ids = new Set<string>();
+    const paths = new Set<string>();
+
     for (const asset of catalog.assets) {
       expect(asset.id).toBeTruthy();
+      expect(ids.has(asset.id)).toBe(false);
+      ids.add(asset.id);
+
       expect(["game-icons", "fruits", "ui", "platform"]).toContain(asset.category);
       expect(asset.path.startsWith("/assets/")).toBe(true);
       expect(asset.path.endsWith(".svg")).toBe(true);
+      expect(paths.has(asset.path)).toBe(false);
+      paths.add(asset.path);
+
       expect(Array.isArray(asset.contexts)).toBe(true);
       expect(asset.contexts.length).toBeGreaterThan(0);
-      expect(asset.grid).toBeTruthy();
-      expect(/^\d+x\d+@\d+px$/.test(asset.grid)).toBe(true);
-      expect(Array.isArray(asset.palette)).toBe(true);
-      expect(asset.palette.length).toBeGreaterThan(0);
+      expect(asset.familyId).toBeTruthy();
+      expect(asset.styleProfile).toBeTruthy();
+
+      expect(asset.sourceLibrary).toBeTruthy();
+      expect(asset.sourceAssetId).toBeTruthy();
+      expect(asset.sourceLicense).toBeTruthy();
+      expect(asset.sourceUrl).toBeTruthy();
+      expect(typeof asset.normalized).toBe("boolean");
+
+      if (asset.sourceLibrary === "berries-internal") {
+        expect(asset.sourceUrl.startsWith("local://")).toBe(true);
+      } else {
+        expect(asset.sourceUrl.startsWith("https://")).toBe(true);
+      }
+
+      if (asset.styleProfile.includes("pixel")) {
+        expect(asset.grid).toBeTruthy();
+        expect(/^\d+x\d+@\d+px$/.test(asset.grid as string)).toBe(true);
+        expect(Array.isArray(asset.palette)).toBe(true);
+        expect((asset.palette ?? []).length).toBeGreaterThan(0);
+      }
     }
   });
 
   test("every runtime svg asset is cataloged", () => {
-    const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8")) as PixelAssetCatalog;
+    const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8")) as AssetCatalog;
     const catalogPaths = new Set(catalog.assets.map((asset) => asset.path));
     const runtimePaths = listAssetPaths(PUBLIC_ASSETS_DIR);
 
@@ -84,7 +115,7 @@ describe("pixel asset catalog", () => {
   });
 
   test("manifests and fruit config use local cataloged assets only", () => {
-    const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8")) as PixelAssetCatalog;
+    const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8")) as AssetCatalog;
     const catalogPaths = new Set(catalog.assets.map((asset) => asset.path));
 
     for (const game of getAllGames()) {

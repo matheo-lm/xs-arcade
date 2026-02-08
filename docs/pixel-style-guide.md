@@ -3,13 +3,19 @@
 Use this checklist for UI work.
 
 ## Required
-- Keep a retro pixel direction with 16-bit clean readability.
+- Keep clear readability and contrast for ages 4-8.
 - Use shared tokens from `src/shared/ui/base.css`.
 - Use shared game header from `src/shared/ui/gameHeader.ts` + `src/shared/ui/gameHeader.css` for all game pages.
 - Keep controls >= 44x44.
-- Keep both dark/light themes pixel consistent.
-- Use local-only SVG image assets from `public/assets/` (no remote URLs).
+- Use local-only SVG image assets from `public/assets/` (no remote runtime URLs).
 - Register every image in `content/assets/pixel-art.json`.
+- Enforce consistency by family:
+  - all assets in a family use one visual profile
+  - different families can use different profiles
+
+## Family Examples
+- `fruit-stacker-fruits-v1`: normalized pixel fruit sprite set.
+- `launcher-card-icons-v1`: Phosphor-derived launcher card icon set.
 
 ## Typography
 - Pixel font: headings, controls, labels, pills, tags.
@@ -17,8 +23,8 @@ Use this checklist for UI work.
 
 ## Surfaces
 - Panels: framed, beveled, high-contrast edges.
-- Buttons: pixel gradient, clear pressed/disabled states.
-- Avoid modern rounded/glass styles.
+- Buttons: clear pressed/disabled states.
+- Avoid noisy effects that reduce legibility.
 
 ## Effects
 - Allowed: subtle glow, scanlines, pixel-grid texture.
@@ -31,8 +37,8 @@ Use this checklist for UI work.
 - Close on outside click and Escape.
 
 ## QA Quick Check
-- Launcher and game pages look like one visual system.
+- Launcher and game pages look like one product.
 - Shared header appears and aligns consistently.
-- Theme switch keeps style identity in both modes.
-- Game cards, UI stats/icons, settings icons, footer icons, and game sprites all use the same pixel language.
+- Theme switch keeps readable identity in both modes.
+- Fruit sprites are visually consistent across all tiers.
 - Game cards are visually recognizable by scene/object, not by initials alone.

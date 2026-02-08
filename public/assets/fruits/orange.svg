@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="orange">
   <rect width="64" height="64" fill="transparent"/>
-  <circle cx="32" cy="35" r="20" fill="#b9602a"/>
-  <circle cx="32" cy="35" r="16" fill="#e18a46"/>
-  <path d="M24 46c2 1 5 2 8 2s6-1 8-2" fill="none" stroke="#d67f3b" stroke-width="2" stroke-linecap="square"/>
-  <ellipse cx="26" cy="29" rx="4.8" ry="3.5" fill="#ffd5aa" opacity="0.74"/>
-  <rect x="31" y="11" width="3" height="7" fill="#6c4a33"/>
-  <path d="M33 13c4-3 8-3 10 0-3 0-6 2-8 4Z" fill="#5f924a"/>
+  <circle cx="32" cy="35" r="21" fill="#b7602a" stroke="#1f2a44" stroke-width="2"/>
+  <circle cx="32" cy="35" r="16" fill="#e7924e"/>
+  <path d="M24 46c2 1 5 2 8 2s6-1 8-2" fill="none" stroke="#d77f3f" stroke-width="2" stroke-linecap="square"/>
+  <ellipse cx="26" cy="28" rx="5" ry="3" fill="#ffdcb8"/>
+  <rect x="31" y="10" width="3" height="7" fill="#6a4a32"/>
+  <path d="M33 12c4-3 7-3 10 0-3 0-6 2-8 4Z" fill="#5f9350"/>
 </svg>

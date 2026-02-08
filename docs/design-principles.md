@@ -1,26 +1,23 @@
 # Design Principles
 
 ## Visual Direction
-- Retro pixel (16-bit clean) look is the default brand style.
-- Keep strong contrast with readable body text.
-- Blend old-school arcade cues with modern, clean composition for current screens.
-- Use pixel frames, beveled panels, and restrained glow/scanline accents.
+- Family-level consistency is required.
+- Brand direction favors playful arcade visuals with strong readability.
+- Pixel style is valid and encouraged for game-style families, but not mandatory for every family.
 
-## Pixel Arcade System
-- Typography split:
-  - `--font-pixel` for headings, controls, labels, pills, and tags.
-  - `--font-body` for descriptions and longer copy.
-- Shapes and borders:
-  - Prefer 3px framed panels and 2px framed controls.
-  - Prefer small-radius corners (`3px` to `4px`) over rounded modern cards.
-- Effects:
-  - Allowed: restrained glow, scanlines, pixel-grid textures.
-  - Avoid heavy blur, glassmorphism, or flat minimal cards.
+## Family Consistency System
+- Define a `familyId` and `styleProfile` for every image asset.
+- Keep each family visually consistent.
+- Allow different families to use different visual systems when intentional.
+
+## Typography and Layout
+- `--font-pixel` for headings, controls, labels, pills, and tags.
+- `--font-body` for descriptions and longer copy.
+- Prefer framed panels and compact, touch-friendly controls.
 
 ## Theme Rules
 - Support both `data-theme="light"` and `data-theme="dark"`.
-- Keep both themes pixel-styled, not modernized variants.
-- Preserve readable contrast in both modes.
+- Maintain readable contrast in both modes.
 
 ## Interaction Rules
 - Mobile-first touch interactions.
@@ -37,11 +34,6 @@
   - localized game title
   - meta pill row (score/status as needed)
   - right action row (sound/restart/etc. as needed)
-
-## Typography and Copy
-- Short labels suitable for early readers.
-- Visual cues (icons, pills, tags) used before long text.
-- Layout supports longer Spanish strings without clipping.
 
 ## Accessibility Baseline
 - Semantic labels for controls.
