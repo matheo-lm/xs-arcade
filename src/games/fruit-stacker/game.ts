@@ -1,7 +1,7 @@
 import { FRUIT_TIERS, TERMINAL_FRUIT_ID, type FruitTier } from "@games/fruit-stacker/config";
 
 type FruitMeta = FruitTier & {
-  sprite?: HTMLImageElement | null;
+  sprite?: HTMLImageElement;
 };
 
 interface FruitState {
@@ -11,11 +11,12 @@ interface FruitState {
   y: number;
   vx: number;
   vy: number;
+  airDrift: number;
+  ageFrames: number;
   merged: boolean;
-  bornAtMs: number;
 }
 
-interface EffectState {
+interface FloatingText {
   x: number;
   y: number;
   text: string;
@@ -56,102 +57,136 @@ export interface FruitStackerApi {
   reset(): void;
 }
 
-const TOP_LINE = 96;
+const FIXED_FPS = 60;
+const FIXED_DT_MS = 1000 / FIXED_FPS;
+const TOP_LINE_Y = 98;
+const PLAYFIELD_PADDING = 3;
+const POINTER_KEY_STEP = 26;
+const GRAVITY = 0.21;
+const VELOCITY_DAMPING = 0.996;
+const AIR_DRIFT_DECAY = 0.995;
+const WALL_BOUNCE = 0.22;
+const FLOOR_BOUNCE = 0.18;
+const COLLISION_PASSES = 3;
+const REST_THRESHOLD = 0.045;
+const OVERFLOW_FRAME_LIMIT = 54;
+const OVERFLOW_SETTLE_FRAMES = 40;
+const SPAWN_POOL_SIZE = 3;
 
 const FRUITS: FruitMeta[] = FRUIT_TIERS.map((tier) => ({ ...tier }));
-
-const GRAVITY = 0.23;
-const AIR = 0.996;
-const BOUNCE = 0.16;
-const REST_SPEED = 0.06;
-const OVERFLOW_LIMIT = 42;
-const KEY_STEP = 26;
-const WALL_MARGIN = 3;
-const TERMINAL_TYPE_INDEX = (() => {
-  const index = FRUITS.findIndex((fruit) => fruit.id === TERMINAL_FRUIT_ID);
-  return index === -1 ? FRUITS.length - 1 : index;
-})();
+const TERMINAL_TYPE_INDEX = Math.max(
+  0,
+  FRUITS.findIndex((fruit) => fruit.id === TERMINAL_FRUIT_ID)
+);
 
 export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi => {
   const ctx = options.canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas 2D context is unavailable");
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
 
   options.gameOverTitleEl.textContent = options.strings.gameOverTitle;
   options.playAgainBtn.textContent = options.strings.gamePlayAgain;
   options.restartBtn.textContent = options.strings.gameRestart;
 
-  const W = options.canvas.width;
-  const H = options.canvas.height;
+  const boardWidth = options.canvas.width;
+  const boardHeight = options.canvas.height;
 
   let fruits: FruitState[] = [];
-  let effects: EffectState[] = [];
+  let effects: FloatingText[] = [];
   let score = 0;
-  let spawnX = W / 2;
+  let spawnX = boardWidth / 2;
   let nextType = 0;
-  let lastDropTime = 0;
-  let gameOver = false;
   let overflowFrames = 0;
-  let sfxMuted = options.initialMuted;
+  let simulationMs = 0;
+  let lastDropMs = -999_999;
+  let gameOver = false;
+  let rafHandle = 0;
+  let lastRafMs = 0;
+  let accumulatorMs = 0;
+  let externalStepperActive = false;
+  let idSequence = 0;
+  let muted = options.initialMuted;
+
   let audioCtx: AudioContext | null = null;
   let masterGain: GainNode | null = null;
-  let lastMergeSfxTime = 0;
 
   const loadSprite = (url: string, fallbackUrl: string): HTMLImageElement => {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
+    const sprite = new Image();
     let fallbackAttempted = false;
 
-    img.onerror = () => {
+    sprite.onerror = () => {
       if (fallbackAttempted) return;
       fallbackAttempted = true;
-      img.removeAttribute("crossorigin");
-      img.src = fallbackUrl;
+      sprite.src = fallbackUrl;
     };
 
-    img.src = url;
-    return img;
+    sprite.src = url;
+    return sprite;
   };
 
   for (const fruit of FRUITS) {
     fruit.sprite = loadSprite(fruit.spriteUrl, fruit.fallbackSpriteUrl);
   }
 
+  const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
+
+  const randomSpawnType = (): number => Math.floor(Math.random() * Math.min(SPAWN_POOL_SIZE, FRUITS.length));
+
+  const getSpawnRadius = (): number => FRUITS[nextType].r + PLAYFIELD_PADDING + 6;
+
+  const setSpawnX = (rawX: number): void => {
+    const radius = getSpawnRadius();
+    spawnX = clamp(rawX, radius, boardWidth - radius);
+  };
+
+  const updateScoreUi = (): void => {
+    options.scoreEl.textContent = `${options.strings.scorePrefix}: ${score}`;
+  };
+
+  const updateSoundToggleUi = (): void => {
+    options.soundToggleBtn.textContent = muted ? options.strings.gameSoundOff : options.strings.gameSoundOn;
+    options.soundToggleBtn.setAttribute("aria-pressed", muted ? "true" : "false");
+  };
+
+  const WebKitWindow = window as typeof window & { webkitAudioContext?: typeof AudioContext };
+
   const ensureAudioContext = (): AudioContext | null => {
     if (audioCtx) return audioCtx;
-    const AudioCtx = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    const AudioCtx = window.AudioContext ?? WebKitWindow.webkitAudioContext;
     if (!AudioCtx) return null;
 
     audioCtx = new AudioCtx();
     masterGain = audioCtx.createGain();
-    masterGain.gain.value = 0.2;
+    masterGain.gain.value = 0.18;
     masterGain.connect(audioCtx.destination);
     return audioCtx;
   };
 
   const unlockAudio = (): void => {
     const ac = ensureAudioContext();
-    if (!ac || sfxMuted || ac.state !== "suspended") return;
-    ac.resume().catch(() => undefined);
+    if (!ac || ac.state !== "suspended") return;
+    void ac.resume();
   };
 
-  const playArcadeTone = ({
-    type = "square",
-    freq = 280,
+  const playTone = ({
+    frequency,
     slideTo = null,
-    duration = 0.1,
-    volume = 0.06,
+    duration = 0.09,
+    type = "square",
+    volume = 0.045,
     when = 0
   }: {
-    type?: OscillatorType;
-    freq?: number;
+    frequency: number;
     slideTo?: number | null;
     duration?: number;
+    type?: OscillatorType;
     volume?: number;
     when?: number;
-  } = {}): void => {
-    if (sfxMuted) return;
+  }): void => {
+    if (muted) return;
     const ac = ensureAudioContext();
-    if (!ac || !masterGain || ac.state !== "running") return;
+    if (!ac || ac.state !== "running" || !masterGain) return;
 
     const start = ac.currentTime + when;
     const end = start + duration;
@@ -159,7 +194,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     const gain = ac.createGain();
 
     osc.type = type;
-    osc.frequency.setValueAtTime(freq, start);
+    osc.frequency.setValueAtTime(frequency, start);
     if (slideTo !== null) {
       osc.frequency.exponentialRampToValueAtTime(Math.max(30, slideTo), end);
     }
@@ -171,96 +206,126 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     osc.connect(gain);
     gain.connect(masterGain);
     osc.start(start);
-    osc.stop(end + 0.01);
+    osc.stop(end + 0.02);
   };
 
   const playUiSfx = (): void => {
-    playArcadeTone({ type: "square", freq: 360, slideTo: 300, duration: 0.06, volume: 0.04 });
+    playTone({ frequency: 360, slideTo: 300, duration: 0.06, volume: 0.038 });
   };
 
   const playDropSfx = (type: number): void => {
-    const base = 220 + type * 18;
-    playArcadeTone({ type: "triangle", freq: base, slideTo: base - 45, duration: 0.07, volume: 0.038 });
+    const base = 210 + type * 22;
+    playTone({ frequency: base, slideTo: base - 42, type: "triangle", duration: 0.08, volume: 0.038 });
   };
 
   const playMergeSfx = (type: number): void => {
-    const now = performance.now();
-    if (now - lastMergeSfxTime < 85) return;
-    lastMergeSfxTime = now;
-    const base = 300 + Math.min(type, 7) * 22;
-    playArcadeTone({ type: "square", freq: base, slideTo: base * 1.06, duration: 0.06, volume: 0.045 });
-    playArcadeTone({ type: "square", freq: base * 1.22, duration: 0.06, volume: 0.038, when: 0.055 });
+    const base = 300 + Math.min(7, type) * 20;
+    playTone({ frequency: base, slideTo: base * 1.05, duration: 0.06, volume: 0.042 });
+    playTone({ frequency: base * 1.24, duration: 0.06, volume: 0.035, when: 0.05 });
   };
 
   const playGameOverSfx = (): void => {
-    playArcadeTone({ type: "sawtooth", freq: 310, slideTo: 250, duration: 0.13, volume: 0.042, when: 0 });
-    playArcadeTone({ type: "sawtooth", freq: 250, slideTo: 205, duration: 0.13, volume: 0.04, when: 0.12 });
-    playArcadeTone({ type: "triangle", freq: 210, slideTo: 160, duration: 0.19, volume: 0.04, when: 0.24 });
+    playTone({ frequency: 310, slideTo: 250, type: "sawtooth", duration: 0.12, volume: 0.04 });
+    playTone({ frequency: 240, slideTo: 190, type: "sawtooth", duration: 0.14, volume: 0.038, when: 0.12 });
+    playTone({ frequency: 180, slideTo: 140, type: "triangle", duration: 0.2, volume: 0.04, when: 0.26 });
   };
 
-  const updateSoundToggleUi = (): void => {
-    options.soundToggleBtn.textContent = sfxMuted ? options.strings.gameSoundOff : options.strings.gameSoundOn;
-    options.soundToggleBtn.setAttribute("aria-pressed", sfxMuted ? "true" : "false");
-  };
-
-  const setSoundMuted = (nextMuted: boolean): void => {
-    sfxMuted = !!nextMuted;
-    options.onMutedChange(sfxMuted);
+  const setMuted = (next: boolean): void => {
+    muted = !!next;
+    options.onMutedChange(muted);
     updateSoundToggleUi();
   };
 
-  const randType = (): number => Math.floor(Math.random() * 3);
-
-  const updateScore = (): void => {
-    options.scoreEl.textContent = `${options.strings.scorePrefix}: ${score}`;
-  };
+  const createFruit = (type: number, x: number, y: number, vx = 0, vy = 0): FruitState => ({
+    id: `fruit-${idSequence++}`,
+    type,
+    x,
+    y,
+    vx,
+    vy,
+    airDrift: (Math.random() - 0.5) * 0.012,
+    ageFrames: 0,
+    merged: false
+  });
 
   const resetGame = (): void => {
     fruits = [];
     effects = [];
     score = 0;
-    spawnX = W / 2;
-    nextType = randType();
-    lastDropTime = 0;
-    gameOver = false;
+    spawnX = boardWidth / 2;
+    nextType = randomSpawnType();
     overflowFrames = 0;
+    simulationMs = 0;
+    lastDropMs = -999_999;
+    gameOver = false;
+    accumulatorMs = 0;
     options.gameOverEl.classList.remove("show");
-    updateScore();
+    updateScoreUi();
+    draw();
   };
 
-  const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
+  const addEffect = (x: number, y: number, text: string): void => {
+    effects.push({ x, y, text, life: 1 });
+  };
 
-  const dropFruit = (): void => {
-    if (gameOver) return;
-    const now = performance.now();
-    if (now - lastDropTime < options.dropCooldownMs) return;
-
-    unlockAudio();
-    lastDropTime = now;
+  const dropFruit = (): boolean => {
+    if (gameOver) return false;
+    if (simulationMs - lastDropMs < options.dropCooldownMs) return false;
 
     const type = nextType;
-    const meta = FRUITS[type];
+    const radius = FRUITS[type].r;
+    const x = clamp(spawnX, radius + PLAYFIELD_PADDING + 3, boardWidth - radius - PLAYFIELD_PADDING - 3);
+    const y = TOP_LINE_Y - radius - 7;
 
-    fruits.push({
-      id: Math.random().toString(36).slice(2),
-      type,
-      x: clamp(spawnX, meta.r + WALL_MARGIN + 3, W - meta.r - WALL_MARGIN - 3),
-      y: meta.r + 8,
-      vx: (Math.random() - 0.5) * 0.2,
-      vy: 0,
-      merged: false,
-      bornAtMs: now
-    });
-
-    nextType = randType();
+    fruits.push(createFruit(type, x, y, (Math.random() - 0.5) * 0.2, 0));
+    nextType = randomSpawnType();
+    lastDropMs = simulationMs;
     playDropSfx(type);
+    return true;
   };
 
-  const circleCollide = (a: FruitState, b: FruitState): boolean => {
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-    const radius = FRUITS[a.type].r + FRUITS[b.type].r;
-    return dx * dx + dy * dy <= radius * radius;
+  const resolveWorldBounds = (fruit: FruitState): void => {
+    const radius = FRUITS[fruit.type].r;
+    const left = radius + PLAYFIELD_PADDING;
+    const right = boardWidth - radius - PLAYFIELD_PADDING;
+    const floor = boardHeight - radius - PLAYFIELD_PADDING;
+
+    if (fruit.x < left) {
+      fruit.x = left;
+      fruit.vx *= -WALL_BOUNCE;
+    } else if (fruit.x > right) {
+      fruit.x = right;
+      fruit.vx *= -WALL_BOUNCE;
+    }
+
+    if (fruit.y > floor) {
+      fruit.y = floor;
+      fruit.vy *= -FLOOR_BOUNCE;
+      if (Math.abs(fruit.vy) < REST_THRESHOLD) fruit.vy = 0;
+    }
+  };
+
+  const tryMerge = (a: FruitState, b: FruitState, distance: number, targetDistance: number): boolean => {
+    if (a.type !== b.type) return false;
+    if (a.type >= TERMINAL_TYPE_INDEX) return false;
+    if (distance > targetDistance * 0.98) return false;
+
+    a.merged = true;
+    b.merged = true;
+
+    const mergedType = a.type + 1;
+    const x = (a.x + b.x) * 0.5;
+    const y = (a.y + b.y) * 0.5;
+    const vx = (a.vx + b.vx) * 0.35;
+    const vy = Math.min(a.vy, b.vy) - 0.65;
+    fruits.push(createFruit(mergedType, x, y, vx, vy));
+
+    const points = FRUITS[mergedType].points;
+    score += points;
+    updateScoreUi();
+    addEffect(x, y, `+${points}`);
+    playMergeSfx(mergedType);
+    return true;
   };
 
   const resolveCollision = (a: FruitState, b: FruitState): void => {
@@ -268,19 +333,21 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     const rb = FRUITS[b.type].r;
     let dx = b.x - a.x;
     let dy = b.y - a.y;
-    let dist = Math.hypot(dx, dy);
+    let distance = Math.hypot(dx, dy);
+    const targetDistance = ra + rb;
 
-    if (dist === 0) {
-      dist = 0.01;
-      dx = 0.01;
+    if (distance >= targetDistance) return;
+    if (distance === 0) {
+      dx = 0.0001;
       dy = 0;
+      distance = 0.0001;
     }
 
-    const overlap = ra + rb - dist;
-    if (overlap <= 0) return;
+    if (tryMerge(a, b, distance, targetDistance)) return;
 
-    const nx = dx / dist;
-    const ny = dy / dist;
+    const nx = dx / distance;
+    const ny = dy / distance;
+    const overlap = targetDistance - distance;
     const push = overlap * 0.5;
     a.x -= nx * push;
     a.y -= ny * push;
@@ -289,332 +356,301 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
 
     const rvx = b.vx - a.vx;
     const rvy = b.vy - a.vy;
-    const velAlongNormal = rvx * nx + rvy * ny;
-    if (velAlongNormal > 0) return;
+    const velocityAlongNormal = rvx * nx + rvy * ny;
+    if (velocityAlongNormal > 0) return;
 
-    const impulse = -(1 + BOUNCE) * velAlongNormal * 0.5;
+    const impulse = -(1 + 0.18) * velocityAlongNormal * 0.5;
     a.vx -= impulse * nx;
     a.vy -= impulse * ny;
     b.vx += impulse * nx;
     b.vy += impulse * ny;
   };
 
-  const addEffect = (x: number, y: number, text: string): void => {
-    effects.push({ x, y, text, life: 1 });
-  };
-
-  const mergeFruits = (a: FruitState, b: FruitState): boolean => {
-    const type = a.type;
-    if (type !== b.type) return false;
-    if (type >= TERMINAL_TYPE_INDEX) return false;
-
-    const nx = (a.x + b.x) * 0.5;
-    const ny = (a.y + b.y) * 0.5;
-
-    a.merged = true;
-    b.merged = true;
-
-    const newType = type + 1;
-    const now = performance.now();
-    fruits.push({
-      id: Math.random().toString(36).slice(2),
-      type: newType,
-      x: nx,
-      y: ny,
-      vx: (a.vx + b.vx) * 0.35,
-      vy: Math.min(a.vy, b.vy) - 0.8,
-      merged: false,
-      bornAtMs: now
-    });
-
-    const points = FRUITS[newType].points;
-    score += points;
-    updateScore();
-    addEffect(nx, ny, `+${points}`);
-    playMergeSfx(newType);
-    return true;
-  };
-
-  const drawFallbackFruit = (meta: FruitMeta, radius: number): void => {
-    const grad = ctx.createRadialGradient(-radius * 0.34, -radius * 0.37, radius * 0.18, 0, 0, radius);
-    grad.addColorStop(0, "#ffffffcc");
-    grad.addColorStop(0.35, meta.fallbackA);
-    grad.addColorStop(1, meta.fallbackB);
-
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(0, 0, radius, 0, Math.PI * 2);
-    ctx.fill();
-  };
-
-  const drawSpecialFruit = (meta: FruitMeta, radius: number): boolean => {
-    if (meta.special !== "pumpkin") return false;
-
-    const gradient = ctx.createRadialGradient(-radius * 0.35, -radius * 0.4, radius * 0.2, 0, 0, radius);
-    gradient.addColorStop(0, "#ffc180");
-    gradient.addColorStop(0.55, "#ef8a2f");
-    gradient.addColorStop(1, "#ba4f1b");
-
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.arc(0, 0, radius, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.97, 0, Math.PI * 2);
-    ctx.clip();
-
-    ctx.strokeStyle = "#c56124";
-    ctx.lineWidth = Math.max(2, radius * 0.12);
-    for (let i = -2; i <= 2; i++) {
-      ctx.beginPath();
-      ctx.ellipse(i * radius * 0.27, 0, radius * 0.22, radius * 1.08, 0, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    ctx.fillStyle = "#ffffff55";
-    ctx.beginPath();
-    ctx.ellipse(-radius * 0.34, -radius * 0.3, radius * 0.2, radius * 0.13, -0.5, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.strokeStyle = "#9a3f15";
-    ctx.lineWidth = Math.max(2, radius * 0.07);
-    ctx.beginPath();
-    ctx.arc(0, 0, radius, 0, Math.PI * 2);
-    ctx.stroke();
-    return true;
-  };
-
-  const drawFruitSprite = (fruit: { type: number; x: number; y: number }, alpha = 1, scale = 1): void => {
-    const meta = FRUITS[fruit.type];
-    const radius = meta.r * scale;
-    const drawRadius = radius * (meta.drawScale || 1);
-    const spriteScale = meta.spriteScale || 1;
-
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.translate(fruit.x, fruit.y);
-
-    const ready = !!(meta.sprite && meta.sprite.complete && meta.sprite.naturalWidth > 0);
-    if (ready && meta.sprite) {
-      try {
-        ctx.imageSmoothingEnabled = true;
-        ctx.drawImage(
-          meta.sprite,
-          -drawRadius * spriteScale,
-          -drawRadius * spriteScale,
-          drawRadius * 2 * spriteScale,
-          drawRadius * 2 * spriteScale
-        );
-      } catch (_err) {
-        if (!drawSpecialFruit(meta, radius)) drawFallbackFruit(meta, radius);
-      }
-    } else if (!drawSpecialFruit(meta, radius)) {
-      drawFallbackFruit(meta, radius);
-    }
-
-    if (ready && meta.name === "Cherry") {
-      ctx.fillStyle = "#78f2ffcc";
-      ctx.beginPath();
-      ctx.arc(0, 0, Math.max(2, radius * 0.14), 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    ctx.restore();
-  };
-
-  const drawTopHud = (preview: FruitMeta): void => {
-    const nextLabel = options.strings.gameNext.toUpperCase();
-    const previewLabel = preview.name.toUpperCase();
-
-    ctx.fillStyle = "#101946e6";
-    ctx.fillRect(0, 0, W, TOP_LINE - 2);
-
-    ctx.fillStyle = "#ffe57d";
-    ctx.font = "700 14px \"Press Start 2P\", \"Courier New\", monospace";
-    ctx.textAlign = "left";
-    ctx.fillText(nextLabel, 10, 24);
-
-    const nextWidth = ctx.measureText(nextLabel).width;
-    ctx.font = "700 11px \"Press Start 2P\", \"Courier New\", monospace";
-    const previewWidth = ctx.measureText(previewLabel).width;
-    const previewX = 10 + nextWidth + 18;
-    const previewFitsTopRow = previewX + previewWidth <= W - 10;
-    ctx.fillText(previewLabel, previewFitsTopRow ? previewX : 10, previewFitsTopRow ? 24 : 44);
-  };
-
-  const update = (): void => {
+  const checkOverflow = (): void => {
     if (gameOver) return;
 
-    for (let i = 0; i < fruits.length; i++) {
-      const fruit = fruits[i];
+    const blocked = fruits.some((fruit) => {
       const radius = FRUITS[fruit.type].r;
+      const top = fruit.y - radius;
+      if (top >= TOP_LINE_Y) return false;
+      if (fruit.ageFrames < OVERFLOW_SETTLE_FRAMES) return false;
+      if (Math.abs(fruit.vx) + Math.abs(fruit.vy) > 1.15) return false;
+      return true;
+    });
 
+    overflowFrames = blocked ? overflowFrames + 1 : 0;
+    if (overflowFrames <= OVERFLOW_FRAME_LIMIT) return;
+
+    gameOver = true;
+    options.finalScoreEl.textContent = `${options.strings.gameOverScore} ${score}`;
+    options.gameOverEl.classList.add("show");
+    playGameOverSfx();
+    options.onGameOver(score);
+  };
+
+  const stepFixed = (): void => {
+    if (gameOver) return;
+
+    simulationMs += FIXED_DT_MS;
+
+    for (const fruit of fruits) {
+      if (fruit.merged) continue;
+      fruit.ageFrames += 1;
+      const radius = FRUITS[fruit.type].r;
+      const floorY = boardHeight - radius - PLAYFIELD_PADDING;
+      const airborne = fruit.y < floorY - 3 || Math.abs(fruit.vy) > REST_THRESHOLD * 1.8;
+      if (airborne) {
+        fruit.vx += fruit.airDrift;
+        fruit.airDrift *= AIR_DRIFT_DECAY;
+      }
       fruit.vy += GRAVITY;
-      fruit.vx *= AIR;
-      fruit.vy *= AIR;
-
+      fruit.vx *= VELOCITY_DAMPING;
+      fruit.vy *= VELOCITY_DAMPING;
       fruit.x += fruit.vx;
       fruit.y += fruit.vy;
-
-      if (fruit.x - radius < WALL_MARGIN) {
-        fruit.x = radius + WALL_MARGIN;
-        fruit.vx *= -0.45;
-      }
-
-      if (fruit.x + radius > W - WALL_MARGIN) {
-        fruit.x = W - radius - WALL_MARGIN;
-        fruit.vx *= -0.45;
-      }
-
-      if (fruit.y + radius > H - WALL_MARGIN) {
-        fruit.y = H - radius - WALL_MARGIN;
-        fruit.vy *= -0.35;
-        if (Math.abs(fruit.vy) < REST_SPEED) fruit.vy = 0;
-      }
+      resolveWorldBounds(fruit);
     }
 
-    for (let loop = 0; loop < 2; loop++) {
+    for (let pass = 0; pass < COLLISION_PASSES; pass++) {
       for (let i = 0; i < fruits.length; i++) {
         for (let j = i + 1; j < fruits.length; j++) {
           const a = fruits[i];
           const b = fruits[j];
           if (a.merged || b.merged) continue;
-          if (!circleCollide(a, b)) continue;
-
-          if (!mergeFruits(a, b)) {
-            resolveCollision(a, b);
-          }
+          resolveCollision(a, b);
         }
       }
     }
 
+    for (const fruit of fruits) {
+      if (fruit.merged) continue;
+      resolveWorldBounds(fruit);
+    }
     fruits = fruits.filter((fruit) => !fruit.merged);
 
     for (const effect of effects) {
-      effect.y -= 0.7;
+      effect.y -= 0.6;
       effect.life -= 0.02;
     }
     effects = effects.filter((effect) => effect.life > 0);
 
-    const now = performance.now();
-    const blockedTop = fruits.some((fruit) => {
-      const fruitTop = fruit.y - FRUITS[fruit.type].r;
-      if (fruitTop >= TOP_LINE) return false;
-
-      // Ignore fresh or still-fast fruit so rapid drops don't false-trigger overflow.
-      if (now - fruit.bornAtMs < 850) return false;
-      if (Math.abs(fruit.vy) > 1.1 || Math.abs(fruit.vx) > 1.1) return false;
-
-      return true;
-    });
-    overflowFrames = blockedTop ? overflowFrames + 1 : 0;
-
-    if (overflowFrames > OVERFLOW_LIMIT) {
-      gameOver = true;
-      options.finalScoreEl.textContent = `${options.strings.gameOverScore} ${score}`;
-      options.gameOverEl.classList.add("show");
-      playGameOverSfx();
-      options.onGameOver(score);
-    }
+    checkOverflow();
   };
 
-  const draw = (): void => {
-    ctx.clearRect(0, 0, W, H);
-
-    const preview = FRUITS[nextType];
-    drawTopHud(preview);
-
-    ctx.strokeStyle = "#ffdc58";
-    ctx.lineWidth = 3;
-    ctx.setLineDash([8, 6]);
+  const drawFallbackFruit = (meta: FruitMeta, radius: number): void => {
+    const gradient = ctx.createRadialGradient(-radius * 0.35, -radius * 0.35, radius * 0.15, 0, 0, radius);
+    gradient.addColorStop(0, "#ffffffdd");
+    gradient.addColorStop(0.34, meta.fallbackA);
+    gradient.addColorStop(1, meta.fallbackB);
+    ctx.fillStyle = gradient;
     ctx.beginPath();
-    ctx.moveTo(0, TOP_LINE);
-    ctx.lineTo(W, TOP_LINE);
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fill();
+  };
+
+  const drawFruit = (fruit: { type: number; x: number; y: number }, alpha = 1, scale = 1): void => {
+    const meta = FRUITS[fruit.type];
+    const drawRadius = meta.r * (meta.drawScale || 1) * scale;
+    const spriteScale = meta.spriteScale || 1;
+    const spriteSize = drawRadius * 2 * spriteScale;
+    const spriteReady = !!(meta.sprite && meta.sprite.complete && meta.sprite.naturalWidth > 0);
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(fruit.x, fruit.y);
+    if (spriteReady && meta.sprite) {
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(meta.sprite, -spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
+    } else {
+      drawFallbackFruit(meta, meta.r * scale);
+    }
+    ctx.restore();
+  };
+
+  const drawBackground = (): void => {
+    const sky = ctx.createLinearGradient(0, 0, 0, boardHeight);
+    sky.addColorStop(0, "#2b3a77");
+    sky.addColorStop(0.33, "#3c5aa1");
+    sky.addColorStop(1, "#74a2d5");
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, boardWidth, boardHeight);
+
+    ctx.fillStyle = "#0b1238d9";
+    ctx.fillRect(0, 0, boardWidth, TOP_LINE_Y - 2);
+
+    const floorGlow = ctx.createLinearGradient(0, TOP_LINE_Y, 0, boardHeight);
+    floorGlow.addColorStop(0, "#ffffff08");
+    floorGlow.addColorStop(1, "#0000002c");
+    ctx.fillStyle = floorGlow;
+    ctx.fillRect(0, TOP_LINE_Y, boardWidth, boardHeight - TOP_LINE_Y);
+  };
+
+  const drawHud = (): void => {
+    const nextMeta = FRUITS[nextType];
+
+    ctx.fillStyle = "#ffe57d";
+    ctx.font = "700 13px \"Press Start 2P\", \"Courier New\", monospace";
+    ctx.textAlign = "left";
+    ctx.fillText(options.strings.gameNext.toUpperCase(), 10, 24);
+
+    ctx.fillStyle = "#d7ecff";
+    ctx.font = "700 11px \"Press Start 2P\", \"Courier New\", monospace";
+    ctx.fillText(nextMeta.name.toUpperCase(), 10, 45);
+    drawFruit({ type: nextType, x: boardWidth - 36, y: 32 }, 0.95, 0.62);
+  };
+
+  const drawOverflowLine = (): void => {
+    ctx.strokeStyle = overflowFrames > 0 ? "#ff6a6a" : "#ffd45a";
+    ctx.lineWidth = 3;
+    ctx.setLineDash([7, 6]);
+    ctx.beginPath();
+    ctx.moveTo(0, TOP_LINE_Y);
+    ctx.lineTo(boardWidth, TOP_LINE_Y);
     ctx.stroke();
     ctx.setLineDash([]);
+  };
 
-    for (const fruit of fruits) {
-      drawFruitSprite(fruit);
-    }
+  const drawLauncher = (): void => {
+    const radius = getSpawnRadius();
+    const launchY = TOP_LINE_Y - radius;
 
-    const launchMeta = FRUITS[nextType];
-    const launchRadius = launchMeta.r;
-    const launchX = clamp(spawnX, launchRadius + WALL_MARGIN + 6, W - launchRadius - WALL_MARGIN - 6);
-    const launchY = TOP_LINE - launchRadius - 8;
-
-    ctx.strokeStyle = "#7deeff9f";
+    ctx.strokeStyle = "#b7f7ff96";
     ctx.lineWidth = 2;
     ctx.setLineDash([5, 5]);
     ctx.beginPath();
-    ctx.moveTo(launchX, TOP_LINE);
-    ctx.lineTo(launchX, H);
+    ctx.moveTo(spawnX, TOP_LINE_Y);
+    ctx.lineTo(spawnX, boardHeight);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    drawFruitSprite({ type: nextType, x: launchX, y: launchY }, 0.58);
+    drawFruit({ type: nextType, x: spawnX, y: launchY }, 0.62);
+  };
 
+  const drawEffects = (): void => {
     for (const effect of effects) {
       ctx.save();
       ctx.globalAlpha = effect.life;
-      ctx.fillStyle = "#79ff9f";
+      ctx.fillStyle = "#9dffba";
       ctx.font = "700 16px \"Press Start 2P\", \"Courier New\", monospace";
       ctx.textAlign = "center";
       ctx.fillText(effect.text, effect.x, effect.y);
       ctx.restore();
     }
-
   };
 
-  const loop = (): void => {
-    update();
+  const draw = (): void => {
+    ctx.clearRect(0, 0, boardWidth, boardHeight);
+    drawBackground();
+    drawHud();
+    drawOverflowLine();
+
+    for (const fruit of fruits) {
+      drawFruit(fruit);
+    }
+
+    drawLauncher();
+    drawEffects();
+  };
+
+  const stepForMs = (ms: number): void => {
+    accumulatorMs += ms;
+    while (accumulatorMs >= FIXED_DT_MS) {
+      stepFixed();
+      accumulatorMs -= FIXED_DT_MS;
+    }
+  };
+
+  const runRaf = (rafMs: number): void => {
+    if (!lastRafMs) lastRafMs = rafMs;
+    const deltaMs = Math.min(100, rafMs - lastRafMs);
+    lastRafMs = rafMs;
+
+    if (!externalStepperActive) {
+      stepForMs(deltaMs);
+    }
     draw();
-    window.requestAnimationFrame(loop);
+    rafHandle = window.requestAnimationFrame(runRaf);
   };
 
-  const setSpawnFromClientX = (clientX: number): void => {
+  const getCanvasWorldX = (clientX: number): number => {
     const rect = options.canvas.getBoundingClientRect();
-    const x = ((clientX - rect.left) / rect.width) * W;
-    const radius = FRUITS[nextType].r + WALL_MARGIN + 6;
-    spawnX = clamp(x, radius, W - radius);
+    if (rect.width === 0) return spawnX;
+    return ((clientX - rect.left) / rect.width) * boardWidth;
   };
 
-  options.canvas.addEventListener("mousemove", (event) => {
-    setSpawnFromClientX(event.clientX);
+  const toggleFullscreen = async (): Promise<void> => {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+      return;
+    }
+
+    if (options.boardEl.requestFullscreen) {
+      await options.boardEl.requestFullscreen();
+    }
+  };
+
+  const testingWindow = window as typeof window & {
+    advanceTime?: (ms: number) => void;
+    render_game_to_text?: () => string;
+  };
+
+  testingWindow.advanceTime = (ms: number): void => {
+    externalStepperActive = true;
+    const safeMs = Number.isFinite(ms) ? Math.max(0, ms) : 0;
+    const steps = Math.max(1, Math.round(safeMs / FIXED_DT_MS));
+    for (let i = 0; i < steps; i++) {
+      stepFixed();
+    }
+    draw();
+  };
+
+  testingWindow.render_game_to_text = (): string => {
+    const payload = {
+      coordinateSystem: "origin=(0,0) top-left; +x right; +y down; units are canvas pixels",
+      mode: gameOver ? "gameover" : "playing",
+      score,
+      muted,
+      nextFruit: FRUITS[nextType].id,
+      launcher: {
+        x: Number(spawnX.toFixed(2)),
+        y: Number((TOP_LINE_Y - getSpawnRadius()).toFixed(2)),
+        cooldownMsRemaining: Number(Math.max(0, options.dropCooldownMs - (simulationMs - lastDropMs)).toFixed(2))
+      },
+      overflow: {
+        lineY: TOP_LINE_Y,
+        frames: overflowFrames,
+        frameLimit: OVERFLOW_FRAME_LIMIT
+      },
+      fruits: fruits.map((fruit) => ({
+        id: fruit.id,
+        type: FRUITS[fruit.type].id,
+        x: Number(fruit.x.toFixed(2)),
+        y: Number(fruit.y.toFixed(2)),
+        vx: Number(fruit.vx.toFixed(2)),
+        vy: Number(fruit.vy.toFixed(2)),
+        drift: Number(fruit.airDrift.toFixed(4)),
+        r: FRUITS[fruit.type].r
+      }))
+    };
+
+    return JSON.stringify(payload);
+  };
+
+  options.canvas.addEventListener("pointermove", (event) => {
+    setSpawnX(getCanvasWorldX(event.clientX));
   });
 
-  options.canvas.addEventListener("click", () => {
+  options.canvas.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    unlockAudio();
+    setSpawnX(getCanvasWorldX(event.clientX));
     dropFruit();
+    event.preventDefault();
   });
-
-  options.canvas.addEventListener(
-    "touchmove",
-    (event) => {
-      const touch = event.touches[0];
-      if (!touch) return;
-      setSpawnFromClientX(touch.clientX);
-      event.preventDefault();
-    },
-    { passive: false }
-  );
-
-  options.canvas.addEventListener(
-    "touchstart",
-    (event) => {
-      const touch = event.touches[0];
-      if (!touch) return;
-      setSpawnFromClientX(touch.clientX);
-      dropFruit();
-      event.preventDefault();
-    },
-    { passive: false }
-  );
 
   options.soundToggleBtn.addEventListener("click", () => {
-    const nextMuted = !sfxMuted;
-    setSoundMuted(nextMuted);
+    const nextMuted = !muted;
+    setMuted(nextMuted);
     if (!nextMuted) {
       unlockAudio();
       playUiSfx();
@@ -638,34 +674,40 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     let handled = false;
 
     if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") {
-      spawnX -= KEY_STEP;
+      setSpawnX(spawnX - POINTER_KEY_STEP);
       handled = true;
-    }
-    if (event.key === "ArrowRight" || event.key === "d" || event.key === "D") {
-      spawnX += KEY_STEP;
+    } else if (event.key === "ArrowRight" || event.key === "d" || event.key === "D") {
+      setSpawnX(spawnX + POINTER_KEY_STEP);
       handled = true;
-    }
-    if (event.key === " " || event.key === "Enter") {
+    } else if (event.key === " " || event.key === "Enter") {
+      unlockAudio();
       dropFruit();
       handled = true;
+    } else if (event.key === "f" || event.key === "F") {
+      void toggleFullscreen();
+      handled = true;
+    } else if (event.key === "Escape" && document.fullscreenElement) {
+      void document.exitFullscreen();
+      handled = true;
     }
-
-    const radius = FRUITS[nextType].r + WALL_MARGIN + 6;
-    spawnX = clamp(spawnX, radius, W - radius);
 
     if (handled) event.preventDefault();
   });
 
+  document.addEventListener("fullscreenchange", () => {
+    draw();
+  });
+
   resetGame();
   updateSoundToggleUi();
-  loop();
+  rafHandle = window.requestAnimationFrame(runRaf);
 
   return {
     setMuted(next: boolean) {
-      setSoundMuted(next);
+      setMuted(next);
     },
     getMuted() {
-      return sfxMuted;
+      return muted;
     },
     reset() {
       resetGame();

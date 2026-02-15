@@ -31,6 +31,7 @@ const PUBLIC_ASSETS_DIR = join(ROOT, "public/assets");
 const CATALOG_PATH = join(ROOT, "content/assets/pixel-art.json");
 const MANIFEST_DIR = join(ROOT, "content/games");
 const FRUIT_CONFIG_PATH = join(ROOT, "src/games/fruit-stacker/config.ts");
+const RUNTIME_IMAGE_EXTENSIONS = new Set([".svg", ".png"]);
 
 const listAssetPaths = (dir: string): string[] => {
   const entries = readdirSync(dir);
@@ -43,7 +44,9 @@ const listAssetPaths = (dir: string): string[] => {
       continue;
     }
 
-    if (!entry.endsWith(".svg")) continue;
+    const lower = entry.toLowerCase();
+    const hasSupportedExtension = [...RUNTIME_IMAGE_EXTENSIONS].some((ext) => lower.endsWith(ext));
+    if (!hasSupportedExtension) continue;
     const runtimePath = fullPath.replace(`${ROOT}/public`, "").replace(/\\/g, "/");
     output.push(runtimePath);
   }
@@ -70,7 +73,9 @@ describe("asset catalog", () => {
 
       expect(["game-icons", "fruits", "ui", "platform"]).toContain(asset.category);
       expect(asset.path.startsWith("/assets/")).toBe(true);
-      expect(asset.path.endsWith(".svg")).toBe(true);
+      const lowerPath = asset.path.toLowerCase();
+      const hasSupportedExtension = [...RUNTIME_IMAGE_EXTENSIONS].some((ext) => lowerPath.endsWith(ext));
+      expect(hasSupportedExtension).toBe(true);
       expect(paths.has(asset.path)).toBe(false);
       paths.add(asset.path);
 
@@ -100,7 +105,7 @@ describe("asset catalog", () => {
     }
   });
 
-  test("every runtime svg asset is cataloged", () => {
+  test("every runtime image asset is cataloged", () => {
     const catalog = JSON.parse(readFileSync(CATALOG_PATH, "utf8")) as AssetCatalog;
     const catalogPaths = new Set(catalog.assets.map((asset) => asset.path));
     const runtimePaths = listAssetPaths(PUBLIC_ASSETS_DIR);

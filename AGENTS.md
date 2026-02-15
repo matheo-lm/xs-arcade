@@ -51,14 +51,16 @@ Rules:
 ## Asset Policy
 - Runtime image assets must be local-only under `/Users/m/Desktop/berries/public/assets/` (no CDN or remote runtime image URLs).
 - Every image used by platform or games must have a catalog record in `/Users/m/Desktop/berries/content/assets/pixel-art.json`.
-- Use SVG assets for launcher/game image delivery.
+- Use SVG assets for launcher and shared UI image delivery.
+- Fruit Stacker gameplay sprites may use local high-resolution PNGs under `/Users/m/Desktop/berries/public/assets/fruits/` with SVG fallback paths retained in config.
 - Consistency is enforced per asset family, not globally across every image.
 - Families may use different visual systems, but each family must remain internally consistent.
 - Do not add heavyweight asset pipelines unless requested.
 
 ## Image Family Policy (Required)
 - `content/games/*.json` `cardIcon` values must be local `/assets/...svg` paths.
-- Fruit Stacker sprite URLs must be local `/assets/fruits/*.svg` paths.
+- Fruit Stacker `spriteUrl` values may be local `/assets/fruits/*.png` or `/assets/fruits/*.svg` paths.
+- Fruit Stacker `fallbackSpriteUrl` values must be local `/assets/fruits/*.svg` paths.
 - Family-level consistency contracts:
   - `fruit-stacker-fruits-v2`: all 10 fruit tiers share the same outlined playful style profile.
   - `launcher-card-icons-v2`: all launcher game card icons share one custom in-house style profile.

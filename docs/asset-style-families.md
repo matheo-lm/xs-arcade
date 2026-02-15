@@ -6,12 +6,14 @@ This document defines the active visual contracts for runtime image families.
 - Purpose: gameplay sprites and next-fruit preview in Fruit Stacker.
 - Visual direction: outlined, playful, smooth silhouettes inspired by the pre-8-bit style.
 - Canvas readability target: clear shape identity at small sizes and overlapping stacks.
-- SVG constraints:
-  - viewBox: `0 0 64 64`
-  - stroke: dark outline (`#111827` to `#1f2937` range), 2-3px, rounded joins/caps
-  - highlights: 1-2 simple highlights per fruit, no heavy gradients
+- Asset format constraints:
+  - runtime format: local SVG or local high-resolution PNG
+  - preferred Fruit Stacker runtime format: PNG at source resolution with transparent background
+  - fallback format: SVG with `viewBox: 0 0 64 64`
+  - visual language: dark outline (`#111827` to `#1f2937` range), 2-3px equivalent weight, rounded silhouette grammar
+  - highlights: 1-2 simple highlights per fruit, no muddy overblending
   - shading: 1 shadow/accent region max per fruit for clarity
-  - negative space: keep center-mass readable; avoid thin details under 2px
+  - negative space: keep center-mass readable; avoid thin details under 2px equivalent
 - Family consistency rules:
   - all 10 tiers share the same outline/shading language
   - stem/leaf language is reused where applicable

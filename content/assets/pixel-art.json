@@ -535,6 +535,166 @@
         "#ef5560",
         "#9fd071"
       ]
+    },
+    {
+      "id": "fruits-apple-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/apple.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/apple-hd-raw-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/apple-hd-raw-png",
+      "normalized": true
+    },
+    {
+      "id": "fruits-cherry-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/cherry.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/cherry-hd-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/cherry-hd-png",
+      "normalized": true
+    },
+    {
+      "id": "fruits-kiwi-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/kiwi.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/kiwi-hd-raw-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/kiwi-hd-raw-png",
+      "normalized": true
+    },
+    {
+      "id": "fruits-lemon-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/lemon.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/lemon-hd-raw-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/lemon-hd-raw-png",
+      "normalized": true
+    },
+    {
+      "id": "fruits-melon-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/melon.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/melon-hd-raw-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/melon-hd-raw-png",
+      "normalized": true
+    },
+    {
+      "id": "fruits-orange-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/orange.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/orange-hd-raw-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/orange-hd-raw-png",
+      "normalized": true
+    },
+    {
+      "id": "fruits-peach-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/peach.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/peach-hd-raw-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/peach-hd-raw-png",
+      "normalized": true
+    },
+    {
+      "id": "fruits-pear-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/pear.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/pear-hd-raw-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/pear-hd-raw-png",
+      "normalized": true
+    },
+    {
+      "id": "fruits-pumpkin-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/pumpkin.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/pumpkin-hd-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/pumpkin-hd-png",
+      "normalized": true
+    },
+    {
+      "id": "fruits-watermelon-hd-png",
+      "category": "fruits",
+      "path": "/assets/fruits/watermelon.png",
+      "contexts": [
+        "fruit-stacker-gameplay",
+        "fruit-stacker-preview"
+      ],
+      "familyId": "fruit-stacker-fruits-v2",
+      "styleProfile": "fruit-stacker-outlined-v2",
+      "sourceLibrary": "berries-internal",
+      "sourceAssetId": "fruits/watermelon-hd-raw-png",
+      "sourceLicense": "Internal",
+      "sourceUrl": "local://berries/fruits/watermelon-hd-raw-png",
+      "normalized": true
     }
   ]
 }
