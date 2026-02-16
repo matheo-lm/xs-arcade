@@ -99,7 +99,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
 
   options.gameOverTitleEl.textContent = options.strings.gameOverTitle;
   options.playAgainBtn.textContent = options.strings.gamePlayAgain;
-  options.restartBtn.textContent = options.strings.gameRestart;
+  // options.restartBtn.textContent = options.strings.gameRestart;
 
   // Logical width/height matches CSS size because of scale()
   const boardWidth = rect.width;

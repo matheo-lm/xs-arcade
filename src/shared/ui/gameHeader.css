@@ -1,8 +1,11 @@
 .game-header {
-  padding: 12px;
-  display: grid;
-  gap: 10px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   border-radius: 4px;
+  flex-wrap: nowrap;
 }
 
 .game-header-main {
@@ -68,7 +71,7 @@
   flex-wrap: nowrap;
   gap: 8px;
   justify-content: flex-end;
-  overflow-x: auto;
+  /* overflow-x: auto; Removed to allow settings menu popup */
 }
 
 .game-header-action {
@@ -85,25 +88,80 @@
   font-size: 1.2rem;
 }
 
+/* Compact single-row layout for mobile/desktop */
 @media (max-width: 900px) {
-  .game-header-main {
-    flex-direction: row;
+  .game-header {
+    padding: 8px;
+    gap: 8px;
+    display: flex;
+    /* Change grid to flex for better control */
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    /* Force single row */
+    overflow-x: auto;
+    /* Allow scrolling if absolutely necessary, but try to fit */
   }
 
+  .game-header-main {
+    flex: 0 0 auto;
+    gap: 8px;
+  }
+
+  /* Hide title on small screens if needed, or make it very small */
   .game-header-title {
-    text-align: left;
-  }
-
-  .game-header-actions {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    overflow-x: visible;
+    display: none;
   }
 
   .game-header-meta {
-    flex-wrap: wrap;
-    overflow-x: visible;
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    gap: 4px;
+    overflow-x: auto;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .game-header-meta::-webkit-scrollbar {
+    display: none;
+  }
+
+  .game-header-pill {
+    min-height: 32px;
+    padding: 4px 8px;
+    font-size: 0.65rem;
+    white-space: nowrap;
+  }
+
+  .game-header-actions {
+    flex: 0 0 auto;
+    gap: 4px;
+    justify-content: flex-end;
+    /* overflow-x: auto; Removed to allow settings menu popup */
+  }
+
+  /* Compact buttons */
+  .game-header-back.icon-btn,
+  .game-header-action.icon-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+
+  .game-header-back.icon-btn svg,
+  .game-header-action.icon-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Ensure title is visible on larger screens but layout remains compact */
+@media (min-width: 901px) {
+  .game-header-title {
+    font-size: 1rem;
+    white-space: nowrap;
   }
 }

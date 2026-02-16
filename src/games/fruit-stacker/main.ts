@@ -77,6 +77,11 @@ const renderHeader = () => {
         id: "restartBtn",
         label: i18n.t("gameRestart"),
         icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>`
+      },
+      {
+        id: "immersiveBtn",
+        label: "Immersive Mode",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`
       }
     ],
     ariaLabel: "game status"
@@ -89,6 +94,20 @@ const scoreEl = byId<HTMLElement>("score");
 const bestScoreEl = byId<HTMLElement>("bestScore");
 const soundToggleBtn = byId<HTMLButtonElement>("soundToggleBtn");
 const restartBtn = byId<HTMLButtonElement>("restartBtn");
+const immersiveBtn = byId<HTMLButtonElement>("immersiveBtn");
+
+immersiveBtn.addEventListener("click", () => {
+  console.log("Immersive button clicked"); // Debug
+  if (!document.fullscreenElement) {
+    console.log("Requesting fullscreen"); // Debug
+    document.documentElement.requestFullscreen().catch((err) => {
+      console.error(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
+    });
+  } else {
+    console.log("Exiting fullscreen"); // Debug
+    document.exitFullscreen();
+  }
+});
 
 hint.textContent = i18n.t("gameHintFruitStacker");
 
