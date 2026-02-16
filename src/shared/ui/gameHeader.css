@@ -16,6 +16,24 @@
   font-size: 0.78rem;
 }
 
+.game-header-back.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.05);
+  color: inherit;
+  transition: background 0.2s;
+}
+
+.game-header-back.icon-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
 .game-header-title {
   margin: 0;
   font-family: var(--font-pixel);
@@ -55,6 +73,16 @@
 
 .game-header-action {
   min-width: 120px;
+}
+
+.game-header-action.icon-btn {
+  min-width: 44px;
+  width: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
 }
 
 @media (max-width: 900px) {

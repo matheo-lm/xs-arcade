@@ -96,13 +96,14 @@ const renderCards = (games: GameManifest[]): string =>
     .map((game) => {
       const playable = game.status === "playable";
       const statusClass = playable ? "" : "status-placeholder";
+      const cardClass = playable ? "" : "coming-soon";
       const buttonText = playable ? i18n.t("ctaPlay") : i18n.t("ctaComingSoon");
       const statusText = playable ? i18n.t("statusPlayable") : i18n.t("statusPlaceholder");
       const ageTags = game.ageBands.map((age) => `<span class=\"tag\">${ageLabel(age)}</span>`).join("");
       const skillTags = game.skills.map((skill) => `<span class=\"tag\">${skillLabel(skill)}</span>`).join("");
 
       return `
-        <article class="panel game-card" data-game-id="${game.id}">
+        <article class="panel game-card ${cardClass}" data-game-id="${game.id}">
           <div class="card-top">
             <span class="card-icon" aria-hidden="true">${iconMarkup(game)}</span>
             <span class="status-pill ${statusClass}">${statusText}</span>
@@ -197,12 +198,12 @@ const render = (): void => {
             <label class="field-label launcher-control-label" for="profileSelect">${i18n.t("profileLabel")}</label>
             <select class="select" id="profileSelect">
               ${platformStorage
-                .listProfiles()
-                .map(
-                  (profile) =>
-                    `<option value="${profile.id}" ${profile.id === active.id ? "selected" : ""}>${profile.name}</option>`
-                )
-                .join("")}
+      .listProfiles()
+      .map(
+        (profile) =>
+          `<option value="${profile.id}" ${profile.id === active.id ? "selected" : ""}>${profile.name}</option>`
+      )
+      .join("")}
             </select>
           </div>
           <div class="launcher-control-field">
@@ -341,6 +342,23 @@ const render = (): void => {
     const target = event.target as HTMLSelectElement;
     selectedSkill = target.value as SkillTag | "";
     render();
+  });
+
+  // Wire up coming soon shake effects
+  const comingSoonCards = app.querySelectorAll(".game-card.coming-soon");
+  comingSoonCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      unlockAudioContext();
+      // Simple error/locked sound using oscillator if possible, or just ui click for now
+      // Since playUiClick is imported, let's use that but maybe we can do a distinct sound later.
+      // For now, reusing click is better than silence.
+      playUiClick();
+
+      card.classList.remove("shake");
+      // Force reflow
+      void (card as HTMLElement).offsetWidth;
+      card.classList.add("shake");
+    });
   });
 };
 

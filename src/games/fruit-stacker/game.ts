@@ -82,6 +82,18 @@ const TERMINAL_TYPE_INDEX = Math.max(
 export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi => {
   const ctx = options.canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas 2D context is unavailable");
+
+  // High-DPI support
+  const dpr = window.devicePixelRatio || 1;
+  const rect = options.canvas.getBoundingClientRect();
+
+  // Set actual size in memory (scaled to account for extra pixel density)
+  options.canvas.width = rect.width * dpr;
+  options.canvas.height = rect.height * dpr;
+
+  // Normalize coordinate system to use css pixels
+  ctx.scale(dpr, dpr);
+
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
 
@@ -89,8 +101,9 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   options.playAgainBtn.textContent = options.strings.gamePlayAgain;
   options.restartBtn.textContent = options.strings.gameRestart;
 
-  const boardWidth = options.canvas.width;
-  const boardHeight = options.canvas.height;
+  // Logical width/height matches CSS size because of scale()
+  const boardWidth = rect.width;
+  const boardHeight = rect.height;
 
   let fruits: FruitState[] = [];
   let effects: FloatingText[] = [];
@@ -145,7 +158,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   };
 
   const updateSoundToggleUi = (): void => {
-    options.soundToggleBtn.textContent = muted ? options.strings.gameSoundOff : options.strings.gameSoundOn;
+    // options.soundToggleBtn.textContent = muted ? options.strings.gameSoundOff : options.strings.gameSoundOn;
     options.soundToggleBtn.setAttribute("aria-pressed", muted ? "true" : "false");
   };
 

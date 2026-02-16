@@ -115,6 +115,31 @@
   display: grid;
   gap: 8px;
   min-height: clamp(168px, 20vh, 216px);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.game-card:hover {
+  transform: scale(1.025);
+  z-index: 1;
+}
+
+.game-card:active {
+  transform: scale(0.98);
+}
+
+.game-card.coming-soon {
+  cursor: not-allowed;
+}
+
+.game-card.shake {
+  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
 }
 
 .game-card h2 {
