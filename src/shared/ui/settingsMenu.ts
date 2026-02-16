@@ -17,6 +17,8 @@ export interface SettingsMenuLabels {
   soundOff: string;
   profileLabel?: string;
   createProfileLabel?: string;
+  restartLabel?: string;
+  fullscreenLabel?: string;
 }
 
 export interface SettingsMenuConfig {
@@ -35,6 +37,8 @@ export interface SettingsMenuHandlers {
   onThemeChange: (theme: ThemePreference) => void;
   onLocaleChange: (locale: LocaleCode) => void;
   onToggleMuted: () => void;
+  onRestart?: () => void;
+  onToggleImmersive?: () => void;
   onCreateProfile?: () => void;
 }
 
@@ -61,6 +65,8 @@ export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig
   const langEnId = idFor(idPrefix, "LangEn");
   const langEsId = idFor(idPrefix, "LangEs");
   const muteId = idFor(idPrefix, "SoundBtn");
+  const restartId = idFor(idPrefix, "RestartBtn");
+  const immersiveId = idFor(idPrefix, "ImmersiveBtn");
   const createId = idFor(idPrefix, "CreateProfileBtn");
   const themeMarkup =
     themeControlMode === "icons"
@@ -144,14 +150,25 @@ export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig
         <span class="field-label">${labels.audioLabel}</span>
         <button type="button" id="${muteId}">${muted ? labels.soundOff : labels.soundOn}</button>
       </div>
-      ${
-        includeCreateProfile
-          ? `<div class="settings-row">
+      ${config.labels.restartLabel
+      ? `<div class="settings-row">
+               <button type="button" id="${restartId}">${labels.restartLabel}</button>
+             </div>`
+      : ""
+    }
+      ${config.labels.fullscreenLabel
+      ? `<div class="settings-row">
+               <button type="button" id="${immersiveId}">${labels.fullscreenLabel}</button>
+             </div>`
+      : ""
+    }
+      ${includeCreateProfile
+      ? `<div class="settings-row">
                ${labels.profileLabel ? `<span class="field-label">${labels.profileLabel}</span>` : ""}
                <button type="button" id="${createId}">${labels.createProfileLabel ?? "create profile"}</button>
              </div>`
-          : ""
-      }
+      : ""
+    }
     </section>
   `;
 };
@@ -171,6 +188,8 @@ export const bindSettingsMenuEvents = (
   const langEnButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "LangEn")}`);
   const langEsButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "LangEs")}`);
   const soundButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "SoundBtn")}`);
+  const restartButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "RestartBtn")}`);
+  const immersiveButton = root.querySelector<HTMLButtonElement>(`#${idFor(config.idPrefix, "ImmersiveBtn")}`);
   const createProfileButton = root.querySelector<HTMLButtonElement>(
     `#${idFor(config.idPrefix, "CreateProfileBtn")}`
   );
@@ -217,6 +236,8 @@ export const bindSettingsMenuEvents = (
   langEnButton?.addEventListener("click", () => handlers.onLocaleChange("en"));
   langEsButton?.addEventListener("click", () => handlers.onLocaleChange("es"));
   soundButton?.addEventListener("click", handlers.onToggleMuted);
+  restartButton?.addEventListener("click", () => handlers.onRestart?.());
+  immersiveButton?.addEventListener("click", () => handlers.onToggleImmersive?.());
   createProfileButton?.addEventListener("click", () => handlers.onCreateProfile?.());
   window.addEventListener("click", onOutsideClick);
   window.addEventListener("keydown", onEscape);

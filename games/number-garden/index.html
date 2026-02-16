@@ -1,12 +1,36 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>number garden | x's arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
-<body data-game-slug="number-garden">
-  <main id="placeholderApp" class="app-shell"></main>
-  <script type="module" src="/src/games/placeholder/main.ts"></script>
+
+<body>
+  <main class="app-shell game-shell">
+    <div id="gameHeaderMount"></div>
+
+    <section class="panel ng-board" id="gardenBoard" aria-label="garden play area">
+      <canvas id="gardenCanvas" width="480" height="408"></canvas>
+      <div class="overlay" id="gameOver">
+        <div>
+          <h2 id="gameOverTitle">game over</h2>
+          <p id="finalScore">you scored 0</p>
+          <button id="playAgainBtn" type="button">play again</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="ng-number-pad" id="numberPad" aria-label="number pad"></div>
+
+    <p class="hint" id="hint">count the flowers and tap the matching number.</p>
+  </main>
+
+  <script type="module" src="/src/games/number-garden/main.ts"></script>
 </body>
+
 </html>

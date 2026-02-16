@@ -7,7 +7,7 @@ import { getAllGames } from "@platform/gameRegistry";
 import { platformStorage } from "@shared/storage/platformStorage";
 import { initFruitStacker } from "@games/fruit-stacker/game";
 import { applyTheme, watchSystemTheme, type ThemePreference } from "@shared/ui/theme";
-import { renderGameHeader, updateGameHeaderAction } from "@shared/ui/gameHeader";
+import { renderGameHeader, updateGameHeaderAction, updateGameHeaderMeta } from "@shared/ui/gameHeader";
 import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } from "@shared/ui/settingsMenu";
 
 const byId = <T extends HTMLElement>(id: string): T => {
@@ -60,30 +60,8 @@ const renderHeader = () => {
     title: manifest.title[i18n.locale],
     backHref: "/",
     backLabel: i18n.t("gameBackToLauncher"),
-    leftMeta: [
-      { id: "score", text: `${i18n.t("gameScorePrefix")}: 0` },
-      { id: "bestScore", text: `${i18n.t("highScoreLabel")}: 0` }
-    ],
-    rightActions: [
-      {
-        id: "soundToggleBtn",
-        label: platformStorage.isGlobalMute() ? i18n.t("gameSoundOff") : i18n.t("gameSoundOn"),
-        icon: platformStorage.isGlobalMute()
-          ? `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`
-          : `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`,
-        pressed: platformStorage.isGlobalMute()
-      },
-      {
-        id: "restartBtn",
-        label: i18n.t("gameRestart"),
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>`
-      },
-      {
-        id: "immersiveBtn",
-        label: "Immersive Mode",
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`
-      }
-    ],
+    leftMeta: [{ id: "score", text: `${i18n.t("gameScorePrefix")}: 0` }],
+    rightActions: [], // Removed sound, restart, immersive from main header
     ariaLabel: "game status"
   });
 };
@@ -91,23 +69,6 @@ const renderHeader = () => {
 renderHeader();
 
 const scoreEl = byId<HTMLElement>("score");
-const bestScoreEl = byId<HTMLElement>("bestScore");
-const soundToggleBtn = byId<HTMLButtonElement>("soundToggleBtn");
-const restartBtn = byId<HTMLButtonElement>("restartBtn");
-const immersiveBtn = byId<HTMLButtonElement>("immersiveBtn");
-
-immersiveBtn.addEventListener("click", () => {
-  console.log("Immersive button clicked"); // Debug
-  if (!document.fullscreenElement) {
-    console.log("Requesting fullscreen"); // Debug
-    document.documentElement.requestFullscreen().catch((err) => {
-      console.error(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
-    });
-  } else {
-    console.log("Exiting fullscreen"); // Debug
-    document.exitFullscreen();
-  }
-});
 
 hint.textContent = i18n.t("gameHintFruitStacker");
 
@@ -120,13 +81,6 @@ const calculateStars = (score: number): number => {
   return 0;
 };
 
-const updateBestScoreUi = (): void => {
-  const progress = platformStorage.getGameProgress(profileId, "fruit-stacker");
-  bestScoreEl.textContent = `${i18n.t("highScoreLabel")}: ${progress.highScore}`;
-};
-
-updateBestScoreUi();
-
 const gameApi = initFruitStacker({
   canvas,
   boardEl,
@@ -134,8 +88,6 @@ const gameApi = initFruitStacker({
   gameOverEl,
   finalScoreEl,
   gameOverTitleEl,
-  soundToggleBtn,
-  restartBtn,
   playAgainBtn,
   strings: {
     scorePrefix: i18n.t("gameScorePrefix"),
@@ -152,13 +104,6 @@ const gameApi = initFruitStacker({
   onMutedChange(muted) {
     platformStorage.setGlobalMute(muted);
     renderGameSettingsMenu();
-    updateGameHeaderAction(headerRoot, "soundToggleBtn", {
-      label: muted ? i18n.t("gameSoundOff") : i18n.t("gameSoundOn"),
-      icon: muted
-        ? `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`
-        : `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`,
-      pressed: muted
-    });
   },
   onGameOver(score) {
     const current = platformStorage.getGameProgress(profileId, "fruit-stacker");
@@ -173,8 +118,9 @@ const gameApi = initFruitStacker({
     if (stars >= 3) {
       platformStorage.unlockBadge(profileId, "fruit-stacker-master");
     }
-
-    updateBestScoreUi();
+  },
+  onScoreChange(score) {
+    updateGameHeaderMeta(headerRoot, "score", `${i18n.t("gameScorePrefix")}: ${score}`);
   }
 });
 
@@ -224,7 +170,9 @@ const renderGameSettingsMenu = (): void => {
       soundOn: i18n.t("gameSoundOn"),
       soundOff: i18n.t("gameSoundOff"),
       profileLabel: i18n.t("settingsProfileLabel"),
-      createProfileLabel: i18n.t("profileCreate")
+      createProfileLabel: i18n.t("profileCreate"),
+      restartLabel: i18n.t("gameRestart"), // Moved to menu
+      fullscreenLabel: "Fullscreen" // Moved to menu
     }
   };
 
@@ -248,6 +196,20 @@ const renderGameSettingsMenu = (): void => {
     onToggleMuted() {
       const next = !gameApi.getMuted();
       gameApi.setMuted(next);
+      renderGameSettingsMenu();
+    },
+    onRestart() {
+      gameApi.restart();
+      gameSettingsOpen = false;
+      renderGameSettingsMenu();
+    },
+    onToggleImmersive() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+      gameSettingsOpen = false;
       renderGameSettingsMenu();
     },
     onCreateProfile() {

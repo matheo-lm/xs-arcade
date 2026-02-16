@@ -41,20 +41,20 @@ export interface FruitStackerOptions {
   gameOverEl: HTMLElement;
   finalScoreEl: HTMLElement;
   gameOverTitleEl: HTMLElement;
-  soundToggleBtn: HTMLButtonElement;
-  restartBtn: HTMLButtonElement;
   playAgainBtn: HTMLButtonElement;
   strings: FruitStackerStrings;
   initialMuted: boolean;
   dropCooldownMs: number;
   onMutedChange: (muted: boolean) => void;
   onGameOver: (score: number) => void;
+  onScoreChange?: (score: number) => void;
 }
 
 export interface FruitStackerApi {
   setMuted(next: boolean): void;
   getMuted(): boolean;
-  reset(): void;
+  restart(): void;
+  destroy(): void;
 }
 
 const FIXED_FPS = 60;
@@ -158,8 +158,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   };
 
   const updateSoundToggleUi = (): void => {
-    // options.soundToggleBtn.textContent = muted ? options.strings.gameSoundOff : options.strings.gameSoundOn;
-    options.soundToggleBtn.setAttribute("aria-pressed", muted ? "true" : "false");
+    // UI is now handled by the settings menu / header render
   };
 
   const WebKitWindow = window as typeof window & { webkitAudioContext?: typeof AudioContext };
@@ -246,7 +245,6 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   const setMuted = (next: boolean): void => {
     muted = !!next;
     options.onMutedChange(muted);
-    updateSoundToggleUi();
   };
 
   const createFruit = (type: number, x: number, y: number, vx = 0, vy = 0): FruitState => ({
@@ -272,7 +270,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     lastDropMs = -999_999;
     gameOver = false;
     accumulatorMs = 0;
-    options.gameOverEl.classList.remove("show");
+    options.gameOverEl.classList.remove("visible");
     updateScoreUi();
     draw();
   };
@@ -396,7 +394,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
 
     gameOver = true;
     options.finalScoreEl.textContent = `${options.strings.gameOverScore} ${score}`;
-    options.gameOverEl.classList.add("show");
+    options.gameOverEl.classList.add("visible");
     playGameOverSfx();
     options.onGameOver(score);
   };
@@ -661,20 +659,8 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     event.preventDefault();
   });
 
-  options.soundToggleBtn.addEventListener("click", () => {
-    const nextMuted = !muted;
-    setMuted(nextMuted);
-    if (!nextMuted) {
-      unlockAudio();
-      playUiSfx();
-    }
-  });
-
-  options.restartBtn.addEventListener("click", () => {
-    unlockAudio();
-    playUiSfx();
-    resetGame();
-  });
+  // Removed obsolete button listeners (soundToggleBtn, restartBtn)
+  // Logic is now in main.ts / settings menu handlers calling api.restart()
 
   options.playAgainBtn.addEventListener("click", () => {
     unlockAudio();
@@ -712,7 +698,6 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   });
 
   resetGame();
-  updateSoundToggleUi();
   rafHandle = window.requestAnimationFrame(runRaf);
 
   return {
@@ -722,8 +707,12 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     getMuted() {
       return muted;
     },
-    reset() {
+    restart() {
       resetGame();
+    },
+    destroy() {
+      window.removeEventListener("pointerdown", unlockAudio);
+      // ... more cleanups could go here if needed
     }
   };
 };

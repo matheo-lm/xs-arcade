@@ -1,0 +1,140 @@
+/* ========================================================
+   Number Garden — game-specific styles
+   ======================================================== */
+
+/* --- Board & Canvas --- */
+
+.ng-board {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    overflow: hidden;
+}
+
+.ng-board canvas {
+    display: block;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 480px;
+}
+
+/* --- Number Pad --- */
+
+.ng-number-pad {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 6px 6px;
+}
+
+.ng-num-btn {
+    min-width: 48px;
+    min-height: 48px;
+    font-family: var(--font-pixel);
+    font-size: 1.1rem;
+    border: 3px solid var(--panel-edge);
+    border-radius: 6px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--panel) 94%, white), var(--panel));
+    color: var(--text-main);
+    cursor: pointer;
+    box-shadow:
+        inset 0 -3px 0 color-mix(in srgb, var(--panel-edge) 30%, transparent),
+        0 0 8px var(--crt-glow);
+    transition: transform 0.1s, background 0.15s, box-shadow 0.15s;
+}
+
+.ng-num-btn:hover {
+    transform: scale(1.08);
+    box-shadow:
+        inset 0 -3px 0 color-mix(in srgb, var(--panel-edge) 30%, transparent),
+        0 0 16px var(--crt-glow);
+}
+
+.ng-num-btn:active {
+    transform: scale(0.96);
+}
+
+.ng-num-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.ng-num-btn.ng-correct {
+    background: linear-gradient(180deg, #66bb6a, #43a047) !important;
+    color: #fff !important;
+    border-color: #2e7d32 !important;
+    transform: scale(1.12);
+    box-shadow: 0 0 16px rgba(76, 175, 80, 0.5);
+}
+
+.ng-num-btn.ng-wrong {
+    background: linear-gradient(180deg, #ef5350, #c62828) !important;
+    color: #fff !important;
+    border-color: #b71c1c !important;
+    animation: ng-wrong-pulse 0.3s ease;
+}
+
+@keyframes ng-wrong-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+/* --- Shake animation --- */
+
+.ng-shake {
+    animation: ng-shake-anim 0.35s ease;
+}
+
+@keyframes ng-shake-anim {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-6px);
+    }
+
+    40% {
+        transform: translateX(6px);
+    }
+
+    60% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 480px) {
+    .ng-num-btn {
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1rem;
+    }
+
+    .ng-number-pad {
+        gap: 6px;
+        padding: 8px 4px 4px;
+    }
+
+    .overlay>div {
+        padding: 18px 16px;
+    }
+}

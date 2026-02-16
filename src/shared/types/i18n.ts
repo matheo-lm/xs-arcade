@@ -43,6 +43,10 @@ export interface TranslationDictionary {
   gameSoundOn: string;
   gameSoundOff: string;
   gameTargetReached: string;
+  gameHintNumberGarden: string;
+  gameCorrect: string;
+  gameTryAgain: string;
+  gameRoundLabel: string;
   settingsLabel: string;
   settingsOpen: string;
   settingsClose: string;
