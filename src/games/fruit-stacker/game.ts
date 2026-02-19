@@ -13,6 +13,7 @@ interface FruitState {
   vy: number;
   airDrift: number;
   ageFrames: number;
+  eligibleForTopLoss: boolean;
   merged: boolean;
 }
 
@@ -21,6 +22,31 @@ interface FloatingText {
   y: number;
   text: string;
   life: number;
+}
+
+interface RingEffect {
+  x: number;
+  y: number;
+  radius: number;
+  growth: number;
+  maxRadius: number;
+  life: number;
+  decay: number;
+  lineWidth: number;
+  color: string;
+}
+
+interface SparkEffect {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  gravity: number;
+  drag: number;
+  life: number;
+  decay: number;
+  size: number;
+  color: string;
 }
 
 interface FruitStackerStrings {
@@ -32,6 +58,7 @@ interface FruitStackerStrings {
   gameNext: string;
   gameSoundOn: string;
   gameSoundOff: string;
+  gameTargetReached: string;
 }
 
 export interface FruitStackerOptions {
@@ -54,7 +81,17 @@ export interface FruitStackerApi {
   setMuted(next: boolean): void;
   getMuted(): boolean;
   restart(): void;
+  toggleFullscreen(): Promise<void>;
   destroy(): void;
+}
+
+type RunMode = "playing" | "loss" | "win";
+type EndReason = "top-line" | "pumpkin-touch" | null;
+
+interface CelebrationState {
+  active: boolean;
+  remainingMs: number;
+  burstCooldownMs: number;
 }
 
 const FIXED_FPS = 60;
@@ -69,51 +106,46 @@ const WALL_BOUNCE = 0.22;
 const FLOOR_BOUNCE = 0.18;
 const COLLISION_PASSES = 3;
 const REST_THRESHOLD = 0.045;
-const OVERFLOW_FRAME_LIMIT = 54;
-const OVERFLOW_SETTLE_FRAMES = 40;
+const TOP_LINE_SPAWN_EXEMPT_FRAMES = 18;
 const SPAWN_POOL_SIZE = 3;
+const WIN_CELEBRATION_MS = 3000;
 
 const FRUITS: FruitMeta[] = FRUIT_TIERS.map((tier) => ({ ...tier }));
 const TERMINAL_TYPE_INDEX = Math.max(
   0,
   FRUITS.findIndex((fruit) => fruit.id === TERMINAL_FRUIT_ID)
 );
+const PUMPKIN_TYPE_INDEX = TERMINAL_TYPE_INDEX;
 
 export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi => {
   const ctx = options.canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas 2D context is unavailable");
 
-  // High-DPI support
-  const dpr = window.devicePixelRatio || 1;
-  const rect = options.canvas.getBoundingClientRect();
-
-  // Set actual size in memory (scaled to account for extra pixel density)
-  options.canvas.width = rect.width * dpr;
-  options.canvas.height = rect.height * dpr;
-
-  // Normalize coordinate system to use css pixels
-  ctx.scale(dpr, dpr);
-
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
-
   options.gameOverTitleEl.textContent = options.strings.gameOverTitle;
   options.playAgainBtn.textContent = options.strings.gamePlayAgain;
-  // options.restartBtn.textContent = options.strings.gameRestart;
 
-  // Logical width/height matches CSS size because of scale()
-  const boardWidth = rect.width;
-  const boardHeight = rect.height;
+  let boardWidth = 1;
+  let boardHeight = 1;
+  let currentDpr = 1;
 
   let fruits: FruitState[] = [];
   let effects: FloatingText[] = [];
+  let rings: RingEffect[] = [];
+  let sparks: SparkEffect[] = [];
+  let celebration: CelebrationState = {
+    active: false,
+    remainingMs: 0,
+    burstCooldownMs: 0
+  };
+
   let score = 0;
-  let spawnX = boardWidth / 2;
+  let spawnX = 0;
   let nextType = 0;
-  let overflowFrames = 0;
   let simulationMs = 0;
   let lastDropMs = -999_999;
-  let gameOver = false;
+  let queuedDrop = false;
+  let runMode: RunMode = "playing";
+  let endReason: EndReason = null;
   let rafHandle = 0;
   let lastRafMs = 0;
   let accumulatorMs = 0;
@@ -148,17 +180,22 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
 
   const getSpawnRadius = (): number => FRUITS[nextType].r + PLAYFIELD_PADDING + 6;
 
+  const getDropCooldownRemaining = (): number => Math.max(0, options.dropCooldownMs - (simulationMs - lastDropMs));
+
+  const getDropCooldownRatio = (): number => {
+    if (options.dropCooldownMs <= 0) return 1;
+    return 1 - getDropCooldownRemaining() / options.dropCooldownMs;
+  };
+
   const setSpawnX = (rawX: number): void => {
     const radius = getSpawnRadius();
     spawnX = clamp(rawX, radius, boardWidth - radius);
   };
 
   const updateScoreUi = (): void => {
-    options.scoreEl.textContent = `${options.strings.scorePrefix}: ${score}`;
-  };
-
-  const updateSoundToggleUi = (): void => {
-    // UI is now handled by the settings menu / header render
+    const text = `${options.strings.scorePrefix}: ${score}`;
+    options.scoreEl.textContent = text;
+    options.onScoreChange?.(score);
   };
 
   const WebKitWindow = window as typeof window & { webkitAudioContext?: typeof AudioContext };
@@ -242,9 +279,31 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     playTone({ frequency: 180, slideTo: 140, type: "triangle", duration: 0.2, volume: 0.04, when: 0.26 });
   };
 
+  const playWinSfx = (): void => {
+    playTone({ frequency: 440, slideTo: 520, type: "triangle", duration: 0.12, volume: 0.045 });
+    playTone({ frequency: 560, slideTo: 660, type: "triangle", duration: 0.12, volume: 0.043, when: 0.1 });
+    playTone({ frequency: 680, slideTo: 820, type: "sine", duration: 0.14, volume: 0.04, when: 0.2 });
+  };
+
   const setMuted = (next: boolean): void => {
     muted = !!next;
     options.onMutedChange(muted);
+  };
+
+  const resizeCanvas = (): void => {
+    const rect = options.canvas.getBoundingClientRect();
+    boardWidth = Math.max(1, Math.round(rect.width));
+    boardHeight = Math.max(1, Math.round(rect.height));
+    currentDpr = Math.max(1, window.devicePixelRatio || 1);
+
+    options.canvas.width = Math.max(1, Math.round(boardWidth * currentDpr));
+    options.canvas.height = Math.max(1, Math.round(boardHeight * currentDpr));
+
+    ctx.setTransform(currentDpr, 0, 0, currentDpr, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+
+    setSpawnX(spawnX || boardWidth / 2);
   };
 
   const createFruit = (type: number, x: number, y: number, vx = 0, vy = 0): FruitState => ({
@@ -256,32 +315,139 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     vy,
     airDrift: (Math.random() - 0.5) * 0.012,
     ageFrames: 0,
+    eligibleForTopLoss: false,
     merged: false
   });
-
-  const resetGame = (): void => {
-    fruits = [];
-    effects = [];
-    score = 0;
-    spawnX = boardWidth / 2;
-    nextType = randomSpawnType();
-    overflowFrames = 0;
-    simulationMs = 0;
-    lastDropMs = -999_999;
-    gameOver = false;
-    accumulatorMs = 0;
-    options.gameOverEl.classList.remove("visible");
-    updateScoreUi();
-    draw();
-  };
 
   const addEffect = (x: number, y: number, text: string): void => {
     effects.push({ x, y, text, life: 1 });
   };
 
+  const addRing = (x: number, y: number, color: string, maxRadius: number, growth: number, decay: number): void => {
+    rings.push({
+      x,
+      y,
+      radius: 6,
+      growth,
+      maxRadius,
+      life: 1,
+      decay,
+      lineWidth: 3,
+      color
+    });
+  };
+
+  const addSparkBurst = (
+    x: number,
+    y: number,
+    count: number,
+    palette: string[],
+    speedBase: number,
+    gravity = 0.08,
+    decay = 0.02
+  ): void => {
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.6;
+      const speed = speedBase * (0.6 + Math.random() * 0.8);
+      sparks.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 0.8,
+        gravity,
+        drag: 0.985,
+        life: 1,
+        decay,
+        size: 2 + Math.random() * 3,
+        color: palette[Math.floor(Math.random() * palette.length)]
+      });
+    }
+  };
+
+  const spawnPumpkinMergeCelebration = (x: number, y: number): void => {
+    addRing(x, y, "#ffd56a", 76, 2.7, 0.03);
+    addRing(x, y, "#ff9f4e", 104, 3.2, 0.024);
+    addSparkBurst(x, y, 26, ["#ffd56a", "#ffa54b", "#fff0b1", "#ff7b40"], 3.8, 0.09, 0.028);
+    addEffect(x, y - 12, "+PUMPKIN!");
+  };
+
+  const spawnFireworkBurst = (x: number, y: number): void => {
+    const palette = ["#ffe57d", "#80e8ff", "#ff9ed1", "#9dffba", "#ffd28a"];
+    addRing(x, y, palette[Math.floor(Math.random() * palette.length)], 92, 3.1, 0.024);
+    addSparkBurst(x, y, 34, palette, 4.2, 0.065, 0.02);
+  };
+
+  const startWinCelebration = (): void => {
+    celebration = {
+      active: true,
+      remainingMs: WIN_CELEBRATION_MS,
+      burstCooldownMs: 0
+    };
+    spawnFireworkBurst(boardWidth * 0.5, TOP_LINE_Y + 78);
+  };
+
+  const clearTransientEffects = (): void => {
+    effects = [];
+    rings = [];
+    sparks = [];
+    celebration = {
+      active: false,
+      remainingMs: 0,
+      burstCooldownMs: 0
+    };
+  };
+
+  const endRun = (reason: Exclude<EndReason, null>): void => {
+    if (runMode !== "playing") return;
+
+    endReason = reason;
+    runMode = reason === "pumpkin-touch" ? "win" : "loss";
+
+    options.gameOverEl.dataset.state = runMode;
+    options.gameOverTitleEl.textContent =
+      runMode === "win" ? options.strings.gameTargetReached : options.strings.gameOverTitle;
+    options.finalScoreEl.textContent = `${options.strings.gameOverScore} ${score}`;
+    options.gameOverEl.classList.add("visible");
+
+    if (runMode === "win") {
+      playWinSfx();
+      startWinCelebration();
+    } else {
+      playGameOverSfx();
+    }
+
+    options.onGameOver(score);
+  };
+
+  const resetGame = (): void => {
+    fruits = [];
+    clearTransientEffects();
+    score = 0;
+    nextType = randomSpawnType();
+    spawnX = boardWidth / 2;
+    setSpawnX(spawnX);
+    simulationMs = 0;
+    lastDropMs = -999_999;
+    queuedDrop = false;
+    runMode = "playing";
+    endReason = null;
+    accumulatorMs = 0;
+    lastRafMs = 0;
+
+    options.gameOverEl.classList.remove("visible");
+    options.gameOverEl.dataset.state = "loss";
+    options.gameOverTitleEl.textContent = options.strings.gameOverTitle;
+    updateScoreUi();
+    draw();
+  };
+
+  const canDropNow = (): boolean => {
+    if (runMode !== "playing") return false;
+    return getDropCooldownRemaining() <= 0;
+  };
+
   const dropFruit = (): boolean => {
-    if (gameOver) return false;
-    if (simulationMs - lastDropMs < options.dropCooldownMs) return false;
+    if (!canDropNow()) return false;
 
     const type = nextType;
     const radius = FRUITS[type].r;
@@ -293,6 +459,26 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     lastDropMs = simulationMs;
     playDropSfx(type);
     return true;
+  };
+
+  const attemptPlayerDrop = (): void => {
+    if (dropFruit()) {
+      queuedDrop = false;
+      return;
+    }
+
+    if (runMode !== "playing") return;
+
+    if (!queuedDrop) {
+      playUiSfx();
+    }
+    queuedDrop = true;
+  };
+
+  const consumeQueuedDropIfReady = (): void => {
+    if (!queuedDrop) return;
+    if (!dropFruit()) return;
+    queuedDrop = false;
   };
 
   const resolveWorldBounds = (fruit: FruitState): void => {
@@ -336,6 +522,11 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     updateScoreUi();
     addEffect(x, y, `+${points}`);
     playMergeSfx(mergedType);
+
+    if (mergedType === PUMPKIN_TYPE_INDEX) {
+      spawnPumpkinMergeCelebration(x, y);
+    }
+
     return true;
   };
 
@@ -377,32 +568,85 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     b.vy += impulse * ny;
   };
 
-  const checkOverflow = (): void => {
-    if (gameOver) return;
-
-    const blocked = fruits.some((fruit) => {
+  const hasImmediateTopLineBreach = (): boolean => {
+    for (const fruit of fruits) {
+      if (fruit.merged) continue;
+      if (!fruit.eligibleForTopLoss) continue;
+      if (fruit.ageFrames < TOP_LINE_SPAWN_EXEMPT_FRAMES) continue;
       const radius = FRUITS[fruit.type].r;
       const top = fruit.y - radius;
-      if (top >= TOP_LINE_Y) return false;
-      if (fruit.ageFrames < OVERFLOW_SETTLE_FRAMES) return false;
-      if (Math.abs(fruit.vx) + Math.abs(fruit.vy) > 1.15) return false;
-      return true;
-    });
+      if (top < TOP_LINE_Y) return true;
+    }
+    return false;
+  };
 
-    overflowFrames = blocked ? overflowFrames + 1 : 0;
-    if (overflowFrames <= OVERFLOW_FRAME_LIMIT) return;
+  const hasPumpkinTouch = (): boolean => {
+    const pumpkins = fruits.filter((fruit) => !fruit.merged && fruit.type === PUMPKIN_TYPE_INDEX);
+    if (pumpkins.length < 2) return false;
 
-    gameOver = true;
-    options.finalScoreEl.textContent = `${options.strings.gameOverScore} ${score}`;
-    options.gameOverEl.classList.add("visible");
-    playGameOverSfx();
-    options.onGameOver(score);
+    for (let i = 0; i < pumpkins.length; i++) {
+      for (let j = i + 1; j < pumpkins.length; j++) {
+        const a = pumpkins[i];
+        const b = pumpkins[j];
+        const targetDistance = FRUITS[a.type].r + FRUITS[b.type].r;
+        const distance = Math.hypot(b.x - a.x, b.y - a.y);
+        if (distance <= targetDistance * 0.99) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
+  const stepTransientEffects = (): void => {
+    for (const effect of effects) {
+      effect.y -= 0.6;
+      effect.life -= 0.02;
+    }
+    effects = effects.filter((effect) => effect.life > 0);
+
+    for (const ring of rings) {
+      ring.radius = Math.min(ring.maxRadius, ring.radius + ring.growth);
+      ring.life -= ring.decay;
+    }
+    rings = rings.filter((ring) => ring.life > 0);
+
+    for (const spark of sparks) {
+      spark.vx *= spark.drag;
+      spark.vy = spark.vy * spark.drag + spark.gravity;
+      spark.x += spark.vx;
+      spark.y += spark.vy;
+      spark.life -= spark.decay;
+    }
+    sparks = sparks.filter((spark) => spark.life > 0);
+
+    if (!celebration.active) return;
+
+    celebration.remainingMs -= FIXED_DT_MS;
+    celebration.burstCooldownMs -= FIXED_DT_MS;
+
+    if (celebration.remainingMs > 0 && celebration.burstCooldownMs <= 0) {
+      const burstX = clamp(26 + Math.random() * (boardWidth - 52), 26, boardWidth - 26);
+      const burstY = clamp(TOP_LINE_Y + 36 + Math.random() * 170, TOP_LINE_Y + 32, boardHeight * 0.7);
+      spawnFireworkBurst(burstX, burstY);
+      celebration.burstCooldownMs = 240 + Math.random() * 120;
+    }
+
+    if (celebration.remainingMs <= 0) {
+      celebration.active = false;
+    }
   };
 
   const stepFixed = (): void => {
-    if (gameOver) return;
-
     simulationMs += FIXED_DT_MS;
+
+    if (runMode !== "playing") {
+      stepTransientEffects();
+      return;
+    }
+
+    consumeQueuedDropIfReady();
 
     for (const fruit of fruits) {
       if (fruit.merged) continue;
@@ -420,6 +664,10 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
       fruit.x += fruit.vx;
       fruit.y += fruit.vy;
       resolveWorldBounds(fruit);
+      const top = fruit.y - radius;
+      if (!fruit.eligibleForTopLoss && top >= TOP_LINE_Y) {
+        fruit.eligibleForTopLoss = true;
+      }
     }
 
     for (let pass = 0; pass < COLLISION_PASSES; pass++) {
@@ -437,15 +685,19 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
       if (fruit.merged) continue;
       resolveWorldBounds(fruit);
     }
+
     fruits = fruits.filter((fruit) => !fruit.merged);
 
-    for (const effect of effects) {
-      effect.y -= 0.6;
-      effect.life -= 0.02;
-    }
-    effects = effects.filter((effect) => effect.life > 0);
+    stepTransientEffects();
 
-    checkOverflow();
+    if (hasImmediateTopLineBreach()) {
+      endRun("top-line");
+      return;
+    }
+
+    if (hasPumpkinTouch()) {
+      endRun("pumpkin-touch");
+    }
   };
 
   const drawFallbackFruit = (meta: FruitMeta, radius: number): void => {
@@ -499,19 +751,26 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   const drawHud = (): void => {
     const nextMeta = FRUITS[nextType];
 
+    ctx.fillStyle = "#040c2dca";
+    ctx.fillRect(6, 8, 174, 47);
+    ctx.strokeStyle = "#8bb4f67d";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(6.5, 8.5, 173, 46);
+
     ctx.fillStyle = "#ffe57d";
-    ctx.font = "700 13px \"Press Start 2P\", \"Courier New\", monospace";
+    ctx.font = '700 13px "Press Start 2P", "Courier New", monospace';
     ctx.textAlign = "left";
-    ctx.fillText(options.strings.gameNext.toUpperCase(), 10, 24);
+    ctx.fillText(options.strings.gameNext.toUpperCase(), 14, 24);
 
     ctx.fillStyle = "#d7ecff";
-    ctx.font = "700 11px \"Press Start 2P\", \"Courier New\", monospace";
-    ctx.fillText(nextMeta.name.toUpperCase(), 10, 45);
+    ctx.font = '700 11px "Press Start 2P", "Courier New", monospace';
+    ctx.fillText(nextMeta.name.toUpperCase(), 14, 45);
+
     drawFruit({ type: nextType, x: boardWidth - 36, y: 32 }, 0.95, 0.62);
   };
 
-  const drawOverflowLine = (): void => {
-    ctx.strokeStyle = overflowFrames > 0 ? "#ff6a6a" : "#ffd45a";
+  const drawTopLine = (): void => {
+    ctx.strokeStyle = runMode === "loss" ? "#ff6a6a" : "#ffd45a";
     ctx.lineWidth = 3;
     ctx.setLineDash([7, 6]);
     ctx.beginPath();
@@ -535,6 +794,33 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     ctx.setLineDash([]);
 
     drawFruit({ type: nextType, x: spawnX, y: launchY }, 0.62);
+
+    const cooldownRatio = getDropCooldownRatio();
+    if (cooldownRatio >= 0.999 && !queuedDrop) return;
+
+    const pulse = 0.55 + 0.45 * Math.sin(simulationMs / 90);
+    const ringColor = queuedDrop
+      ? `rgba(157, 255, 186, ${0.5 + pulse * 0.35})`
+      : `rgba(255, 212, 90, ${0.45 + pulse * 0.25})`;
+
+    ctx.strokeStyle = ringColor;
+    ctx.lineWidth = queuedDrop ? 4 : 3;
+    ctx.beginPath();
+    ctx.arc(
+      spawnX,
+      launchY,
+      radius + 7,
+      -Math.PI / 2,
+      -Math.PI / 2 + Math.PI * 2 * Math.max(0.06, cooldownRatio)
+    );
+    ctx.stroke();
+
+    if (!queuedDrop) return;
+
+    ctx.fillStyle = `rgba(157, 255, 186, ${0.72 + pulse * 0.2})`;
+    ctx.beginPath();
+    ctx.arc(spawnX + radius + 12, launchY - radius + 3, 4, 0, Math.PI * 2);
+    ctx.fill();
   };
 
   const drawEffects = (): void => {
@@ -542,9 +828,30 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
       ctx.save();
       ctx.globalAlpha = effect.life;
       ctx.fillStyle = "#9dffba";
-      ctx.font = "700 16px \"Press Start 2P\", \"Courier New\", monospace";
+      ctx.font = '700 16px "Press Start 2P", "Courier New", monospace';
       ctx.textAlign = "center";
       ctx.fillText(effect.text, effect.x, effect.y);
+      ctx.restore();
+    }
+
+    for (const ring of rings) {
+      ctx.save();
+      ctx.globalAlpha = ring.life;
+      ctx.strokeStyle = ring.color;
+      ctx.lineWidth = ring.lineWidth;
+      ctx.beginPath();
+      ctx.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    for (const spark of sparks) {
+      ctx.save();
+      ctx.globalAlpha = spark.life;
+      ctx.fillStyle = spark.color;
+      ctx.beginPath();
+      ctx.arc(spark.x, spark.y, spark.size, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
     }
   };
@@ -552,8 +859,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   const draw = (): void => {
     ctx.clearRect(0, 0, boardWidth, boardHeight);
     drawBackground();
-    drawHud();
-    drawOverflowLine();
+    drawTopLine();
 
     for (const fruit of fruits) {
       drawFruit(fruit);
@@ -561,6 +867,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
 
     drawLauncher();
     drawEffects();
+    drawHud();
   };
 
   const stepForMs = (ms: number): void => {
@@ -618,19 +925,22 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   testingWindow.render_game_to_text = (): string => {
     const payload = {
       coordinateSystem: "origin=(0,0) top-left; +x right; +y down; units are canvas pixels",
-      mode: gameOver ? "gameover" : "playing",
+      mode: runMode,
+      endReason,
       score,
       muted,
       nextFruit: FRUITS[nextType].id,
       launcher: {
         x: Number(spawnX.toFixed(2)),
         y: Number((TOP_LINE_Y - getSpawnRadius()).toFixed(2)),
-        cooldownMsRemaining: Number(Math.max(0, options.dropCooldownMs - (simulationMs - lastDropMs)).toFixed(2))
+        cooldownMsRemaining: Number(getDropCooldownRemaining().toFixed(2)),
+        cooldownRatio: Number(getDropCooldownRatio().toFixed(3)),
+        queuedDrop
       },
       overflow: {
         lineY: TOP_LINE_Y,
-        frames: overflowFrames,
-        frameLimit: OVERFLOW_FRAME_LIMIT
+        immediate: true,
+        spawnExemptFrames: TOP_LINE_SPAWN_EXEMPT_FRAMES
       },
       fruits: fruits.map((fruit) => ({
         id: fruit.id,
@@ -640,6 +950,8 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
         vx: Number(fruit.vx.toFixed(2)),
         vy: Number(fruit.vy.toFixed(2)),
         drift: Number(fruit.airDrift.toFixed(4)),
+        ageFrames: fruit.ageFrames,
+        eligibleForTopLoss: fruit.eligibleForTopLoss,
         r: FRUITS[fruit.type].r
       }))
     };
@@ -647,29 +959,29 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     return JSON.stringify(payload);
   };
 
-  options.canvas.addEventListener("pointermove", (event) => {
+  const handlePointerMove = (event: PointerEvent): void => {
     setSpawnX(getCanvasWorldX(event.clientX));
-  });
+  };
 
-  options.canvas.addEventListener("pointerdown", (event) => {
+  const handlePointerDown = (event: PointerEvent): void => {
     if (event.button !== 0) return;
     unlockAudio();
     setSpawnX(getCanvasWorldX(event.clientX));
-    dropFruit();
+    attemptPlayerDrop();
     event.preventDefault();
-  });
+  };
 
-  // Removed obsolete button listeners (soundToggleBtn, restartBtn)
-  // Logic is now in main.ts / settings menu handlers calling api.restart()
-
-  options.playAgainBtn.addEventListener("click", () => {
+  const handlePlayAgain = (): void => {
     unlockAudio();
     playUiSfx();
     resetGame();
-  });
+  };
 
-  window.addEventListener("pointerdown", unlockAudio, { passive: true });
-  window.addEventListener("keydown", (event) => {
+  const handleWindowPointerDown = (): void => {
+    unlockAudio();
+  };
+
+  const handleKeyDown = (event: KeyboardEvent): void => {
     let handled = false;
 
     if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") {
@@ -680,7 +992,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
       handled = true;
     } else if (event.key === " " || event.key === "Enter") {
       unlockAudio();
-      dropFruit();
+      attemptPlayerDrop();
       handled = true;
     } else if (event.key === "f" || event.key === "F") {
       void toggleFullscreen();
@@ -691,12 +1003,22 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     }
 
     if (handled) event.preventDefault();
-  });
+  };
 
-  document.addEventListener("fullscreenchange", () => {
+  const handleResize = (): void => {
+    resizeCanvas();
     draw();
-  });
+  };
 
+  options.canvas.addEventListener("pointermove", handlePointerMove);
+  options.canvas.addEventListener("pointerdown", handlePointerDown);
+  options.playAgainBtn.addEventListener("click", handlePlayAgain);
+  window.addEventListener("pointerdown", handleWindowPointerDown, { passive: true });
+  window.addEventListener("keydown", handleKeyDown);
+  window.addEventListener("resize", handleResize);
+  document.addEventListener("fullscreenchange", handleResize);
+
+  resizeCanvas();
   resetGame();
   rafHandle = window.requestAnimationFrame(runRaf);
 
@@ -710,9 +1032,18 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     restart() {
       resetGame();
     },
+    async toggleFullscreen() {
+      await toggleFullscreen();
+    },
     destroy() {
-      window.removeEventListener("pointerdown", unlockAudio);
-      // ... more cleanups could go here if needed
+      window.cancelAnimationFrame(rafHandle);
+      options.canvas.removeEventListener("pointermove", handlePointerMove);
+      options.canvas.removeEventListener("pointerdown", handlePointerDown);
+      options.playAgainBtn.removeEventListener("click", handlePlayAgain);
+      window.removeEventListener("pointerdown", handleWindowPointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("fullscreenchange", handleResize);
     }
   };
 };

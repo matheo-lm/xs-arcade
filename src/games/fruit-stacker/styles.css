@@ -34,6 +34,23 @@ canvas {
   image-rendering: auto;
 }
 
+#gameOver[data-state="win"] {
+  background: color-mix(in srgb, var(--bg-top) 65%, transparent);
+}
+
+#gameOver[data-state="win"] > div {
+  border-color: #ffe57d;
+  box-shadow: 0 0 34px #ffd45a99;
+}
+
+#gameOver[data-state="win"] h2 {
+  color: #ffe57d;
+}
+
+#gameOver[data-state="win"] p {
+  color: #f7f0cf;
+}
+
 @media (max-width: 920px) {
   .board {
     width: min(100%, 390px);

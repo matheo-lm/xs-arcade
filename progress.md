@@ -95,3 +95,67 @@ Original prompt: [$develop-web-game](/Users/m/.codex/skills/develop-web-game/SKI
   - Ran Playwright capture: `output/web-game/fruit-stacker-naturalness-pass1`.
   - Reviewed screenshots + `state-*.json`; visuals are back to consistent outlined family style and no PNG halo fringe observed.
   - No `errors-*.json` emitted.
+
+## 2026-02-19 (improvements review pass)
+- User request: review Fruit Stacker and suggest improvements; use Playwright observation.
+- Runs executed:
+  - `output/web-game/fruit-stacker-review-center` (55 iterations, center drop cadence)
+  - `output/web-game/fruit-stacker-review-left-edge` (85 iterations, left-edge stack pressure)
+  - `output/web-game/fruit-stacker-review-spam` (30 iterations, rapid input spam)
+- Observations:
+  - No `errors-*.json` emitted in all three runs (no captured console/page errors).
+  - Rapid spam input showed many ignored drops with little player feedback; by `state-29.json`, only 3 fruits were active despite 30 attempts.
+  - HUD readability degrades near left spawn positions because launcher preview fruit can overlap the top-left `NEXT` label area.
+  - Code review flagged fullscreen consistency risk:
+    - `main.ts` settings menu fullscreen toggles `document.documentElement.requestFullscreen()`.
+    - `game.ts` keyboard fullscreen toggles `boardEl.requestFullscreen()`.
+    - `game.ts` physics/render dimensions are computed once from initial canvas rect and not recomputed on resize/fullscreen, so fullscreen can stretch visuals and degrade pointer mapping fidelity.
+
+## 2026-02-19 (end-state + UX implementation pass)
+- User request: implement full Fruit Stacker upgrade plan.
+- Implemented:
+  - Reworked `src/games/fruit-stacker/game.ts` with explicit terminal run states (`playing`, `loss`, `win`) and `endReason`.
+  - Added immediate top-line loss with spawn eligibility gating:
+    - Exemption window remains `18` frames.
+    - New fruits are additionally excluded until they first enter normal playfield depth (`eligibleForTopLoss`), preventing false instant losses while still airborne from spawn.
+  - Added two-pumpkin touch win detection (without changing terminal pumpkin merge rules).
+  - Added merge celebrations:
+    - Watermelon -> pumpkin burst (ring + sparks + text).
+    - Win fireworks celebration timeline for pumpkin-touch wins.
+  - Added queued drop behavior + cooldown ring/pulse feedback around launcher preview.
+  - Added resizable board/canvas handling with DPR-aware `resizeCanvas` on `resize` + `fullscreenchange`.
+  - Unified fullscreen behavior:
+    - API now exposes `toggleFullscreen()`.
+    - Settings menu now routes fullscreen toggles through game API.
+  - Improved HUD readability:
+    - Launcher now draws before HUD.
+    - Added compact top-left HUD backing strip for `NEXT` text.
+  - Extended `render_game_to_text` payload with:
+    - `mode`, `endReason`
+    - `launcher.queuedDrop`, `launcher.cooldownRatio`
+    - extra fruit debug field `eligibleForTopLoss`.
+  - Updated `src/games/fruit-stacker/main.ts` to pass `gameTargetReached`.
+  - Added win-state overlay styling in `src/games/fruit-stacker/styles.css`.
+  - Removed Google Fonts runtime links from `games/fruit-stacker/index.html`.
+  - Updated fruit scale tuning in `src/games/fruit-stacker/config.ts`:
+    - melon/watermelon scales per plan.
+    - adjusted pumpkin sprite scale slightly to keep strict visible tier progression.
+  - Updated `tests/unit/fruitStackerConfig.test.ts` with rendered-size progression assertion.
+  - Updated gameplay contract text in `AGENTS.md` for immediate top-line + spawn exemption + pumpkin-touch win.
+- Validation:
+  - `npm run typecheck` passed.
+  - `npm run test` passed (21 tests).
+  - Playwright runs (no `errors-*.json` emitted):
+    - `output/web-game/fruit-stacker-impl-spam-v2`
+      - confirms queued-drop state + cooldown ring visibility and non-loss while fresh fruits are still exempt.
+    - `output/web-game/fruit-stacker-impl-left-edge`
+      - extended edge stacking pressure (stable, no immediate regressions).
+    - `output/web-game/fruit-stacker-impl-topline`
+      - sustained center pressure run for high-stack behavior.
+    - `output/web-game/fruit-stacker-impl-edge-long`
+      - reached terminal loss with `\"mode\":\"loss\"` and `\"endReason\":\"top-line\"`.
+      - also reached pumpkin creation and visual merge celebration (`shot-289.png`).
+    - `output/web-game/fruit-stacker-impl-long-run`
+      - long non-terminal balance run.
+- Known remaining verification gap:
+  - Did not observe `mode:\"win\"` in automated traces yet (two-pumpkin-touch condition is implemented, but this trigger remained rare under sampled random runs and needs additional long/manual capture for explicit win-fireworks artifact confirmation).

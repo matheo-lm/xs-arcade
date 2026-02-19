@@ -46,7 +46,9 @@ Canonical merge chain must remain:
 Rules:
 - Pumpkin is terminal.
 - Same-type touching merges into next tier.
-- Game over triggers only after sustained top-line overflow.
+- Game over triggers immediately when an eligible stacked fruit crosses above the top line.
+- Newly dropped fruits are exempt from top-line loss for a short spawn window.
+- Touching pumpkins trigger a win celebration while pumpkin remains terminal.
 
 ## Asset Policy
 - Runtime image assets must be local-only under `/Users/m/Desktop/berries/public/assets/` (no CDN or remote runtime image URLs).

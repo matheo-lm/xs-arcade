@@ -7,7 +7,7 @@ import { getAllGames } from "@platform/gameRegistry";
 import { platformStorage } from "@shared/storage/platformStorage";
 import { initFruitStacker } from "@games/fruit-stacker/game";
 import { applyTheme, watchSystemTheme, type ThemePreference } from "@shared/ui/theme";
-import { renderGameHeader, updateGameHeaderAction, updateGameHeaderMeta } from "@shared/ui/gameHeader";
+import { renderGameHeader, updateGameHeaderMeta } from "@shared/ui/gameHeader";
 import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } from "@shared/ui/settingsMenu";
 
 const byId = <T extends HTMLElement>(id: string): T => {
@@ -97,7 +97,8 @@ const gameApi = initFruitStacker({
     gameRestart: i18n.t("gameRestart"),
     gameNext: i18n.t("gameNext"),
     gameSoundOn: i18n.t("gameSoundOn"),
-    gameSoundOff: i18n.t("gameSoundOff")
+    gameSoundOff: i18n.t("gameSoundOff"),
+    gameTargetReached: i18n.t("gameTargetReached")
   },
   initialMuted: platformStorage.isGlobalMute(),
   dropCooldownMs: mediumPreset.dropCooldownMs,
@@ -204,11 +205,7 @@ const renderGameSettingsMenu = (): void => {
       renderGameSettingsMenu();
     },
     onToggleImmersive() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
+      void gameApi.toggleFullscreen();
       gameSettingsOpen = false;
       renderGameSettingsMenu();
     },

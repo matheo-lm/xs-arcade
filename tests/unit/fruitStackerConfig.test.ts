@@ -28,4 +28,24 @@ describe("fruit stacker config", () => {
       expect(tier.fallbackSpriteUrl.startsWith("/assets/fruits/")).toBe(true);
     }
   });
+
+  test("keeps high-tier rendered size progression", () => {
+    const renderedDiameterById = new Map(
+      FRUIT_TIERS.map((tier) => [tier.id, tier.r * tier.drawScale * tier.spriteScale * 2])
+    );
+
+    const peach = renderedDiameterById.get("peach");
+    const melon = renderedDiameterById.get("melon");
+    const watermelon = renderedDiameterById.get("watermelon");
+    const pumpkin = renderedDiameterById.get("pumpkin");
+
+    expect(peach).toBeDefined();
+    expect(melon).toBeDefined();
+    expect(watermelon).toBeDefined();
+    expect(pumpkin).toBeDefined();
+
+    expect(peach as number).toBeLessThan(melon as number);
+    expect(melon as number).toBeLessThan(watermelon as number);
+    expect(watermelon as number).toBeLessThan(pumpkin as number);
+  });
 });
